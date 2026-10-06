@@ -379,8 +379,8 @@ body.cursor-click .cursor-ring {
   object-fit: cover;
   object-position: center;
   z-index: 0;
-  opacity: 0.30;
-  filter: blur(1px) brightness(1.05) contrast(1.05);
+  opacity: 0.25;
+  filter: blur(1px) brightness(0.9) contrast(1.05);
 }
 .hero-bg-overlay {
   position: absolute;
