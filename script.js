@@ -191,9 +191,17 @@
           observer.unobserve(el);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
 
-    aosEls.forEach(el => observer.observe(el));
+    aosEls.forEach(el => {
+      // If already in viewport or close to it on load, animate immediately
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('aos-animate');
+      } else {
+        observer.observe(el);
+      }
+    });
   }
 
   /* ─── 6. CRITERIA BAR ANIMATION ────────────────────────── */
