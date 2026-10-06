@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI VibeX — The premier AI Hackathon by Mangalore Institute of Technology & Engineering. A 6-hour innovation sprint from 9:45 AM to 4:00 PM. Build, Vibe, Innovate." />
+  <meta property="og:title" content="AI VibeX | MITE Hackathon" />
+  <meta property="og:description" content="6-hour AI innovation sprint at MITE. Build, Vibe, Innovate." />
+  <title>AI VibeX | MITE Hackathon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CANVAS PARTICLE BG -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- CURSOR GLOW -->
+  <!-- Custom cursor layers -->
+  <div class="cursor-glow"  id="cursor-glow"></div>
+  <div class="cursor-ring"  id="cursor-ring"></div>
+  <div class="cursor-dot"   id="cursor-dot"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-bracket">&lt;</span>
+        <span class="logo-text">AI VibeX</span>
+        <span class="logo-bracket">/&gt;</span>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#timeline" class="nav-link">Timeline</a></li>
+        <li><a href="#flow" class="nav-link">Flow</a></li>
+        <li><a href="#why" class="nav-link">Why Join</a></li>
+        <li><a href="#register" class="nav-link nav-cta">Register</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-overlay"></div>
+    <img src="assets/hero_bg.jpg" alt="AI Neural Network Background" class="hero-bg-img" />
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <div class="college-badge" data-aos="fade-down">
+        <span class="badge-dot pulse"></span>
+        <span class="badge-dept">Presented by AIML DEPARTMENT</span>
+        <span class="badge-sep">•</span>
+        <span class="badge-college">Mangalore Institute of Technology &amp; Engineering</span>
+      </div>
+
+      <h1 class="hero-title" data-aos="fade-up">
+        <span class="title-line">
+          <span class="gradient-text glitch-text" data-text="AI VibeX">AI VibeX</span>
+        </span>
+        <span class="title-sub">Hackathon <span class="year-tag">2026</span></span>
+      </h1>
+
+      <p class="hero-tagline" data-aos="fade-up" data-aos-delay="100">
+        Build. Vibe. Innovate. &mdash; A 6-Hour AI Innovation Sprint
+      </p>
+
+      <div class="hero-meta" data-aos="fade-up" data-aos-delay="200">
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          9:45 AM &ndash; 4:00 PM
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Date To Be Announced
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          6 Hours of Innovation
+        </div>
+      </div>
+
+      <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
+        <a href="#register" class="btn-primary" id="hero-register-btn">
+          <span>Register Now</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#timeline" class="btn-secondary" id="hero-timeline-btn">
+          View Timeline
+        </a>
+      </div>
+
+      <div class="countdown-wrap" data-aos="fade-up" data-aos-delay="400">
+        <p class="countdown-label">Date Releasing Soon &mdash; Stay Tuned</p>
+        <div class="countdown-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ABOUT STRIP -->
+  <section class="about-strip" id="about">
+    <div class="container">
+      <div class="strip-grid">
+        <div class="strip-card" data-aos="fade-up">
+          <div class="strip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <h3>6 Hours</h3>
+          <p>Intense sprint to build something extraordinary with AI</p>
+        </div>
+        <div class="strip-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="strip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Team Spirit</h3>
+          <p>Collaborate, ideate, and ship together under pressure</p>
+        </div>
+        <div class="strip-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="strip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>AI-First</h3>
+          <p>Every project must harness the power of Artificial Intelligence</p>
+        </div>
+        <div class="strip-card" data-aos="fade-up" data-aos-delay="240">
+          <div class="strip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <h3>Win Prizes</h3>
+          <p>Exciting rewards await the teams that vibe the hardest</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE SECTION -->
+  <section class="section timeline-section" id="timeline">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Schedule</span>
+        <h2 class="section-title">Event <span class="gradient-text">Timeline</span></h2>
+        <p class="section-subtitle">Your 6-hour journey mapped out minute by minute</p>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item" data-aos="fade-right" id="tl-registration">
+          <div class="tl-marker">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">09:45 AM</div>
+            <h3 class="tl-title">Registration &amp; Check-In</h3>
+            <p class="tl-desc">Participants arrive, register, receive kits, and settle into their workstations. Meet your mentors and get the vibe going!</p>
+            <div class="tl-tag">Kick-off</div>
+          </div>
+        </div>
+
+        <div class="timeline-item tl-right" data-aos="fade-left" id="tl-inauguration">
+          <div class="tl-marker">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">10:15 AM</div>
+            <h3 class="tl-title">Inauguration &amp; Problem Reveal</h3>
+            <p class="tl-desc">Official opening ceremony presented by 3rd Year AIML. Problem statements are unveiled &mdash; teams strategize and choose their challenge.</p>
+            <div class="tl-tag">Opening</div>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-right" id="tl-hacking">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tl-card-highlight">
+            <div class="tl-time">10:30 AM</div>
+            <h3 class="tl-title">Hacking Begins!</h3>
+            <p class="tl-desc">The clock starts. Teams dive into building their AI-powered projects. Mentors are on standby. Coffee is flowing.</p>
+            <div class="tl-tag tl-tag-hot">Main Event</div>
+          </div>
+        </div>
+
+        <div class="timeline-item tl-right" data-aos="fade-left" id="tl-lunch">
+          <div class="tl-marker">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">01:00 PM</div>
+            <h3 class="tl-title">Lunch Break &amp; Mentor Sessions</h3>
+            <p class="tl-desc">Recharge with lunch. Grab a mentor session to unblock your team or refine your approach.</p>
+            <div class="tl-tag">Break</div>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-right" id="tl-midcheck">
+          <div class="tl-marker">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">01:30 PM</div>
+            <h3 class="tl-title">Mid-Point Check-In</h3>
+            <p class="tl-desc">Progress review by mentors. Ensure your project is on track. Pivot if needed &mdash; the judges will be watching!</p>
+            <div class="tl-tag">Checkpoint</div>
+          </div>
+        </div>
+
+        <div class="timeline-item tl-right" data-aos="fade-left" id="tl-submission">
+          <div class="tl-marker">
+            <div class="tl-dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">03:30 PM</div>
+            <h3 class="tl-title">Project Submission Deadline</h3>
+            <p class="tl-desc">All projects must be submitted. Code frozen. Time to polish the demo and presentation!</p>
+            <div class="tl-tag tl-tag-warn">Deadline</div>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-right" id="tl-demo">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">03:45 PM</div>
+            <h3 class="tl-title">Demo &amp; Judging</h3>
+            <p class="tl-desc">Teams present to judges. 5-minute demo + Q&amp;A. Wow the panel with your AI innovation!</p>
+            <div class="tl-tag">Judging</div>
+          </div>
+        </div>
+
+        <div class="timeline-item tl-right" data-aos="fade-left" id="tl-closing">
+          <div class="tl-marker">
+            <div class="tl-dot tl-dot-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+            </div>
+          </div>
+          <div class="tl-card">
+            <div class="tl-time">04:00 PM</div>
+            <h3 class="tl-title">Prize Ceremony &amp; Closing</h3>
+            <p class="tl-desc">Winners announced! Prizes distributed. Celebrate six hours of pure creative energy and innovation at MITE.</p>
+            <div class="tl-tag tl-tag-gold">Grand Finale</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW SECTION -->
+  <section class="section flow-section" id="flow">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Process</span>
+        <h2 class="section-title">Hackathon <span class="gradient-text">Flow</span></h2>
+        <p class="section-subtitle">How it all works &mdash; from idea to glory in 6 hours</p>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card" data-aos="zoom-in" id="flow-step-1">
+          <div class="flow-number">01</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>Form Your Team</h3>
+          <p>Assemble a team of passionate builders. Mix skills &mdash; design, code, ML &mdash; for maximum impact.</p>
+          <div class="flow-arrow">&#8594;</div>
+        </div>
+
+        <div class="flow-card" data-aos="zoom-in" data-aos-delay="80" id="flow-step-2">
+          <div class="flow-number">02</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h3>Pick a Problem</h3>
+          <p>Choose from curated AI-focused problem statements that tackle real-world challenges.</p>
+          <div class="flow-arrow">&#8594;</div>
+        </div>
+
+        <div class="flow-card" data-aos="zoom-in" data-aos-delay="160" id="flow-step-3">
+          <div class="flow-number">03</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3>Build &amp; Iterate</h3>
+          <p>Code furiously. Use APIs, models, frameworks. Mentors are available to guide you throughout.</p>
+          <div class="flow-arrow">&#8594;</div>
+        </div>
+
+        <div class="flow-card" data-aos="zoom-in" data-aos-delay="240" id="flow-step-4">
+          <div class="flow-number">04</div>
+          <div class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Demo &amp; Win</h3>
+          <p>Present your solution to the judges. Impress with impact, creativity, and technical depth.</p>
+          <div class="flow-arrow last">&#127942;</div>
+        </div>
+      </div>
+
+      <div class="criteria-wrap" data-aos="fade-up">
+        <h3 class="criteria-title">Judging Criteria</h3>
+        <div class="criteria-grid">
+          <div class="criteria-item" id="criteria-innovation">
+            <div class="criteria-bar-wrap">
+              <span class="criteria-label">Innovation</span>
+              <span class="criteria-percent">30%</span>
+            </div>
+            <div class="criteria-bar"><div class="criteria-fill" style="--pct:30%"></div></div>
+          </div>
+          <div class="criteria-item" id="criteria-impact">
+            <div class="criteria-bar-wrap">
+              <span class="criteria-label">Real-World Impact</span>
+              <span class="criteria-percent">25%</span>
+            </div>
+            <div class="criteria-bar"><div class="criteria-fill" style="--pct:25%"></div></div>
+          </div>
+          <div class="criteria-item" id="criteria-tech">
+            <div class="criteria-bar-wrap">
+              <span class="criteria-label">Technical Complexity</span>
+              <span class="criteria-percent">25%</span>
+            </div>
+            <div class="criteria-bar"><div class="criteria-fill" style="--pct:25%"></div></div>
+          </div>
+          <div class="criteria-item" id="criteria-presentation">
+            <div class="criteria-bar-wrap">
+              <span class="criteria-label">Presentation</span>
+              <span class="criteria-percent">20%</span>
+            </div>
+            <div class="criteria-bar"><div class="criteria-fill" style="--pct:20%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY JOIN -->
+  <section class="section why-section" id="why">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Reasons</span>
+        <h2 class="section-title">Why <span class="gradient-text">AI VibeX?</span></h2>
+        <p class="section-subtitle">This isn't just a hackathon &mdash; it's a launchpad</p>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card" data-aos="fade-up" id="why-card-1">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#129302;</div>
+          <h3>AI-First Culture</h3>
+          <p>Every challenge revolves around building with AI. Get hands-on experience with LLMs, computer vision, generative models, and more.</p>
+        </div>
+        <div class="why-card" data-aos="fade-up" data-aos-delay="80" id="why-card-2">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#129504;</div>
+          <h3>Expert Mentors</h3>
+          <p>Learn from industry professionals and faculty. Get live feedback, unblock challenges, and level up your skills in real time.</p>
+        </div>
+        <div class="why-card" data-aos="fade-up" data-aos-delay="160" id="why-card-3">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#128640;</div>
+          <h3>Accelerated Growth</h3>
+          <p>6 hours of focused building is worth months of casual learning. Push your limits and discover what you're truly capable of.</p>
+        </div>
+        <div class="why-card" data-aos="fade-up" data-aos-delay="240" id="why-card-4">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#127941;</div>
+          <h3>Recognition &amp; Prizes</h3>
+          <p>Win exciting prizes, certificates, and gain recognition from MITE faculty and the broader tech community.</p>
+        </div>
+        <div class="why-card" data-aos="fade-up" data-aos-delay="320" id="why-card-5">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#129309;</div>
+          <h3>Network &amp; Vibe</h3>
+          <p>Connect with like-minded builders, future founders, and tech enthusiasts from across the college.</p>
+        </div>
+        <div class="why-card" data-aos="fade-up" data-aos-delay="400" id="why-card-6">
+          <div class="why-glow"></div>
+          <div class="why-icon">&#128161;</div>
+          <h3>Real Problem Solving</h3>
+          <p>Tackle carefully designed problems that matter. Ship something you'd actually be proud to put in your portfolio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER SECTION -->
+  <section class="section register-section" id="register">
+    <div class="register-bg-orb"></div>
+    <div class="container">
+      <div class="register-card" data-aos="zoom-in">
+        <div class="reg-badge">
+          <span class="badge-dot pulse"></span> Date Releasing Soon
+        </div>
+        <h2 class="reg-title">Ready to <span class="gradient-text">Vibe?</span></h2>
+        <p class="reg-subtitle">
+          Presented by the <strong>Department of AIML (3rd Year)</strong><br/>
+          <strong>Mangalore Institute of Technology &amp; Engineering</strong>
+        </p>
+        <div class="reg-meta">
+          <span>&#9200; 9:45 AM &ndash; 4:00 PM</span>
+          <span>&#9889; 6 Hours</span>
+          <span>&#129302; AI-Powered</span>
+        </div>
+        <a href="#" class="btn-primary btn-large" id="main-register-btn">
+          <span>Notify Me When Registration Opens</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </a>
+        <p class="reg-note">Registration link will be announced soon. Follow us for updates.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid-overlay"></div>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <span class="logo-bracket">&lt;</span>
+            <span class="logo-text">AI VibeX</span>
+            <span class="logo-bracket">/&gt;</span>
+          </div>
+          <p>Presented with passion by 3rd Year AIML<br />at MITE, Mangalore.</p>
+        </div>
+        <div class="footer-links">
+          <span class="footer-link-head">Quick Links</span>
+          <a href="#about">About</a>
+          <a href="#timeline">Timeline</a>
+          <a href="#flow">Flow</a>
+          <a href="#why">Why Join</a>
+          <a href="#register">Register</a>
+        </div>
+        <div class="footer-contact">
+          <span class="footer-link-head">Presented By</span>
+          <p><strong>Department of AIML (3rd Year)</strong></p>
+          <p>Mangalore Institute of Technology &amp; Engineering</p>
+          <p class="footer-muted">Moodbidri, Karnataka, India</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 AI VibeX &mdash; Presented by 3rd Year AIML, MITE. All rights reserved.</p>
+        <p class="footer-made">Built with passion by 3rd Year AIML, MITE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
