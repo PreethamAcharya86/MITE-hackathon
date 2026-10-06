@@ -300,24 +300,62 @@
     sections.forEach(s => observer.observe(s));
   }
 
-  /* ─── 8. TILT HOVER EFFECT ON CARDS ───────────────────── */
+  /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card');
+    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width  - 0.5;
-        const y = (e.clientY - rect.top)  / rect.height - 0.5;
-        el.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-8px)`;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Set CSS custom properties for radial spotlight beam
+        el.style.setProperty('--mouse-x', `${mouseX}px`);
+        el.style.setProperty('--mouse-y', `${mouseY}px`);
+
+        // Compute 3D tilt
+        const x = (mouseX / rect.width)  - 0.5;
+        const y = (mouseY / rect.height) - 0.5;
+        el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-6px)`;
       });
+
       el.addEventListener('mouseleave', () => {
         el.style.transform = '';
-        el.style.transition = 'transform 0.5s ease';
+        el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+
+        // Remove active-hover from connected timeline dot if present
+        const item = el.closest('.timeline-item');
+        if (item) {
+          const dot = item.querySelector('.tl-dot');
+          if (dot) dot.classList.remove('active-hover');
+        }
       });
+
       el.addEventListener('mouseenter', () => {
         el.style.transition = 'none';
+
+        // Highlight connected timeline dot
+        const item = el.closest('.timeline-item');
+        if (item) {
+          const dot = item.querySelector('.tl-dot');
+          if (dot) dot.classList.add('active-hover');
+        }
       });
     });
+  }
+
+  /* ─── SCROLL PROGRESS BAR ──────────────────────────────── */
+  function initScrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+
+    window.addEventListener('scroll', () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable > 0) {
+        const pct = (window.scrollY / scrollable) * 100;
+        bar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      }
+    }, { passive: true });
   }
 
   /* ─── 9. HERO PARALLAX ─────────────────────────────────── */
@@ -426,6 +464,7 @@
 
   /* ─── INIT ALL ─────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
+    initScrollProgress();
     initAOS();
     initCriteriaBars();
     initActiveNav();
