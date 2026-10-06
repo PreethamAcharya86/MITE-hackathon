@@ -262,6 +262,28 @@ body.cursor-click .cursor-ring {
   opacity: 0;
   transition: var(--transition);
 }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: btnSweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnSweep {
+  0%, 100% { transform: translateX(0) rotate(25deg); opacity: 0; }
+  10%      { opacity: 1; }
+  30%      { transform: translateX(450%) rotate(25deg); opacity: 0; }
+}
 .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(139,92,246,0.6); }
 .btn-primary:hover::before { opacity: 1; }
 .btn-primary svg { width: 18px; height: 18px; transition: transform var(--transition); }
@@ -721,8 +743,20 @@ body.cursor-click .cursor-ring {
   flex-shrink: 0;
   transition: var(--transition);
   box-shadow: 0 0 20px rgba(139,92,246,0.35);
+  animation: tlPulse 3.5s ease-in-out infinite;
 }
-.tl-dot svg { width: 20px; height: 20px; color: var(--clr-purple); }
+@keyframes tlPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 16px rgba(139,92,246,0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 26px rgba(139,92,246,0.65), 0 0 40px rgba(34,211,238,0.25);
+  }
+}
+.tl-dot svg { width: 20px; height: 20px; color: var(--clr-purple); transition: transform 0.3s ease; }
+.tl-dot:hover svg { transform: scale(1.15) rotate(5deg); }
 .tl-dot-primary { border-color: var(--clr-cyan); box-shadow: 0 0 25px rgba(34,211,238,0.45); }
 .tl-dot-primary svg { color: var(--clr-cyan); }
 .tl-dot-gold { border-color: var(--clr-gold); box-shadow: 0 0 25px rgba(245,158,11,0.5); }
@@ -1130,10 +1164,61 @@ body.cursor-click .cursor-ring {
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .hero-meta { flex-direction: column; align-items: center; }
-  .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5,8,17,0.97); flex-direction: column; align-items: center; justify-content: center; gap: 24px; backdrop-filter: blur(20px); z-index: 99; }
-  .nav-links.open { display: flex; }
-  .nav-link { font-size: 1.4rem !important; padding: 12px 32px !important; }
-  .hamburger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; z-index: 101; padding: 8px; }
+  body.nav-open {
+    overflow: hidden;
+    touch-action: none;
+  }
+  .nav-links {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(5, 8, 17, 0.98);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 80px 24px 40px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 99;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.25s ease;
+  }
+  .nav-links.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .nav-link {
+    font-size: 1.25rem !important;
+    padding: 12px 24px !important;
+    text-align: center;
+    width: min(280px, 85vw);
+  }
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 101;
+    padding: 8px;
+  }
   .hamburger span { display: block; width: 24px; height: 2px; background: #e2e8f0; border-radius: 99px; transition: var(--transition); }
   .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
   .hamburger.open span:nth-child(2) { opacity: 0; }

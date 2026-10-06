@@ -146,9 +146,27 @@
   initParticles();
   animate();
 
-  /* ─── 3. NAVBAR SCROLL ─────────────────────────────────── */
-  const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
+  /* ─── 3. NAVBAR & MOBILE NAVIGATION ─────────────────────── */
+  const navbar    = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('nav-links');
+  let lastScroll  = 0;
+
+  function closeMobileNav() {
+    if (hamburger && hamburger.classList.contains('open')) {
+      hamburger.classList.remove('open');
+      if (navLinks) navLinks.classList.remove('open');
+      document.body.classList.remove('nav-open');
+    }
+  }
+
+  function openMobileNav() {
+    if (hamburger && navLinks) {
+      hamburger.classList.add('open');
+      navLinks.classList.add('open');
+      document.body.classList.add('nav-open');
+    }
+  }
 
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
@@ -157,25 +175,70 @@
     } else {
       navbar.classList.remove('scrolled');
     }
+
+    // Auto-close mobile dropdown when user scrolls down
+    if (hamburger && hamburger.classList.contains('open') && Math.abs(scrollY - lastScroll) > 8) {
+      closeMobileNav();
+    }
+
     lastScroll = scrollY;
-  });
+  }, { passive: true });
 
   /* ─── 4. HAMBURGER MENU ────────────────────────────────── */
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('nav-links');
-
-  if (hamburger) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (hamburger.classList.contains('open')) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
+      }
     });
 
+    // Close menu when any nav item is clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navLinks.classList.remove('open');
+        closeMobileNav();
       });
     });
+
+    // Close when tapping/clicking outside the menu
+    document.addEventListener('click', (e) => {
+      if (hamburger.classList.contains('open') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        closeMobileNav();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileNav();
+      }
+    });
+
+    // Close when swiping / scrolling on touch devices
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (hamburger.classList.contains('open') && e.touches && e.touches.length > 0) {
+        const touchCurrentY = e.touches[0].clientY;
+        if (Math.abs(touchCurrentY - touchStartY) > 25) {
+          closeMobileNav();
+        }
+      }
+    }, { passive: true });
+
+    // Clean up if screen is rotated or resized to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMobileNav();
+      }
+    }, { passive: true });
   }
 
   /* ─── 5. AOS (ANIMATE ON SCROLL) ──────────────────────── */
