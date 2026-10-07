@@ -462,6 +462,54 @@
     };
   }
 
+  /* ─── 13. COORDINATOR CAROUSEL ──────────────────────────── */
+  function initCoordinatorCarousel() {
+    const track   = document.getElementById('coordinators-track');
+    const row     = track ? track.querySelector('.coordinators-cards-row') : null;
+    const btnPrev = document.getElementById('coord-prev');
+    const btnNext = document.getElementById('coord-next');
+    if (!track || !row || !btnPrev || !btnNext) return;
+
+    let currentIndex = 0;
+
+    function getCardWidth() {
+      const card = row.querySelector('.coordinator-card');
+      if (!card) return 0;
+      const gap = parseFloat(getComputedStyle(row).gap) || 24;
+      return card.offsetWidth + gap;
+    }
+
+    function getVisibleCount() {
+      const w = getCardWidth();
+      return w > 0 ? Math.max(1, Math.floor(track.offsetWidth / w)) : 1;
+    }
+
+    function update() {
+      const total   = row.querySelectorAll('.coordinator-card').length;
+      const visible = getVisibleCount();
+      const maxIdx  = Math.max(0, total - visible);
+      currentIndex  = Math.min(Math.max(0, currentIndex), maxIdx);
+      row.style.transform    = `translateX(-${currentIndex * getCardWidth()}px)`;
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.disabled = currentIndex >= maxIdx;
+    }
+
+    btnPrev.addEventListener('click', () => { currentIndex--; update(); });
+    btnNext.addEventListener('click', () => { currentIndex++; update(); });
+
+    // Touch swipe
+    let startX = 0;
+    row.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    row.addEventListener('touchend',   (e) => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) diff > 0 ? currentIndex++ : currentIndex--;
+      update();
+    });
+
+    window.addEventListener('resize', throttle(update, 150));
+    update();
+  }
+
   /* ─── INIT ALL ─────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
@@ -473,6 +521,7 @@
     initMouseParticles();
     initRipple();
     initTypingEffect();
+    initCoordinatorCarousel();
   });
 
 })();
