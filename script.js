@@ -464,13 +464,32 @@
 
   /* ─── 13. COORDINATOR CAROUSEL ──────────────────────────── */
   function initCoordinatorCarousel() {
-    const track   = document.getElementById('coordinators-track');
-    const row     = track ? track.querySelector('.coordinators-cards-row') : null;
-    const btnPrev = document.getElementById('coord-prev');
-    const btnNext = document.getElementById('coord-next');
-    if (!track || !row || !btnPrev || !btnNext) return;
+    const track    = document.getElementById('coordinators-track');
+    const row      = track ? track.querySelector('.coordinators-cards-row') : null;
+    const btnPrev  = document.getElementById('coord-prev');
+    const btnNext  = document.getElementById('coord-next');
+    const dotsWrap = document.getElementById('coord-dots');
+    if (!track || !row) return;
 
     let currentIndex = 0;
+    let hasNudged    = false;
+
+    // Generate pagination dots
+    const cards = row.querySelectorAll('.coordinator-card');
+    if (dotsWrap && cards.length > 0) {
+      dotsWrap.innerHTML = '';
+      cards.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to team slide ${idx + 1}`);
+        dot.addEventListener('click', () => {
+          row.classList.remove('nudge-anim');
+          currentIndex = idx;
+          update();
+        });
+        dotsWrap.appendChild(dot);
+      });
+    }
 
     function getCardWidth() {
       const card = row.querySelector('.coordinator-card');
@@ -489,22 +508,67 @@
       const visible = getVisibleCount();
       const maxIdx  = Math.max(0, total - visible);
       currentIndex  = Math.min(Math.max(0, currentIndex), maxIdx);
-      row.style.transform    = `translateX(-${currentIndex * getCardWidth()}px)`;
-      btnPrev.disabled = currentIndex === 0;
-      btnNext.disabled = currentIndex >= maxIdx;
+      row.style.transform = `translateX(-${currentIndex * getCardWidth()}px)`;
+      if (btnPrev) btnPrev.disabled = currentIndex === 0;
+      if (btnNext) btnNext.disabled = currentIndex >= maxIdx;
+
+      // Update dots
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentIndex);
+        });
+      }
     }
 
-    btnPrev.addEventListener('click', () => { currentIndex--; update(); });
-    btnNext.addEventListener('click', () => { currentIndex++; update(); });
+    if (btnPrev) {
+      btnPrev.addEventListener('click', () => {
+        row.classList.remove('nudge-anim');
+        currentIndex--;
+        update();
+      });
+    }
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        row.classList.remove('nudge-anim');
+        currentIndex++;
+        update();
+      });
+    }
 
     // Touch swipe
     let startX = 0;
-    row.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
-    row.addEventListener('touchend',   (e) => {
-      const diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) diff > 0 ? currentIndex++ : currentIndex--;
-      update();
+    let startY = 0;
+    row.addEventListener('touchstart', (e) => {
+      row.classList.remove('nudge-anim');
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    row.addEventListener('touchend', (e) => {
+      const diffX = startX - e.changedTouches[0].clientX;
+      const diffY = startY - e.changedTouches[0].clientY;
+      if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
+        diffX > 0 ? currentIndex++ : currentIndex--;
+        update();
+      }
     });
+
+    // Initial Peek / Nudge Animation when section enters viewport
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasNudged && currentIndex === 0) {
+            hasNudged = true;
+            row.classList.add('nudge-anim');
+            setTimeout(() => {
+              row.classList.remove('nudge-anim');
+            }, 1800);
+            observer.unobserve(track);
+          }
+        });
+      }, { threshold: 0.2 });
+      observer.observe(track);
+    }
 
     window.addEventListener('resize', throttle(update, 150));
     update();

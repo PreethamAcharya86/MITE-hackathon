@@ -1722,6 +1722,11 @@ body.cursor-click .cursor-ring {
   color: #e9d5ff;
 }
 
+.avatar-role-badge.lead-badge {
+  border-color: rgba(34, 211, 238, 0.85);
+  color: #67e8f9;
+}
+
 .avatar-role-badge.designer-badge {
   border-color: rgba(34, 211, 238, 0.75);
   color: #67e8f9;
@@ -1747,6 +1752,12 @@ body.cursor-click .cursor-ring {
   color: #67e8f9;
   border-color: rgba(103,232,249,0.3);
   background: rgba(103,232,249,0.08);
+}
+
+.role-title-pill.lead-pill {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.35);
+  background: rgba(103, 232, 249, 0.08);
 }
 
 .role-title-pill.coord-pill {
@@ -1901,6 +1912,132 @@ body.cursor-click .cursor-ring {
 
 .coordinator-card {
   padding: 34px 24px 30px;
+}
+
+/* ─── ROW SCROLL / SWIPE GUIDANCE ANIMATION ───────────────── */
+.row-scroll-guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.scroll-guide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  border-radius: 99px;
+  background: rgba(13, 19, 36, 0.75);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(139, 92, 246, 0.16);
+  user-select: none;
+}
+
+.guide-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-cyan);
+}
+
+.guide-arrow svg {
+  width: 15px;
+  height: 15px;
+}
+
+.guide-arrow-left {
+  animation: guideArrowLeft 1.5s ease-in-out infinite;
+}
+
+.guide-arrow-right {
+  animation: guideArrowRight 1.5s ease-in-out infinite;
+}
+
+@keyframes guideArrowLeft {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50%      { transform: translateX(-5px); opacity: 1; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.8)); }
+}
+
+@keyframes guideArrowRight {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50%      { transform: translateX(5px); opacity: 1; filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.8)); }
+}
+
+.guide-swipe-icon-wrap {
+  display: flex;
+  align-items: center;
+  color: #a78bfa;
+}
+
+.guide-swipe-hand {
+  width: 16px;
+  height: 16px;
+  animation: guideSwipeMotion 1.8s ease-in-out infinite;
+}
+
+@keyframes guideSwipeMotion {
+  0%, 100% { transform: translateX(-4px); }
+  50%      { transform: translateX(4px); }
+}
+
+.guide-label {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* Dots navigation */
+.carousel-dots-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background: rgba(34, 211, 238, 0.6);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  width: 26px;
+  background: linear-gradient(90deg, var(--clr-cyan), var(--clr-purple));
+  border-color: var(--clr-cyan);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+}
+
+/* Row-wise Nudge Entrance Animation */
+@keyframes rowSwipeNudge {
+  0%   { transform: translateX(0); }
+  22%  { transform: translateX(-42px); }
+  45%  { transform: translateX(0); }
+  68%  { transform: translateX(-20px); }
+  85%  { transform: translateX(0); }
+  100% { transform: translateX(0); }
+}
+
+.coordinators-cards-row.nudge-anim {
+  animation: rowSwipeNudge 1.6s cubic-bezier(0.2, 0.9, 0.3, 1) 1;
 }
 
 /* ─── QUERY / CONTACT SECTION ───────────────────────────── */
@@ -2349,6 +2486,42 @@ body.cursor-click .cursor-ring {
   .flow-arrow { display: none; }
   body { cursor: auto; }
   .cursor-glow, .cursor-dot, .cursor-ring { display: none; }
+
+  /* Remove coordinator carousel navigation buttons in mobile screen only */
+  .carousel-btn {
+    display: none !important;
+  }
+  .carousel-btn-prev, .carousel-btn-next {
+    display: none !important;
+    margin: 0 !important;
+  }
+
+  /* Coordinator carousel: 98% width on small screens */
+  .contributors-row-wrapper.coordinators-section-row {
+    width: 98%;
+    max-width: 98%;
+    margin: 0 auto;
+  }
+  .coordinators-carousel-wrapper {
+    width: 98%;
+    max-width: 98%;
+    margin: 0 auto;
+  }
+  .coordinators-carousel-track {
+    width: 100%;
+    padding: 12px 1% 18px;
+    overflow: hidden;
+  }
+  .coordinators-cards-row {
+    gap: 16px;
+  }
+  .coordinator-card {
+    flex: 0 0 98%;
+    max-width: 98%;
+    width: 98%;
+    min-width: 0;
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2371,8 +2544,12 @@ body.cursor-click .cursor-ring {
   .hero-actions { flex-direction: column; width: 100%; }
   .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
   .reg-meta { flex-direction: column; }
-  .leadership-cards-grid { grid-template-columns: 1fr; max-width: 340px; }
-  .coordinators-cards-grid { grid-template-columns: 1fr; max-width: 340px; }
+  .leadership-cards-grid { grid-template-columns: 1fr; width: 98%; max-width: 98%; margin: 0 auto; }
+  .coordinators-carousel-wrapper { width: 98%; max-width: 98%; margin: 0 auto; }
+  .coordinators-carousel-track { padding: 10px 0 16px; }
+  .coordinator-card { flex: 0 0 98%; max-width: 98%; width: 98%; padding: 30px 16px 26px; }
+  .scroll-guide-pill { padding: 6px 14px; gap: 8px; }
+  .guide-label { font-size: 0.68rem; letter-spacing: 0.05em; }
   .contributor-card { padding: 32px 18px 28px; }
   .role-line-divider { flex-wrap: wrap; gap: 8px; }
   .role-line-divider::before, .role-line-divider::after { display: none; }
