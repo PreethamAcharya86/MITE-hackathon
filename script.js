@@ -302,7 +302,7 @@
 
   /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card');
+    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card, .contributor-card');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
