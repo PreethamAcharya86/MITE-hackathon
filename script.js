@@ -302,7 +302,7 @@
 
   /* â”€â”€â”€ 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card, .contributor-card');
+    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card, .contributor-card:not(.coordinator-card)');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
@@ -463,6 +463,7 @@
   }
 
   /* â”€â”€â”€ 13. COORDINATOR CAROUSEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ─── 13. COORDINATOR 3D STACK CAROUSEL (\ | /) ──────────────── */
   function initCoordinatorCarousel() {
     const track    = document.getElementById('coordinators-track');
     const row      = track ? track.querySelector('.coordinators-cards-row') : null;
@@ -471,108 +472,140 @@
     const dotsWrap = document.getElementById('coord-dots');
     if (!track || !row) return;
 
-    let currentIndex = 0;
-    let hasNudged    = false;
+    const cards = row.querySelectorAll('.coordinator-card');
+    const total = cards.length;
+    if (total === 0) return;
+
+    let activeIndex = 0;
 
     // Generate pagination dots
-    const cards = row.querySelectorAll('.coordinator-card');
-    if (dotsWrap && cards.length > 0) {
+    if (dotsWrap) {
       dotsWrap.innerHTML = '';
       cards.forEach((_, idx) => {
         const dot = document.createElement('button');
         dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
-        dot.setAttribute('aria-label', `Go to team slide ${idx + 1}`);
+        dot.setAttribute('aria-label', `Go to team member ${idx + 1}`);
         dot.addEventListener('click', () => {
-          row.classList.remove('nudge-anim');
-          currentIndex = idx;
-          update();
+          activeIndex = idx;
+          updateStack();
         });
         dotsWrap.appendChild(dot);
       });
     }
 
-    function getCardWidth() {
-      const card = row.querySelector('.coordinator-card');
-      if (!card) return 0;
-      const gap = parseFloat(getComputedStyle(row).gap) || 24;
-      return card.offsetWidth + gap;
-    }
+    function updateStack() {
+      cards.forEach((card, i) => {
+        // Calculate circular offset relative to activeIndex
+        let diff = i - activeIndex;
+        while (diff > total / 2) diff -= total;
+        while (diff < -total / 2) diff += total;
 
-    function getVisibleCount() {
-      const w = getCardWidth();
-      return w > 0 ? Math.max(1, Math.floor(track.offsetWidth / w)) : 1;
-    }
+        card.classList.remove(
+          'card-stack-active',
+          'card-stack-prev',
+          'card-stack-next',
+          'card-stack-far-prev',
+          'card-stack-far-next',
+          'card-stack-hidden'
+        );
 
-    function update() {
-      const total   = row.querySelectorAll('.coordinator-card').length;
-      const visible = getVisibleCount();
-      const maxIdx  = Math.max(0, total - visible);
-      currentIndex  = Math.min(Math.max(0, currentIndex), maxIdx);
-      row.style.transform = `translateX(-${currentIndex * getCardWidth()}px)`;
-      if (btnPrev) btnPrev.disabled = currentIndex === 0;
-      if (btnNext) btnNext.disabled = currentIndex >= maxIdx;
+        if (diff === 0) {
+          card.classList.add('card-stack-active');
+        } else if (diff === -1) {
+          card.classList.add('card-stack-prev');
+        } else if (diff === 1) {
+          card.classList.add('card-stack-next');
+        } else if (diff === -2) {
+          card.classList.add('card-stack-far-prev');
+        } else if (diff === 2) {
+          card.classList.add('card-stack-far-next');
+        } else {
+          card.classList.add('card-stack-hidden');
+        }
+      });
 
       // Update dots
       if (dotsWrap) {
         const dots = dotsWrap.querySelectorAll('.carousel-dot');
         dots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === currentIndex);
+          dot.classList.toggle('active', idx === activeIndex);
         });
       }
     }
 
+    // Direct card click: bringing clicked card to center
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', (e) => {
+        // If clicking on LinkedIn social link on the active card, let it open
+        if (e.target.closest('a') && idx === activeIndex) return;
+
+        if (idx !== activeIndex) {
+          e.preventDefault();
+          activeIndex = idx;
+          updateStack();
+        }
+      });
+    });
+
+    // Left button (<) moves backward in stack
     if (btnPrev) {
       btnPrev.addEventListener('click', () => {
-        row.classList.remove('nudge-anim');
-        currentIndex--;
-        update();
-      });
-    }
-    if (btnNext) {
-      btnNext.addEventListener('click', () => {
-        row.classList.remove('nudge-anim');
-        currentIndex++;
-        update();
+        activeIndex = (activeIndex - 1 + total) % total;
+        updateStack();
       });
     }
 
-    // Touch swipe
+    // Right button (>) moves forward in stack
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        activeIndex = (activeIndex + 1) % total;
+        updateStack();
+      });
+    }
+
+    // Touch swipe support
     let startX = 0;
     let startY = 0;
-    row.addEventListener('touchstart', (e) => {
-      row.classList.remove('nudge-anim');
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
+    track.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }
     }, { passive: true });
-    row.addEventListener('touchend', (e) => {
-      const diffX = startX - e.changedTouches[0].clientX;
-      const diffY = startY - e.changedTouches[0].clientY;
-      if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
-        diffX > 0 ? currentIndex++ : currentIndex--;
-        update();
+
+    track.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length > 0) {
+        const diffX = startX - e.changedTouches[0].clientX;
+        const diffY = startY - e.changedTouches[0].clientY;
+        if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 0) {
+            activeIndex = (activeIndex + 1) % total;
+          } else {
+            activeIndex = (activeIndex - 1 + total) % total;
+          }
+          updateStack();
+        }
       }
     });
 
-    // Initial Peek / Nudge Animation when section enters viewport
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hasNudged && currentIndex === 0) {
-            hasNudged = true;
-            row.classList.add('nudge-anim');
-            setTimeout(() => {
-              row.classList.remove('nudge-anim');
-            }, 1800);
-            observer.unobserve(track);
-          }
-        });
-      }, { threshold: 0.2 });
-      observer.observe(track);
-    }
+    // Keyboard navigation when near section
+    window.addEventListener('keydown', (e) => {
+      const rect = track.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
 
-    window.addEventListener('resize', throttle(update, 150));
-    update();
+      if (e.key === 'ArrowLeft') {
+        activeIndex = (activeIndex - 1 + total) % total;
+        updateStack();
+      } else if (e.key === 'ArrowRight') {
+        activeIndex = (activeIndex + 1) % total;
+        updateStack();
+      }
+    });
+
+    updateStack();
   }
+
 
   /* â”€â”€â”€ TIMELINE SCROLL PROGRESS FILL + CARD GLOW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTimelineProgressFill() {
@@ -683,18 +716,6 @@
   // Smoothed parallax offset (represents camera pan across deep space)
   let parallaxX = 0, parallaxY = 0;
 
-  // Mouse hold / Black Hole vortex state
-  let isMouseDown = false;
-  let mouseHoldTime = 0;
-  const blackHole = {
-    active: false,
-    x: 0,
-    y: 0,
-    power: 0,      // 0..1
-    targetPower: 0,
-    angle: 0
-  };
-
   // Direct star hit radius (star only glows when cursor is directly over it)
   const STAR_HIT_RADIUS = 16;
 
@@ -702,14 +723,11 @@
   const trail = [];
   const TRAIL_LEN = 26;
 
-  // Expanding ripple shockwaves
-  const ripples = [];
-
   // Cosmic stardust particles
   const dust = [];
   const MAX_DUST = 180;
 
-  // Periodic and triggered shooting stars
+  // Periodic shooting stars in background
   let shooters = [];
   const MAX_SHOOTERS = 5;
   let shooterTimer = 0;
@@ -727,16 +745,35 @@
   // Planets array
   let planets = [];
 
+  // Check if current device is mobile screen
+  const isMobile = () => window.innerWidth <= 768;
+
   // --- Resize Canvas ---
   function resize() {
     const rect = (heroEl || canvas).getBoundingClientRect();
     W = canvas.width  = Math.max(300, Math.floor(rect.width  || window.innerWidth));
     H = canvas.height = Math.max(300, Math.floor(rect.height || window.innerHeight));
     buildScene();
+
+    if (isMobile()) {
+      // Mobile: Keep static, halt animation loop
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      renderStaticFrame();
+    } else {
+      // Desktop: Start / resume animation loop if not already running
+      if (!rafId) {
+        rafId = requestAnimationFrame(render);
+      }
+    }
   }
 
-  // --- Pointer & Touch Tracking ---
+  // --- Pointer Hover Tracking (Desktop Only) ---
   function updatePointerPos(clientX, clientY) {
+    if (isMobile()) return; // Keep static on mobile
+
     const rect = canvas.getBoundingClientRect();
     mouseCX = clientX - rect.left;
     mouseCY = clientY - rect.top;
@@ -770,149 +807,38 @@
     }
   }
 
-  // Listen on hero container so hovering titles or buttons NEVER stops mouse tracking
+  // Hover events: only active on desktop
   heroEl.addEventListener('mousemove', e => {
-    updatePointerPos(e.clientX, e.clientY);
+    if (!isMobile()) {
+      updatePointerPos(e.clientX, e.clientY);
+    }
   });
 
   heroEl.addEventListener('mouseleave', () => {
+    if (isMobile()) return;
     isMouseOver = false;
     targetNX = 0;
     targetNY = 0;
     mouseCX = -9999;
     mouseCY = -9999;
     trail.length = 0;
-    isMouseDown = false;
-    blackHole.targetPower = 0;
-  });
-
-  // Touch Support
-  heroEl.addEventListener('touchstart', e => {
-    if (e.touches.length > 0) {
-      updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
-      isMouseDown = true;
-      mouseHoldTime = 0;
-      blackHole.x = mouseCX;
-      blackHole.y = mouseCY;
-      blackHole.targetPower = 1;
-    }
-  }, { passive: true });
-
-  heroEl.addEventListener('touchmove', e => {
-    if (e.touches.length > 0) {
-      updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
-      if (isMouseDown) {
-        blackHole.x = mouseCX;
-        blackHole.y = mouseCY;
-      }
-    }
-  }, { passive: true });
-
-  heroEl.addEventListener('touchend', () => {
-    triggerSupernova();
-  });
-
-  // Mouse Down: Start Gravitational Singularity / Black Hole
-  heroEl.addEventListener('mousedown', e => {
-    if (e.button === 0) { // left click
-      isMouseDown = true;
-      mouseHoldTime = 0;
-      blackHole.x = mouseCX;
-      blackHole.y = mouseCY;
-      blackHole.targetPower = 1;
-    }
-  });
-
-  // Trigger cosmic burst when releasing mouse
-  function triggerSupernova() {
-    if (!isMouseDown && blackHole.power < 0.1) return;
-
-    const hadStrongCharge = blackHole.power > 0.35 || mouseHoldTime > 15;
-    const burstX = (mouseCX > -9000) ? mouseCX : (W * 0.5);
-    const burstY = (mouseCY > -9000) ? mouseCY : (H * 0.5);
-
-    isMouseDown = false;
-    blackHole.targetPower = 0;
-
-    // Fast click ripples
-    ripples.push({
-      x: burstX,
-      y: burstY,
-      r: 6,
-      maxR: hadStrongCharge ? 340 : 220,
-      alpha: 0.95,
-      color: '#00d4ff'
-    });
-
-    ripples.push({
-      x: burstX,
-      y: burstY,
-      r: 4,
-      maxR: hadStrongCharge ? 250 : 160,
-      alpha: 0.75,
-      color: '#a855f7',
-      delay: 4
-    });
-
-    if (hadStrongCharge) {
-      // Supernova explosion: dense outward stardust blast
-      const sparkCount = 36;
-      for (let i = 0; i < sparkCount; i++) {
-        const ang = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.2;
-        const spd = Math.random() * 5 + 3;
-        dust.push({
-          x: burstX,
-          y: burstY,
-          vx: Math.cos(ang) * spd,
-          vy: Math.sin(ang) * spd,
-          r: Math.random() * 2.2 + 1,
-          alpha: 1,
-          decay: 0.02,
-          color: ['#00d4ff', '#38bdf8', '#c084fc', '#f472b6', '#ffffff'][Math.floor(Math.random() * 5)]
-        });
-      }
-    }
-
-    // Launch shooting meteors radiating from click / release
-    const meteorCount = hadStrongCharge ? 3 : 1;
-    for (let k = 0; k < meteorCount; k++) {
-      const angle = (Math.PI * 2 * Math.random());
-      const speed = 4 + Math.random() * 3.5;
-      shooters.push({
-        x: burstX,
-        y: burstY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        len: 110 + Math.random() * 70,
-        alpha: 1,
-        r: 1.6,
-        color: '#ffffff'
-      });
-    }
-  }
-
-  window.addEventListener('mouseup', () => {
-    triggerSupernova();
   });
 
   // --- Stars Setup with 3 Depth Tiers for Dynamic Space Parallax ---
   function makeStars() {
     stars = [];
-    for (let i = 0; i < STAR_COUNT; i++) {
+    const count = isMobile() ? 75 : 360;
+    for (let i = 0; i < count; i++) {
       const tier = Math.random();
-      // Depth plane configuration:
-      // Foreground: large, fast parallax movement across screen
-      // Midground: medium stars
-      // Background: tiny, distant stars
       let baseR, depth;
       if (tier > 0.88) {
-        baseR = Math.random() * 1.5 + 1.2;
+        baseR = isMobile() ? (Math.random() * 0.7 + 0.5) : (Math.random() * 1.5 + 1.2);
         depth = 0.32 + Math.random() * 0.12; // foreground: strong space motion
       } else if (tier > 0.55) {
-        baseR = Math.random() * 0.8 + 0.5;
+        baseR = isMobile() ? (Math.random() * 0.45 + 0.3) : (Math.random() * 0.8 + 0.5);
         depth = 0.18 + Math.random() * 0.08; // midground
       } else {
-        baseR = Math.random() * 0.4 + 0.15;
+        baseR = isMobile() ? (Math.random() * 0.3 + 0.15) : (Math.random() * 0.4 + 0.15);
         depth = 0.06 + Math.random() * 0.06; // deep background
       }
 
@@ -937,32 +863,27 @@
     const timeDriftX = (s.drift * (t || 0) * 0.001);
     const timeDriftY = (s.driftY * (t || 0) * 0.001);
 
-    // Camera moves with mouse: moving right pans camera right, so celestial bodies shift left
     let px = s.x - (parallaxX * s.parallaxDepth * W) + timeDriftX;
     let py = s.y - (parallaxY * (s.parallaxDepth * 0.5) * H) + timeDriftY;
 
-    // Seamless toroidal wrap-around so stars never run out when panning left/right
     if (W > 0) px = ((px % W) + W) % W;
     if (H > 0) py = ((py % H) + H) % H;
 
     return { px, py };
   }
 
-  // Update Star Hover:
-  // Strict direct hit test: stars do NOT glow from general area proximity,
-  // ONLY the specific star directly under the mouse pointer glows!
+  // Update Star Hover (Strict direct hit test: only star under pointer glows)
   function updateStarHover(t) {
+    if (isMobile()) return;
     stars.forEach(s => {
       const { px, py } = getStarCoords(s, t);
       const dx = mouseCX - px;
       const dy = mouseCY - py;
       const dist = Math.hypot(dx, dy);
 
-      // Strict hit distance for direct hover
       const hitR = Math.max(STAR_HIT_RADIUS, s.baseR * 5);
 
       if (isMouseOver && dist <= hitR) {
-        // Direct hover on this specific star!
         s.hovered = Math.min(1, s.hovered + 0.18);
 
         // Emit micro solar flare sparkles from this star
@@ -987,7 +908,6 @@
           }
         }
       } else {
-        // Smoothly fade back down
         s.hovered = Math.max(0, s.hovered - 0.06);
       }
 
@@ -997,17 +917,19 @@
 
   // Render Stars
   function drawStars(t) {
+    const isMob = isMobile();
     stars.forEach(s => {
       const { px, py } = getStarCoords(s, t);
-      const twinkle = 0.55 + 0.45 * Math.sin(s.phase + t * s.speed);
-      const alpha = Math.min(1, twinkle + s.hovered * 0.5);
-      const drawR = s.baseR * (1 + s.hovered * 1.5);
+      // On mobile screen: keep stars low glow (subtle, non-distracting) so hero text has maximum readability
+      const twinkle = isMob ? 0.22 : (0.55 + 0.45 * Math.sin(s.phase + t * s.speed));
+      const alpha = isMob ? (s.baseR > 0.6 ? 0.30 : 0.18) : Math.min(1, twinkle + s.hovered * 0.5);
+      const drawR = isMob ? Math.max(0.4, s.baseR * 0.65) : s.baseR * (1 + s.hovered * 1.5);
 
       ctx.save();
       ctx.globalAlpha = alpha;
 
-      // Base glow for larger stars in background
-      if (s.baseR > 1.0) {
+      // Base glow for larger stars in background (Desktop only - skip halo on mobile to avoid text haze)
+      if (!isMob && s.baseR > 1.0) {
         const glowR = drawR * 3;
         const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
         grad.addColorStop(0, s.color + 'aa');
@@ -1071,9 +993,8 @@
 
   // --- Constellation Lines between hovered / close stars ---
   function drawConstellation(t) {
-    if (!isMouseOver) return;
+    if (!isMouseOver || isMobile()) return;
 
-    // Filter stars that are either hovered or within tight proximity
     const cluster = stars.filter(s => {
       if (s.hovered > 0.05) return true;
       const { px, py } = getStarCoords(s, t);
@@ -1109,97 +1030,6 @@
         }
       }
     }
-  }
-
-  // --- Interactive Black Hole / Singularity Vortex ---
-  function updateBlackHole() {
-    if (isMouseDown) {
-      mouseHoldTime++;
-      blackHole.x = mouseCX;
-      blackHole.y = mouseCY;
-      blackHole.targetPower = Math.min(1, mouseHoldTime / 25);
-    } else {
-      blackHole.targetPower = 0;
-    }
-
-    blackHole.power += (blackHole.targetPower - blackHole.power) * 0.12;
-    blackHole.angle += 0.05 + blackHole.power * 0.1;
-
-    // Pull cosmic stardust into the black hole vortex
-    if (blackHole.power > 0.08) {
-      dust.forEach(d => {
-        const dx = blackHole.x - d.x;
-        const dy = blackHole.y - d.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 260 && dist > 10) {
-          const force = (1 - dist / 260) * 0.75 * blackHole.power;
-          // Inward gravitational pull + orbital swirl
-          d.vx += (dx / dist) * force * 2.2 - (dy / dist) * force * 1.5;
-          d.vy += (dy / dist) * force * 2.2 + (dx / dist) * force * 1.5;
-        }
-      });
-    }
-  }
-
-  function drawBlackHole(t) {
-    if (blackHole.power < 0.02) return;
-
-    const p = blackHole.power;
-    const bx = blackHole.x;
-    const by = blackHole.y;
-    const coreR = (14 + p * 22);
-
-    ctx.save();
-
-    // 1. Gravitational lensing halo
-    const lensR = coreR * (3.8 + Math.sin(t * 0.008) * 0.3);
-    const lensGrad = ctx.createRadialGradient(bx, by, coreR * 0.9, bx, by, lensR);
-    lensGrad.addColorStop(0, 'rgba(0, 212, 255, 0)');
-    lensGrad.addColorStop(0.35, `rgba(168, 85, 247, ${0.45 * p})`);
-    lensGrad.addColorStop(0.7, `rgba(0, 212, 255, ${0.35 * p})`);
-    lensGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = lensGrad;
-    ctx.beginPath();
-    ctx.arc(bx, by, lensR, 0, Math.PI * 2);
-    ctx.fill();
-
-    // 2. Swirling Accretion Disk
-    ctx.save();
-    ctx.translate(bx, by);
-    ctx.rotate(blackHole.angle);
-
-    for (let ring = 0; ring < 3; ring++) {
-      const rx = coreR * (1.8 + ring * 0.5);
-      const ry = coreR * (0.6 + ring * 0.2);
-      ctx.save();
-      ctx.globalAlpha = p * (0.65 - ring * 0.15);
-      ctx.strokeStyle = ring === 0 ? '#38bdf8' : (ring === 1 ? '#c084fc' : '#f472b6');
-      ctx.lineWidth = 3 - ring * 0.8;
-      ctx.shadowColor = '#00d4ff';
-      ctx.shadowBlur = 12;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, rx, ry, ring * 0.4, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
-    ctx.restore();
-
-    // 3. Event Horizon (deep pitch-black void with glowing photon ring)
-    ctx.shadowColor = '#38bdf8';
-    ctx.shadowBlur = 16 * p;
-    ctx.fillStyle = '#010207';
-    ctx.beginPath();
-    ctx.arc(bx, by, coreR, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Inner bright rim (photon sphere)
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.85 * p})`;
-    ctx.lineWidth = 1.8;
-    ctx.beginPath();
-    ctx.arc(bx, by, coreR + 1, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.restore();
   }
 
   // --- Cosmic Stardust & Particle Dust ---
@@ -1259,7 +1089,7 @@
           { ox: (Math.random() - 0.5) * radius * 0.6, oy: (Math.random() - 0.5) * radius * 0.6, r: radius * 0.18 },
           { ox: (Math.random() - 0.5) * radius * 0.6, oy: (Math.random() - 0.5) * radius * 0.6, r: radius * 0.12 }
         ],
-        pf: 0.22 + Math.random() * 0.12 // foreground depth
+        pf: 0.22 + Math.random() * 0.12
       });
     }
   }
@@ -1270,14 +1100,12 @@
       ast.y += ast.vy;
       ast.rotation += ast.rotSpeed;
 
-      // Wrap around edges
       if (ast.x < -80) ast.x = W + 80;
       if (ast.x > W + 80) ast.x = -80;
       if (ast.y < -80) ast.y = H + 80;
       if (ast.y > H + 80) ast.y = -80;
 
-      // Interactive gentle push away from cursor
-      if (isMouseOver) {
+      if (isMouseOver && !isMobile()) {
         const ax = ast.x - (parallaxX * ast.pf * W);
         const ay = ast.y - (parallaxY * ast.pf * 0.5 * H);
         const dx = ax - mouseCX;
@@ -1302,7 +1130,6 @@
       ctx.translate(ax, ay);
       ctx.rotate(ast.rotation);
 
-      // Shaded 3D Rock Silhouette
       const grad = ctx.createRadialGradient(-ast.radius * 0.3, -ast.radius * 0.3, 0, 0, 0, ast.radius * 1.3);
       grad.addColorStop(0, '#575f7a');
       grad.addColorStop(0.5, '#2e3347');
@@ -1321,7 +1148,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Craters
       ast.craters.forEach(cr => {
         ctx.fillStyle = 'rgba(15, 17, 28, 0.7)';
         ctx.beginPath();
@@ -1333,9 +1159,9 @@
     });
   }
 
-  // --- Cursor Comet Trail ---
+  // --- Cursor Comet Trail (Desktop Only) ---
   function drawCursorTrail() {
-    if (trail.length < 2) return;
+    if (isMobile() || trail.length < 2) return;
     for (let i = 1; i < trail.length; i++) {
       const a = trail[i - 1];
       const b = trail[i];
@@ -1354,7 +1180,6 @@
       ctx.restore();
     }
 
-    // Glowing orb at tip
     if (isMouseOver && mouseCX > -9000) {
       const grad = ctx.createRadialGradient(mouseCX, mouseCY, 0, mouseCX, mouseCY, 24);
       grad.addColorStop(0, 'rgba(0,212,255,0.95)');
@@ -1365,40 +1190,11 @@
       ctx.arc(mouseCX, mouseCY, 24, 0, Math.PI * 2);
       ctx.fill();
 
-      // Inner brilliant core
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(mouseCX, mouseCY, 2.5, 0, Math.PI * 2);
       ctx.fill();
     }
-  }
-
-  // --- Ripple Shockwaves ---
-  function updateRipples() {
-    ripples.forEach(r => {
-      if (r.delay > 0) { r.delay--; return; }
-      r.r += (r.maxR - r.r) * 0.08 + 1.8;
-      r.alpha -= 0.024;
-    });
-    for (let i = ripples.length - 1; i >= 0; i--) {
-      if (ripples[i].alpha <= 0) ripples.splice(i, 1);
-    }
-  }
-
-  function drawRipples() {
-    ripples.forEach(r => {
-      if (r.delay > 0) return;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, Math.min(1, r.alpha));
-      ctx.strokeStyle = r.color;
-      ctx.lineWidth = 2.2;
-      ctx.shadowColor = r.color;
-      ctx.shadowBlur = 16;
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    });
   }
 
   // --- Nebula Clouds with Space Parallax ---
@@ -1419,16 +1215,18 @@
       if (H > 0) cy = ((cy % H) + H) % H;
 
       const rx = n.rx * W, ry = n.ry * H;
+      const isMob = isMobile();
       let boost = 1;
-      if (isMouseOver) {
+      if (isMouseOver && !isMob) {
         const d = Math.hypot(mouseCX - cx, mouseCY - cy);
         boost = 1 + Math.max(0, 1 - d / (W * 0.35)) * 1.4;
       }
       ctx.save();
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
-      const a1 = Math.min(0.3, n.a1 * boost);
+      const a1 = isMob ? (n.a1 * 0.35) : Math.min(0.3, n.a1 * boost);
+      const a2 = isMob ? (n.a2 * 0.35) : n.a2;
       grad.addColorStop(0, `rgba(${n.r1},${n.g1},${n.b1},${a1.toFixed(3)})`);
-      grad.addColorStop(0.5, `rgba(${n.r2},${n.g2},${n.b2},${n.a2})`);
+      grad.addColorStop(0.5, `rgba(${n.r2},${n.g2},${n.b2},${a2.toFixed(3)})`);
       grad.addColorStop(1, 'rgba(0,0,0,0)');
 
       ctx.scale(1, ry / Math.max(rx, ry));
@@ -1464,6 +1262,7 @@
   }
 
   function drawPlanets(t) {
+    const isMob = isMobile();
     planets.forEach(p => {
       let px = p.x * W - (parallaxX * p.pf * W);
       let py = p.y * H - (parallaxY * p.pf * 0.5 * H);
@@ -1471,15 +1270,20 @@
       if (H > 0) py = ((py % H) + H) % H;
 
       let hoverBoost = 0;
-      if (isMouseOver) {
+      if (isMouseOver && !isMob) {
         const d = Math.hypot(mouseCX - px, mouseCY - py);
         hoverBoost = Math.max(0, 1 - d / (p.r * 5));
+      }
+
+      ctx.save();
+      if (isMob) {
+        ctx.globalAlpha = 0.35;
       }
 
       // Outer Glow
       const glowR = p.r * (2.4 + hoverBoost * 1.8);
       const gGrad = ctx.createRadialGradient(px, py, p.r * 0.6, px, py, glowR);
-      gGrad.addColorStop(0, p.glow);
+      gGrad.addColorStop(0, isMob ? 'rgba(139,92,246,0.18)' : p.glow);
       gGrad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = gGrad;
       ctx.beginPath();
@@ -1527,7 +1331,7 @@
 
       // Orbiting Moons
       p.moons.forEach(m => {
-        const angle = m.phase + t * m.speed;
+        const angle = isMobile() ? m.phase : (m.phase + t * m.speed);
         const mx = px + Math.cos(angle) * m.dist;
         const my = py + Math.sin(angle) * m.dist * 0.42;
         ctx.fillStyle = m.color;
@@ -1546,6 +1350,7 @@
         ctx.fill();
         ctx.restore();
       });
+      ctx.restore();
     });
   }
 
@@ -1605,9 +1410,9 @@
     const warpStr = 16;
     for (let c = 0; c <= COLS; c++) {
       for (let r = 0; r <= ROWS; r++) {
-        const wave = Math.sin(t * 0.0006 + c * 0.5 + r * 0.7) * warpStr;
+        const wave = Math.sin((t || 0) * 0.0006 + c * 0.5 + r * 0.7) * warpStr;
         const cx2 = c * cw + wave - (parallaxX * 60);
-        const cy2 = r * ch + Math.cos(t * 0.0005 + r * 0.6) * warpStr * 0.6 - (parallaxY * 30);
+        const cy2 = r * ch + Math.cos((t || 0) * 0.0005 + r * 0.6) * warpStr * 0.6 - (parallaxY * 30);
         if (c > 0 && r === 0) {
           ctx.beginPath(); ctx.moveTo((c - 1) * cw, cy2); ctx.lineTo(cx2, cy2); ctx.stroke();
         }
@@ -1643,10 +1448,32 @@
     makeAsteroids();
   }
 
+  // --- Mobile Static Frame Renderer ---
+  function renderStaticFrame() {
+    ctx.clearRect(0, 0, W, H);
+    const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
+    bg.addColorStop(0,   '#02040b');
+    bg.addColorStop(0.5, '#030612');
+    bg.addColorStop(1,   '#02040b');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    drawGridWarp(0);
+    drawNebulae();
+    drawAsteroids();
+    drawStars(0);
+    drawPlanets(0);
+  }
+
   let rafId;
 
-  // --- Main Animation Render Loop (Crash-Proof) ---
+  // --- Desktop Animation Render Loop (Pure Hover - No click/double-click) ---
   function render(t) {
+    if (isMobile()) {
+      renderStaticFrame();
+      return;
+    }
+
     try {
       // Parallax damping with realistic space inertia
       parallaxX += (targetNX - parallaxX) * 0.06;
@@ -1687,20 +1514,14 @@
       updateShooters();
       drawShooters();
 
-      // 6. Interactive Black Hole / Singularity (hold/drag)
-      updateBlackHole();
-      drawBlackHole(t);
-
-      // 7. Cosmic Stardust Particles
+      // 6. Cosmic Stardust Particles
       updateDust();
       drawDust();
 
-      // 8. Surface FX: Shockwave ripples & Comet Cursor Trail
-      updateRipples();
-      drawRipples();
+      // 7. Surface FX: Comet Cursor Trail
       drawCursorTrail();
 
-      // 9. Sync CSS background ambient orbs with left/right space motion
+      // 8. Sync CSS background ambient orbs with left/right space motion
       const orbs = document.querySelectorAll('.orb');
       if (orbs.length > 0) {
         orbs.forEach((orb, i) => {
@@ -1709,7 +1530,6 @@
         });
       }
     } catch (renderError) {
-      // Even if any unexpected edge-case occurs, log and never terminate the loop!
       console.warn('Hero space canvas frame warning:', renderError);
     }
 
@@ -1718,17 +1538,18 @@
 
   window.addEventListener('resize', resize);
   resize();
-  rafId = requestAnimationFrame(render);
 
   // Pause when hero is scrolled off-screen to conserve CPU/battery
   if (heroEl && 'IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          if (!rafId) rafId = requestAnimationFrame(render);
+          if (!isMobile() && !rafId) rafId = requestAnimationFrame(render);
         } else {
-          cancelAnimationFrame(rafId);
-          rafId = null;
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
         }
       });
     }, { threshold: 0.01 }).observe(heroEl);
