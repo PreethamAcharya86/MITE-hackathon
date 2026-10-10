@@ -39,13 +39,18 @@
 /* ─── RESET ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
 
 body {
   font-family: var(--font-main);
   background: var(--clr-bg);
   color: #e2e8f0;
   overflow-x: hidden;
+  max-width: 100vw;
   line-height: 1.6;
   cursor: none;
 }
@@ -2326,19 +2331,30 @@ body.cursor-click .cursor-ring {
 }
 
 @media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .container {
+    padding: 0 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
   /* Mobile-specific College Badge: Clean, sleek, glassmorphic presentation */
   .college-badge {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 12px 18px;
+    padding: 12px 16px;
     border-radius: 18px;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(26, 16, 60, 0.88) 100%);
     border: 1px solid rgba(139, 92, 246, 0.45);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 25px rgba(139, 92, 246, 0.22);
     width: 100%;
-    max-width: min(390px, 94vw);
-    margin: 0 auto 26px auto;
+    max-width: min(390px, 92vw);
+    margin: 0 auto 24px auto;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
@@ -2350,28 +2366,83 @@ body.cursor-click .cursor-ring {
     box-shadow: 0 0 12px rgba(34, 211, 238, 0.2);
   }
   .badge-dept {
-    font-size: 0.74rem;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
   }
   .badge-sep {
     display: none;
   }
   .badge-college {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
     color: #e2e8f0;
     text-align: center;
     line-height: 1.4;
     letter-spacing: 0.01em;
     padding: 0 4px;
+    word-break: break-word;
   }
 
-  .strip-grid  { grid-template-columns: 1fr; }
-  .flow-grid   { grid-template-columns: 1fr; }
-  .why-grid    { grid-template-columns: 1fr; }
+  /* Hero Section */
+  .hero {
+    min-height: auto;
+    padding: 120px 0 60px;
+  }
+  .hero-content {
+    margin-top: 0;
+    padding: 0 12px;
+    width: 100%;
+  }
+  .title-line {
+    font-size: clamp(2.3rem, 11vw, 3.8rem);
+    word-break: break-word;
+    letter-spacing: -0.02em;
+  }
+  .title-sub {
+    font-size: clamp(0.95rem, 3.8vw, 1.35rem);
+    letter-spacing: 0.1em;
+  }
+  .hero-tagline {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    padding: 0 8px;
+  }
+  .hero-meta {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto 36px;
+    gap: 8px;
+  }
+  .meta-chip {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 16px;
+    font-size: 0.84rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto 40px;
+    gap: 12px;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Grids & Cards */
+  .strip-grid  { grid-template-columns: 1fr; gap: 16px; }
+  .flow-grid   { grid-template-columns: 1fr; gap: 16px; }
+  .why-grid    { grid-template-columns: 1fr; gap: 16px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-  .hero-meta { flex-direction: column; align-items: center; }
+
+  /* Navigation Drawer */
   body.nav-open {
     overflow: hidden;
     touch-action: none;
@@ -2431,13 +2502,38 @@ body.cursor-click .cursor-ring {
   .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-  .register-card { padding: 40px 24px; }
-  .criteria-wrap { padding: 32px 24px; }
+
+  /* Registration Section */
+  .register-card {
+    padding: 36px 18px 28px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .reg-title { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .reg-meta { flex-direction: column; width: 100%; gap: 8px; }
+  .reg-meta span { width: 100%; justify-content: center; }
+  .register-card .btn-large { width: 100%; justify-content: center; }
+  .criteria-wrap { padding: 28px 16px; }
   .flow-arrow { display: none; }
   body { cursor: auto; }
   .cursor-glow, .cursor-dot, .cursor-ring { display: none; }
 
-  /* Remove coordinator carousel navigation buttons in mobile screen only */
+  /* Contributors & Leadership Cards */
+  .leadership-cards-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+  .contributor-card {
+    padding: 30px 18px 26px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Coordinator Carousel on Mobile */
   .carousel-btn {
     display: none !important;
   }
@@ -2445,64 +2541,64 @@ body.cursor-click .cursor-ring {
     display: none !important;
     margin: 0 !important;
   }
-
-  /* Coordinator carousel: 98% width on small screens */
   .contributors-row-wrapper.coordinators-section-row {
-    width: 98%;
-    max-width: 98%;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
   }
   .coordinators-carousel-wrapper {
-    width: 98%;
-    max-width: 98%;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
   }
   .coordinators-carousel-track {
     width: 100%;
-    padding: 12px 1% 18px;
+    max-width: 100%;
+    padding: 10px 0 16px;
     overflow: hidden;
   }
   .coordinators-cards-row {
     gap: 16px;
   }
   .coordinator-card {
-    flex: 0 0 98%;
-    max-width: 98%;
-    width: 98%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
     min-width: 0;
     margin: 0 auto;
+    padding: 30px 18px 26px;
+    box-sizing: border-box;
+  }
+
+  .role-line-divider {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .role-line-divider::before,
+  .role-line-divider::after {
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .college-badge {
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 16px;
     gap: 6px;
-    max-width: min(350px, 94vw);
+    max-width: min(340px, 94vw);
   }
   .badge-dept {
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
   }
   .badge-college {
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     line-height: 1.35;
   }
   .nav-logo-img { width: 32px; height: 32px; margin-right: 6px; }
   .nav-logo { font-size: 1.05rem; }
-  .hero-actions { flex-direction: column; width: 100%; }
-  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-  .reg-meta { flex-direction: column; }
-  .leadership-cards-grid { grid-template-columns: 1fr; width: 98%; max-width: 98%; margin: 0 auto; }
-  .coordinators-carousel-wrapper { width: 98%; max-width: 98%; margin: 0 auto; }
-  .coordinators-carousel-track { padding: 10px 0 16px; }
-  .coordinator-card { flex: 0 0 98%; max-width: 98%; width: 98%; padding: 30px 16px 26px; }
   .scroll-guide-pill { padding: 6px 14px; gap: 8px; }
   .guide-label { font-size: 0.68rem; letter-spacing: 0.05em; }
-  .contributor-card { padding: 32px 18px 28px; }
-  .role-line-divider { flex-wrap: wrap; gap: 8px; }
-  .role-line-divider::before, .role-line-divider::after { display: none; }
 }
 
 /* ==================== VIBEBOT MASCOT CORE STYLES ==================== */
