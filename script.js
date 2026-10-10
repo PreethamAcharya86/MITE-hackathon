@@ -641,7 +641,9 @@
     let prevBotY = botY;
     let tiltAngle = 0;
     let floatTime = 0;
+    let floatOffset = 0;
 
+    let isPointerDown = false;
     let isDragging = false;
     let dragOffset = { x: 0, y: 0 };
     let dragStartPos = { x: 0, y: 0 };
@@ -690,7 +692,7 @@
     }
 
     function calculateTargetPosition() {
-      if (isCustomPlaced) return;
+      if (isCustomPlaced || window.innerWidth <= 768) return;
 
       const isSmallScreen = window.innerWidth < 1300;
       const botWidth = isSmallScreen ? 84 : 140;
@@ -764,6 +766,31 @@
       setTimeout(() => particle.remove(), 2400);
     }
 
+    // Throw Cute Heart Emojis Within Little Range on Click
+    function spawnClickHearts() {
+      const hearts = ['💖', '💕', '❤️', '✨'];
+      const count = 3;
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = hearts[Math.floor(Math.random() * hearts.length)];
+          const particle = document.createElement('span');
+          particle.className = 'vb-particle vb-click-heart';
+          particle.textContent = heart;
+
+          // Little tight range: +/-18px horizontal, -16px to -36px vertical
+          const tx = (Math.random() - 0.5) * 36;
+          const ty = -16 - Math.random() * 20;
+          particle.style.setProperty('--tx', `${tx}px`);
+          particle.style.setProperty('--ty', `${ty}px`);
+          particle.style.left = `${58 + (Math.random() - 0.5) * 16}px`;
+          particle.style.top = `${36 + (Math.random() - 0.5) * 14}px`;
+
+          particlesContainer.appendChild(particle);
+          setTimeout(() => particle.remove(), 1400);
+        }, i * 75);
+      }
+    }
+
     function openMenu() {
       isMenuOpen = true;
       menu.classList.add('is-open');
@@ -821,6 +848,11 @@
 
     // Single requestAnimationFrame Loop
     function tick() {
+      if (window.innerWidth <= 768) {
+        requestAnimationFrame(tick);
+        return;
+      }
+
       floatTime += 0.04;
 
       // 1. Idle Sleep Management (after 9s)
@@ -841,8 +873,8 @@
         botY += (targetY - botY) * lerpFactor;
       }
 
-      // 3. Sine Wave Float
-      const floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
+      // 3. Sine Wave Float (only frozen when asleep or actively moving/dragging)
+      floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
 
       // 4. Movement Tilt
       const velocityX = botX - prevBotX;
@@ -905,12 +937,14 @@
       if (e.target.closest('.vibebot-menu')) return;
 
       recordUserActivity();
-      isDragging = true;
+      isPointerDown = true;
+      isDragging = false;
       hasDragged = false;
       dragStartPos = { x: e.clientX, y: e.clientY };
+      // Include current floatOffset so position remains 100% intact if dragged
       dragOffset = {
         x: e.clientX - botX,
-        y: e.clientY - botY
+        y: e.clientY - (botY + floatOffset)
       };
 
       botRoot.setPointerCapture(e.pointerId);
@@ -921,15 +955,21 @@
       mouseScreenY = e.clientY;
       recordUserActivity();
 
-      if (isDragging) {
+      if (isPointerDown) {
         const movedDist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
         if (movedDist > 6) {
-          hasDragged = true;
+          if (!hasDragged) {
+            hasDragged = true;
+            isDragging = true;
+            // Mouth looks like saying "Ohhh" :O while moving!
+            setMood('wow');
+            showMessage("Ohhh! 😮", 0);
+          }
+          botX = e.clientX - dragOffset.x;
+          botY = e.clientY - dragOffset.y;
+          targetX = botX;
+          targetY = botY;
         }
-        botX = e.clientX - dragOffset.x;
-        botY = e.clientY - dragOffset.y;
-        targetX = botX;
-        targetY = botY;
       }
     });
 
@@ -937,23 +977,32 @@
     let singleTapTimeout = null;
 
     botRoot.addEventListener('pointerup', (e) => {
-      if (!isDragging) return;
-      isDragging = false;
+      if (!isPointerDown) return;
+      isPointerDown = false;
 
       try {
         botRoot.releasePointerCapture(e.pointerId);
       } catch (_) {}
 
       if (hasDragged) {
+        isDragging = false;
         isCustomPlaced = true;
-        showMessage("Wheee! 🚀", 2200);
+        showMessage("Wheee! 🚀", 2000);
+        setTimeout(() => {
+          if (!isAsleep && currentMood === 'wow') {
+            setMood('happy');
+          }
+        }, 1500);
       } else {
+        // Intact Click/Tap: throw heart emojis in a little range
+        spawnClickHearts();
+
         if (!e.target.closest('.vibebot-menu')) {
           const now = performance.now();
           const tapInterval = now - lastTapTime;
 
           if (tapInterval < 320 && tapInterval > 30) {
-            // Double-tap detected (touch or click)
+            // Double-tap detected
             lastTapTime = 0;
             if (singleTapTimeout) {
               clearTimeout(singleTapTimeout);
@@ -966,7 +1015,7 @@
             lastTapTime = now;
             if (singleTapTimeout) clearTimeout(singleTapTimeout);
             singleTapTimeout = setTimeout(() => {
-              if (!isDragging && !hasDragged) {
+              if (!hasDragged) {
                 if (isMenuOpen) {
                   closeMenu();
                 } else {
