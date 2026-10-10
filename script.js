@@ -1,13 +1,13 @@
-/* ═══════════════════════════════════════════════════════════
-   AI VibeX — script.js
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   AI VibeX â€” script.js
    Particle canvas, cursor tracking, scroll animations,
    navbar behaviour, AOS, hamburger menu, criteria bars
-   ═══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 (function () {
   'use strict';
 
-  /* ─── 1. CUSTOM CURSOR ─────────────────────────────────── */
+  /* â”€â”€â”€ 1. CUSTOM CURSOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   if (window.innerWidth > 768) {
     const cursorGlow = document.getElementById('cursor-glow');
     const cursorRing = document.getElementById('cursor-ring');
@@ -37,7 +37,7 @@
     });
 
     function animateCursor() {
-      // Dot: instant (no lerp — crisp exact tracking)
+      // Dot: instant (no lerp â€” crisp exact tracking)
       cursorDot.style.left = mx + 'px';
       cursorDot.style.top  = my + 'px';
 
@@ -68,7 +68,7 @@
     });
   }
 
-  /* ─── 2. PARTICLE CANVAS ───────────────────────────────── */
+  /* â”€â”€â”€ 2. PARTICLE CANVAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const canvas = document.getElementById('particle-canvas');
   const ctx    = canvas.getContext('2d');
 
@@ -146,7 +146,7 @@
   initParticles();
   animate();
 
-  /* ─── 3. NAVBAR & MOBILE NAVIGATION ─────────────────────── */
+  /* â”€â”€â”€ 3. NAVBAR & MOBILE NAVIGATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const navbar    = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
   const navLinks  = document.getElementById('nav-links');
@@ -184,7 +184,7 @@
     lastScroll = scrollY;
   }, { passive: true });
 
-  /* ─── 4. HAMBURGER MENU ────────────────────────────────── */
+  /* â”€â”€â”€ 4. HAMBURGER MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   if (hamburger && navLinks) {
     hamburger.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -241,7 +241,7 @@
     }, { passive: true });
   }
 
-  /* ─── 5. AOS (ANIMATE ON SCROLL) ──────────────────────── */
+  /* â”€â”€â”€ 5. AOS (ANIMATE ON SCROLL) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initAOS() {
     const aosEls = document.querySelectorAll('[data-aos]');
 
@@ -267,7 +267,7 @@
     });
   }
 
-  /* ─── 6. CRITERIA BAR ANIMATION ────────────────────────── */
+  /* â”€â”€â”€ 6. CRITERIA BAR ANIMATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initCriteriaBars() {
     const fills = document.querySelectorAll('.criteria-fill');
     const observer = new IntersectionObserver((entries) => {
@@ -282,7 +282,7 @@
     fills.forEach(el => observer.observe(el));
   }
 
-  /* ─── 7. SMOOTH ACTIVE NAV LINK ────────────────────────── */
+  /* â”€â”€â”€ 7. SMOOTH ACTIVE NAV LINK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initActiveNav() {
     const sections = document.querySelectorAll('section[id]');
     const navLinkEls = document.querySelectorAll('.nav-link:not(.nav-cta)');
@@ -300,7 +300,7 @@
     sections.forEach(s => observer.observe(s));
   }
 
-  /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
+  /* â”€â”€â”€ 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTilt() {
     const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card, .contributor-card');
     tiltEls.forEach(el => {
@@ -344,7 +344,7 @@
     });
   }
 
-  /* ─── SCROLL PROGRESS BAR ──────────────────────────────── */
+  /* â”€â”€â”€ SCROLL PROGRESS BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initScrollProgress() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
@@ -358,7 +358,7 @@
     }, { passive: true });
   }
 
-  /* ─── 9. HERO PARALLAX ─────────────────────────────────── */
+  /* â”€â”€â”€ 9. HERO PARALLAX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initParallax() {
     const heroImg = document.querySelector('.hero-bg-img');
     const orbs    = document.querySelectorAll('.orb');
@@ -373,7 +373,7 @@
     });
   }
 
-  /* ─── 10. FLOATING PARTICLES ON MOUSE ─────────────────── */
+  /* â”€â”€â”€ 10. FLOATING PARTICLES ON MOUSE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initMouseParticles() {
     if (window.innerWidth <= 768) return;
     const hero = document.querySelector('.hero');
@@ -405,7 +405,7 @@
     }, 60));
   }
 
-  /* ─── 11. REGISTER BUTTON RIPPLE ───────────────────────── */
+  /* â”€â”€â”€ 11. REGISTER BUTTON RIPPLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initRipple() {
     document.querySelectorAll('.btn-primary').forEach(btn => {
       btn.addEventListener('click', function (e) {
@@ -433,7 +433,7 @@
     document.head.appendChild(style);
   }
 
-  /* ─── 12. TYPING EFFECT FOR HERO TAGLINE ──────────────── */
+  /* â”€â”€â”€ 12. TYPING EFFECT FOR HERO TAGLINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTypingEffect() {
     const tagline = document.querySelector('.hero-tagline');
     if (!tagline) return;
@@ -453,7 +453,7 @@
     setTimeout(type, 800);
   }
 
-  /* ─── UTILITY: THROTTLE ────────────────────────────────── */
+  /* â”€â”€â”€ UTILITY: THROTTLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function throttle(fn, limit) {
     let last = 0;
     return function (...args) {
@@ -462,7 +462,7 @@
     };
   }
 
-  /* ─── 13. COORDINATOR CAROUSEL ──────────────────────────── */
+  /* â”€â”€â”€ 13. COORDINATOR CAROUSEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initCoordinatorCarousel() {
     const track    = document.getElementById('coordinators-track');
     const row      = track ? track.querySelector('.coordinators-cards-row') : null;
@@ -574,7 +574,7 @@
     update();
   }
 
-  /* ─── TIMELINE SCROLL PROGRESS FILL + CARD GLOW ──────────── */
+  /* â”€â”€â”€ TIMELINE SCROLL PROGRESS FILL + CARD GLOW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTimelineProgressFill() {
     const fill = document.getElementById('tl-progress-fill');
     const timelineSection = document.getElementById('timeline');
@@ -609,7 +609,7 @@
         fill.classList.remove('tl-fill-hidden');
       }
 
-      // ── Card glow: find which item the ball tip is touching ──────
+      // â”€â”€ Card glow: find which item the ball tip is touching â”€â”€â”€â”€â”€â”€
       const fillPx = (pct / 100) * totalHeight;
       const tolerance = 80; // px proximity for glow trigger
 
@@ -645,7 +645,7 @@
     updateFill(); // Run once on load
   }
 
-  /* ─── INIT ALL ─────────────────────────────────────────── */
+  /* â”€â”€â”€ INIT ALL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
     initAOS();
@@ -662,7 +662,1080 @@
 
 })();
 
+/* ==================== HERO SPACE CANVAS ==================== */
+(function initHeroSpace() {
+  'use strict';
+
+  const canvas = document.getElementById('hero-space-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const heroEl = document.getElementById('hero') || canvas;
+
+  canvas.style.pointerEvents = 'auto';
+  canvas.style.cursor = 'crosshair';
+
+  let W = 0, H = 0;
+  // Normalized parallax target (-0.5 to +0.5)
+  let targetNX = 0, targetNY = 0;
+  // Canvas pixel coordinates of cursor
+  let mouseCX = -9999, mouseCY = -9999;
+  let isMouseOver = false;
+  // Smoothed parallax offset (represents camera pan across deep space)
+  let parallaxX = 0, parallaxY = 0;
+
+  // Mouse hold / Black Hole vortex state
+  let isMouseDown = false;
+  let mouseHoldTime = 0;
+  const blackHole = {
+    active: false,
+    x: 0,
+    y: 0,
+    power: 0,      // 0..1
+    targetPower: 0,
+    angle: 0
+  };
+
+  // Direct star hit radius (star only glows when cursor is directly over it)
+  const STAR_HIT_RADIUS = 16;
+
+  // Cursor comet trail
+  const trail = [];
+  const TRAIL_LEN = 26;
+
+  // Expanding ripple shockwaves
+  const ripples = [];
+
+  // Cosmic stardust particles
+  const dust = [];
+  const MAX_DUST = 180;
+
+  // Periodic and triggered shooting stars
+  let shooters = [];
+  const MAX_SHOOTERS = 5;
+  let shooterTimer = 0;
+
+  // Asteroid belt
+  let asteroids = [];
+
+  // Stars array
+  let stars = [];
+  const STAR_COUNT = window.innerWidth < 768 ? 160 : 360;
+
+  // Nebulae array
+  let nebulae = [];
+
+  // Planets array
+  let planets = [];
+
+  // --- Resize Canvas ---
+  function resize() {
+    const rect = (heroEl || canvas).getBoundingClientRect();
+    W = canvas.width  = Math.max(300, Math.floor(rect.width  || window.innerWidth));
+    H = canvas.height = Math.max(300, Math.floor(rect.height || window.innerHeight));
+    buildScene();
+  }
+
+  // --- Pointer & Touch Tracking ---
+  function updatePointerPos(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    mouseCX = clientX - rect.left;
+    mouseCY = clientY - rect.top;
+
+    if (W > 0 && H > 0) {
+      targetNX = (mouseCX / W) - 0.5;
+      targetNY = (mouseCY / H) - 0.5;
+      targetNX = Math.max(-0.6, Math.min(0.6, targetNX));
+      targetNY = Math.max(-0.6, Math.min(0.6, targetNY));
+    }
+    isMouseOver = true;
+
+    // Push comet trail point
+    trail.push({ x: mouseCX, y: mouseCY, age: 0 });
+    if (trail.length > TRAIL_LEN) trail.shift();
+
+    // Spawn subtle cosmic stardust as cursor moves
+    if (Math.random() < 0.45 && dust.length < MAX_DUST) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 0.9 + 0.3;
+      dust.push({
+        x: mouseCX + (Math.random() - 0.5) * 8,
+        y: mouseCY + (Math.random() - 0.5) * 8,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: Math.random() * 1.5 + 0.6,
+        alpha: 0.85,
+        decay: 0.018 + Math.random() * 0.012,
+        color: ['#00d4ff', '#7c5cff', '#ec4899', '#ffffff', '#ffd166'][Math.floor(Math.random() * 5)]
+      });
+    }
+  }
+
+  // Listen on hero container so hovering titles or buttons NEVER stops mouse tracking
+  heroEl.addEventListener('mousemove', e => {
+    updatePointerPos(e.clientX, e.clientY);
+  });
+
+  heroEl.addEventListener('mouseleave', () => {
+    isMouseOver = false;
+    targetNX = 0;
+    targetNY = 0;
+    mouseCX = -9999;
+    mouseCY = -9999;
+    trail.length = 0;
+    isMouseDown = false;
+    blackHole.targetPower = 0;
+  });
+
+  // Touch Support
+  heroEl.addEventListener('touchstart', e => {
+    if (e.touches.length > 0) {
+      updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
+      isMouseDown = true;
+      mouseHoldTime = 0;
+      blackHole.x = mouseCX;
+      blackHole.y = mouseCY;
+      blackHole.targetPower = 1;
+    }
+  }, { passive: true });
+
+  heroEl.addEventListener('touchmove', e => {
+    if (e.touches.length > 0) {
+      updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
+      if (isMouseDown) {
+        blackHole.x = mouseCX;
+        blackHole.y = mouseCY;
+      }
+    }
+  }, { passive: true });
+
+  heroEl.addEventListener('touchend', () => {
+    triggerSupernova();
+  });
+
+  // Mouse Down: Start Gravitational Singularity / Black Hole
+  heroEl.addEventListener('mousedown', e => {
+    if (e.button === 0) { // left click
+      isMouseDown = true;
+      mouseHoldTime = 0;
+      blackHole.x = mouseCX;
+      blackHole.y = mouseCY;
+      blackHole.targetPower = 1;
+    }
+  });
+
+  // Trigger cosmic burst when releasing mouse
+  function triggerSupernova() {
+    if (!isMouseDown && blackHole.power < 0.1) return;
+
+    const hadStrongCharge = blackHole.power > 0.35 || mouseHoldTime > 15;
+    const burstX = (mouseCX > -9000) ? mouseCX : (W * 0.5);
+    const burstY = (mouseCY > -9000) ? mouseCY : (H * 0.5);
+
+    isMouseDown = false;
+    blackHole.targetPower = 0;
+
+    // Fast click ripples
+    ripples.push({
+      x: burstX,
+      y: burstY,
+      r: 6,
+      maxR: hadStrongCharge ? 340 : 220,
+      alpha: 0.95,
+      color: '#00d4ff'
+    });
+
+    ripples.push({
+      x: burstX,
+      y: burstY,
+      r: 4,
+      maxR: hadStrongCharge ? 250 : 160,
+      alpha: 0.75,
+      color: '#a855f7',
+      delay: 4
+    });
+
+    if (hadStrongCharge) {
+      // Supernova explosion: dense outward stardust blast
+      const sparkCount = 36;
+      for (let i = 0; i < sparkCount; i++) {
+        const ang = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.2;
+        const spd = Math.random() * 5 + 3;
+        dust.push({
+          x: burstX,
+          y: burstY,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          r: Math.random() * 2.2 + 1,
+          alpha: 1,
+          decay: 0.02,
+          color: ['#00d4ff', '#38bdf8', '#c084fc', '#f472b6', '#ffffff'][Math.floor(Math.random() * 5)]
+        });
+      }
+    }
+
+    // Launch shooting meteors radiating from click / release
+    const meteorCount = hadStrongCharge ? 3 : 1;
+    for (let k = 0; k < meteorCount; k++) {
+      const angle = (Math.PI * 2 * Math.random());
+      const speed = 4 + Math.random() * 3.5;
+      shooters.push({
+        x: burstX,
+        y: burstY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        len: 110 + Math.random() * 70,
+        alpha: 1,
+        r: 1.6,
+        color: '#ffffff'
+      });
+    }
+  }
+
+  window.addEventListener('mouseup', () => {
+    triggerSupernova();
+  });
+
+  // --- Stars Setup with 3 Depth Tiers for Dynamic Space Parallax ---
+  function makeStars() {
+    stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const tier = Math.random();
+      // Depth plane configuration:
+      // Foreground: large, fast parallax movement across screen
+      // Midground: medium stars
+      // Background: tiny, distant stars
+      let baseR, depth;
+      if (tier > 0.88) {
+        baseR = Math.random() * 1.5 + 1.2;
+        depth = 0.32 + Math.random() * 0.12; // foreground: strong space motion
+      } else if (tier > 0.55) {
+        baseR = Math.random() * 0.8 + 0.5;
+        depth = 0.18 + Math.random() * 0.08; // midground
+      } else {
+        baseR = Math.random() * 0.4 + 0.15;
+        depth = 0.06 + Math.random() * 0.06; // deep background
+      }
+
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        baseR: baseR,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.012 + 0.005,
+        color: ['#ffffff', '#c8e8ff', '#ffe8c8', '#cdb4ff', '#b3f0ff', '#fce7f3'][Math.floor(Math.random() * 6)],
+        parallaxDepth: depth,
+        drift: (Math.random() - 0.5) * 0.03,
+        driftY: (Math.random() - 0.5) * 0.015,
+        hovered: 0, // ONLY grows when cursor is DIRECTLY over this star!
+        flareCooldown: 0
+      });
+    }
+  }
+
+  // Calculate current screen coordinates for any star with wrap-around space movement
+  function getStarCoords(s, t) {
+    const timeDriftX = (s.drift * (t || 0) * 0.001);
+    const timeDriftY = (s.driftY * (t || 0) * 0.001);
+
+    // Camera moves with mouse: moving right pans camera right, so celestial bodies shift left
+    let px = s.x - (parallaxX * s.parallaxDepth * W) + timeDriftX;
+    let py = s.y - (parallaxY * (s.parallaxDepth * 0.5) * H) + timeDriftY;
+
+    // Seamless toroidal wrap-around so stars never run out when panning left/right
+    if (W > 0) px = ((px % W) + W) % W;
+    if (H > 0) py = ((py % H) + H) % H;
+
+    return { px, py };
+  }
+
+  // Update Star Hover:
+  // Strict direct hit test: stars do NOT glow from general area proximity,
+  // ONLY the specific star directly under the mouse pointer glows!
+  function updateStarHover(t) {
+    stars.forEach(s => {
+      const { px, py } = getStarCoords(s, t);
+      const dx = mouseCX - px;
+      const dy = mouseCY - py;
+      const dist = Math.hypot(dx, dy);
+
+      // Strict hit distance for direct hover
+      const hitR = Math.max(STAR_HIT_RADIUS, s.baseR * 5);
+
+      if (isMouseOver && dist <= hitR) {
+        // Direct hover on this specific star!
+        s.hovered = Math.min(1, s.hovered + 0.18);
+
+        // Emit micro solar flare sparkles from this star
+        if (s.flareCooldown <= 0) {
+          s.flareCooldown = 18;
+          if (dust.length < MAX_DUST) {
+            const count = s.baseR > 1.1 ? 3 : 1;
+            for (let k = 0; k < count; k++) {
+              const a = Math.random() * Math.PI * 2;
+              const spd = 0.6 + Math.random() * 1.4;
+              dust.push({
+                x: px,
+                y: py,
+                vx: Math.cos(a) * spd,
+                vy: Math.sin(a) * spd,
+                r: Math.random() * 1.4 + 0.7,
+                alpha: 0.95,
+                decay: 0.025,
+                color: s.color
+              });
+            }
+          }
+        }
+      } else {
+        // Smoothly fade back down
+        s.hovered = Math.max(0, s.hovered - 0.06);
+      }
+
+      if (s.flareCooldown > 0) s.flareCooldown--;
+    });
+  }
+
+  // Render Stars
+  function drawStars(t) {
+    stars.forEach(s => {
+      const { px, py } = getStarCoords(s, t);
+      const twinkle = 0.55 + 0.45 * Math.sin(s.phase + t * s.speed);
+      const alpha = Math.min(1, twinkle + s.hovered * 0.5);
+      const drawR = s.baseR * (1 + s.hovered * 1.5);
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // Base glow for larger stars in background
+      if (s.baseR > 1.0) {
+        const glowR = drawR * 3;
+        const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
+        grad.addColorStop(0, s.color + 'aa');
+        grad.addColorStop(1, s.color + '00');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(px, py, glowR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // DIRECT HOVER SPECIAL EFFECT:
+      // Intense radial aura + James Webb / Hubble telescope diffraction spikes!
+      if (s.hovered > 0.04) {
+        const auraR = drawR * (8 + s.hovered * 8);
+        const auraGrad = ctx.createRadialGradient(px, py, 0, px, py, auraR);
+        auraGrad.addColorStop(0, '#ffffff');
+        auraGrad.addColorStop(0.25, s.color);
+        auraGrad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(px, py, auraR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 4-point primary diffraction spikes
+        const spikeLen = drawR * (10 + s.hovered * 14);
+        ctx.save();
+        ctx.globalAlpha = s.hovered * 0.9;
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = Math.max(0.8, drawR * 0.6);
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 14 * s.hovered;
+
+        [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5].forEach(ang => {
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(px + Math.cos(ang) * spikeLen, py + Math.sin(ang) * spikeLen);
+          ctx.stroke();
+        });
+
+        // 4-point secondary diagonal spikes
+        ctx.globalAlpha = s.hovered * 0.45;
+        ctx.lineWidth = Math.max(0.4, drawR * 0.3);
+        [Math.PI * 0.25, Math.PI * 0.75, Math.PI * 1.25, Math.PI * 1.75].forEach(ang => {
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(px + Math.cos(ang) * spikeLen * 0.55, py + Math.sin(ang) * spikeLen * 0.55);
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      // Star core circle
+      ctx.fillStyle = s.hovered > 0.2 ? '#ffffff' : s.color;
+      ctx.beginPath();
+      ctx.arc(px, py, drawR, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    });
+  }
+
+  // --- Constellation Lines between hovered / close stars ---
+  function drawConstellation(t) {
+    if (!isMouseOver) return;
+
+    // Filter stars that are either hovered or within tight proximity
+    const cluster = stars.filter(s => {
+      if (s.hovered > 0.05) return true;
+      const { px, py } = getStarCoords(s, t);
+      return Math.hypot(mouseCX - px, mouseCY - py) < 80;
+    });
+
+    if (cluster.length < 2) return;
+
+    for (let i = 0; i < cluster.length; i++) {
+      for (let j = i + 1; j < cluster.length; j++) {
+        const a = cluster[i];
+        const b = cluster[j];
+        const posA = getStarCoords(a, t);
+        const posB = getStarCoords(b, t);
+        const dist = Math.hypot(posA.px - posB.px, posA.py - posB.py);
+
+        if (dist < 120) {
+          const strength = Math.max(a.hovered, b.hovered, 0.35);
+          const lineAlpha = (1 - dist / 120) * strength * 0.75;
+          const shimmer = 0.7 + 0.3 * Math.sin(t * 0.005 + i + j);
+
+          ctx.save();
+          ctx.globalAlpha = lineAlpha * shimmer;
+          ctx.strokeStyle = '#00d4ff';
+          ctx.lineWidth = 1;
+          ctx.shadowColor = '#00d4ff';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.moveTo(posA.px, posA.py);
+          ctx.lineTo(posB.px, posB.py);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+  }
+
+  // --- Interactive Black Hole / Singularity Vortex ---
+  function updateBlackHole() {
+    if (isMouseDown) {
+      mouseHoldTime++;
+      blackHole.x = mouseCX;
+      blackHole.y = mouseCY;
+      blackHole.targetPower = Math.min(1, mouseHoldTime / 25);
+    } else {
+      blackHole.targetPower = 0;
+    }
+
+    blackHole.power += (blackHole.targetPower - blackHole.power) * 0.12;
+    blackHole.angle += 0.05 + blackHole.power * 0.1;
+
+    // Pull cosmic stardust into the black hole vortex
+    if (blackHole.power > 0.08) {
+      dust.forEach(d => {
+        const dx = blackHole.x - d.x;
+        const dy = blackHole.y - d.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 260 && dist > 10) {
+          const force = (1 - dist / 260) * 0.75 * blackHole.power;
+          // Inward gravitational pull + orbital swirl
+          d.vx += (dx / dist) * force * 2.2 - (dy / dist) * force * 1.5;
+          d.vy += (dy / dist) * force * 2.2 + (dx / dist) * force * 1.5;
+        }
+      });
+    }
+  }
+
+  function drawBlackHole(t) {
+    if (blackHole.power < 0.02) return;
+
+    const p = blackHole.power;
+    const bx = blackHole.x;
+    const by = blackHole.y;
+    const coreR = (14 + p * 22);
+
+    ctx.save();
+
+    // 1. Gravitational lensing halo
+    const lensR = coreR * (3.8 + Math.sin(t * 0.008) * 0.3);
+    const lensGrad = ctx.createRadialGradient(bx, by, coreR * 0.9, bx, by, lensR);
+    lensGrad.addColorStop(0, 'rgba(0, 212, 255, 0)');
+    lensGrad.addColorStop(0.35, `rgba(168, 85, 247, ${0.45 * p})`);
+    lensGrad.addColorStop(0.7, `rgba(0, 212, 255, ${0.35 * p})`);
+    lensGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = lensGrad;
+    ctx.beginPath();
+    ctx.arc(bx, by, lensR, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 2. Swirling Accretion Disk
+    ctx.save();
+    ctx.translate(bx, by);
+    ctx.rotate(blackHole.angle);
+
+    for (let ring = 0; ring < 3; ring++) {
+      const rx = coreR * (1.8 + ring * 0.5);
+      const ry = coreR * (0.6 + ring * 0.2);
+      ctx.save();
+      ctx.globalAlpha = p * (0.65 - ring * 0.15);
+      ctx.strokeStyle = ring === 0 ? '#38bdf8' : (ring === 1 ? '#c084fc' : '#f472b6');
+      ctx.lineWidth = 3 - ring * 0.8;
+      ctx.shadowColor = '#00d4ff';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, ring * 0.4, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+
+    // 3. Event Horizon (deep pitch-black void with glowing photon ring)
+    ctx.shadowColor = '#38bdf8';
+    ctx.shadowBlur = 16 * p;
+    ctx.fillStyle = '#010207';
+    ctx.beginPath();
+    ctx.arc(bx, by, coreR, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Inner bright rim (photon sphere)
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.85 * p})`;
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.arc(bx, by, coreR + 1, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // --- Cosmic Stardust & Particle Dust ---
+  function updateDust() {
+    for (let i = dust.length - 1; i >= 0; i--) {
+      const d = dust[i];
+      d.x += d.vx;
+      d.y += d.vy;
+      d.vx *= 0.96;
+      d.vy *= 0.96;
+      d.alpha -= d.decay;
+
+      if (d.alpha <= 0) {
+        dust.splice(i, 1);
+      }
+    }
+  }
+
+  function drawDust() {
+    dust.forEach(d => {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, d.alpha));
+      ctx.fillStyle = d.color;
+      ctx.shadowColor = d.color;
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  // --- Asteroids Belt with Space Motion ---
+  function makeAsteroids() {
+    asteroids = [];
+    const count = window.innerWidth < 768 ? 4 : 7;
+    for (let i = 0; i < count; i++) {
+      const radius = 9 + Math.random() * 14;
+      const numPoints = 8 + Math.floor(Math.random() * 4);
+      const vertices = [];
+      for (let p = 0; p < numPoints; p++) {
+        const ang = (Math.PI * 2 * p) / numPoints;
+        const dist = radius * (0.75 + Math.random() * 0.45);
+        vertices.push({ x: Math.cos(ang) * dist, y: Math.sin(ang) * dist });
+      }
+
+      asteroids.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.25 - 0.15,
+        vy: (Math.random() - 0.5) * 0.18 + 0.1,
+        radius: radius,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.008,
+        vertices: vertices,
+        craters: [
+          { ox: (Math.random() - 0.5) * radius * 0.6, oy: (Math.random() - 0.5) * radius * 0.6, r: radius * 0.18 },
+          { ox: (Math.random() - 0.5) * radius * 0.6, oy: (Math.random() - 0.5) * radius * 0.6, r: radius * 0.12 }
+        ],
+        pf: 0.22 + Math.random() * 0.12 // foreground depth
+      });
+    }
+  }
+
+  function updateAsteroids() {
+    asteroids.forEach(ast => {
+      ast.x += ast.vx;
+      ast.y += ast.vy;
+      ast.rotation += ast.rotSpeed;
+
+      // Wrap around edges
+      if (ast.x < -80) ast.x = W + 80;
+      if (ast.x > W + 80) ast.x = -80;
+      if (ast.y < -80) ast.y = H + 80;
+      if (ast.y > H + 80) ast.y = -80;
+
+      // Interactive gentle push away from cursor
+      if (isMouseOver) {
+        const ax = ast.x - (parallaxX * ast.pf * W);
+        const ay = ast.y - (parallaxY * ast.pf * 0.5 * H);
+        const dx = ax - mouseCX;
+        const dy = ay - mouseCY;
+        const d = Math.hypot(dx, dy);
+        if (d < 90 && d > 1) {
+          ast.x += (dx / d) * 0.8;
+          ast.y += (dy / d) * 0.8;
+        }
+      }
+    });
+  }
+
+  function drawAsteroids() {
+    asteroids.forEach(ast => {
+      let ax = ast.x - (parallaxX * ast.pf * W);
+      let ay = ast.y - (parallaxY * ast.pf * 0.5 * H);
+      if (W > 0) ax = ((ax % (W + 160)) + (W + 160)) % (W + 160) - 80;
+      if (H > 0) ay = ((ay % (H + 160)) + (H + 160)) % (H + 160) - 80;
+
+      ctx.save();
+      ctx.translate(ax, ay);
+      ctx.rotate(ast.rotation);
+
+      // Shaded 3D Rock Silhouette
+      const grad = ctx.createRadialGradient(-ast.radius * 0.3, -ast.radius * 0.3, 0, 0, 0, ast.radius * 1.3);
+      grad.addColorStop(0, '#575f7a');
+      grad.addColorStop(0.5, '#2e3347');
+      grad.addColorStop(1, '#111422');
+
+      ctx.fillStyle = grad;
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.4)';
+      ctx.lineWidth = 1;
+
+      ctx.beginPath();
+      ctx.moveTo(ast.vertices[0].x, ast.vertices[0].y);
+      for (let i = 1; i < ast.vertices.length; i++) {
+        ctx.lineTo(ast.vertices[i].x, ast.vertices[i].y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Craters
+      ast.craters.forEach(cr => {
+        ctx.fillStyle = 'rgba(15, 17, 28, 0.7)';
+        ctx.beginPath();
+        ctx.arc(cr.ox, cr.oy, cr.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+    });
+  }
+
+  // --- Cursor Comet Trail ---
+  function drawCursorTrail() {
+    if (trail.length < 2) return;
+    for (let i = 1; i < trail.length; i++) {
+      const a = trail[i - 1];
+      const b = trail[i];
+      const pct = i / trail.length;
+      ctx.save();
+      ctx.globalAlpha = pct * 0.7;
+      ctx.strokeStyle = `hsl(${185 + pct * 75}, 100%, ${60 + pct * 20}%)`;
+      ctx.lineWidth = pct * 3.5;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = '#00d4ff';
+      ctx.shadowBlur = 10 * pct;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Glowing orb at tip
+    if (isMouseOver && mouseCX > -9000) {
+      const grad = ctx.createRadialGradient(mouseCX, mouseCY, 0, mouseCX, mouseCY, 24);
+      grad.addColorStop(0, 'rgba(0,212,255,0.95)');
+      grad.addColorStop(0.35, 'rgba(124,92,255,0.45)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(mouseCX, mouseCY, 24, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Inner brilliant core
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(mouseCX, mouseCY, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // --- Ripple Shockwaves ---
+  function updateRipples() {
+    ripples.forEach(r => {
+      if (r.delay > 0) { r.delay--; return; }
+      r.r += (r.maxR - r.r) * 0.08 + 1.8;
+      r.alpha -= 0.024;
+    });
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      if (ripples[i].alpha <= 0) ripples.splice(i, 1);
+    }
+  }
+
+  function drawRipples() {
+    ripples.forEach(r => {
+      if (r.delay > 0) return;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, r.alpha));
+      ctx.strokeStyle = r.color;
+      ctx.lineWidth = 2.2;
+      ctx.shadowColor = r.color;
+      ctx.shadowBlur = 16;
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    });
+  }
+
+  // --- Nebula Clouds with Space Parallax ---
+  function makeNebulae() {
+    nebulae = [
+      { x: 0.18, y: 0.25, rx: 0.22, ry: 0.14, r1: 139, g1: 92, b1: 246, a1: 0.09, r2: 34, g2: 211, b2: 238, a2: 0.04, pf: 0.12 },
+      { x: 0.78, y: 0.60, rx: 0.26, ry: 0.18, r1: 236, g1: 72, b1: 153, a1: 0.08, r2: 139, g2: 92, b2: 246, a2: 0.04, pf: 0.10 },
+      { x: 0.50, y: 0.82, rx: 0.30, ry: 0.12, r1: 34, g1: 211, b1: 238, a1: 0.07, r2: 139, g2: 92, b2: 246, a2: 0.03, pf: 0.08 },
+      { x: 0.85, y: 0.20, rx: 0.18, ry: 0.12, r1: 139, g1: 92, b1: 246, a1: 0.08, r2: 34, g2: 211, b2: 238, a2: 0.03, pf: 0.14 },
+    ];
+  }
+
+  function drawNebulae() {
+    nebulae.forEach(n => {
+      let cx = n.x * W - (parallaxX * n.pf * W);
+      let cy = n.y * H - (parallaxY * n.pf * 0.5 * H);
+      if (W > 0) cx = ((cx % W) + W) % W;
+      if (H > 0) cy = ((cy % H) + H) % H;
+
+      const rx = n.rx * W, ry = n.ry * H;
+      let boost = 1;
+      if (isMouseOver) {
+        const d = Math.hypot(mouseCX - cx, mouseCY - cy);
+        boost = 1 + Math.max(0, 1 - d / (W * 0.35)) * 1.4;
+      }
+      ctx.save();
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
+      const a1 = Math.min(0.3, n.a1 * boost);
+      grad.addColorStop(0, `rgba(${n.r1},${n.g1},${n.b1},${a1.toFixed(3)})`);
+      grad.addColorStop(0.5, `rgba(${n.r2},${n.g2},${n.b2},${n.a2})`);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+      ctx.scale(1, ry / Math.max(rx, ry));
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy * (Math.max(rx, ry) / ry), rx, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  // --- Planets & Moons with Space Parallax ---
+  function makePlanets() {
+    planets = [
+      {
+        x: 0.82, y: 0.18, r: 38, pf: 0.28,
+        color: '#4a3080', glow: 'rgba(139,92,246,0.55)',
+        ring: true, ringColor: 'rgba(180,140,255,0.4)',
+        moons: [{ dist: 58, r: 6, phase: 0.8, speed: 0.0007, color: '#c8e8ff' }]
+      },
+      {
+        x: 0.10, y: 0.70, r: 22, pf: 0.20,
+        color: '#0e4a6e', glow: 'rgba(34,211,238,0.5)',
+        ring: false, moons: []
+      },
+      {
+        x: 0.65, y: 0.88, r: 14, pf: 0.36,
+        color: '#6e0e3a', glow: 'rgba(236,72,153,0.45)',
+        ring: false,
+        moons: [{ dist: 22, r: 3.5, phase: 2.0, speed: 0.0014, color: '#ffd6e8' }]
+      }
+    ];
+  }
+
+  function drawPlanets(t) {
+    planets.forEach(p => {
+      let px = p.x * W - (parallaxX * p.pf * W);
+      let py = p.y * H - (parallaxY * p.pf * 0.5 * H);
+      if (W > 0) px = ((px % W) + W) % W;
+      if (H > 0) py = ((py % H) + H) % H;
+
+      let hoverBoost = 0;
+      if (isMouseOver) {
+        const d = Math.hypot(mouseCX - px, mouseCY - py);
+        hoverBoost = Math.max(0, 1 - d / (p.r * 5));
+      }
+
+      // Outer Glow
+      const glowR = p.r * (2.4 + hoverBoost * 1.8);
+      const gGrad = ctx.createRadialGradient(px, py, p.r * 0.6, px, py, glowR);
+      gGrad.addColorStop(0, p.glow);
+      gGrad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = gGrad;
+      ctx.beginPath();
+      ctx.arc(px, py, glowR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Planet Sphere Body (CRASH-PROOF integer shading)
+      const bGrad = ctx.createRadialGradient(px - p.r * 0.3, py - p.r * 0.3, 0, px, py, p.r);
+      bGrad.addColorStop(0, shadeColor(p.color, Math.round(60 + hoverBoost * 30)));
+      bGrad.addColorStop(0.6, p.color);
+      bGrad.addColorStop(1, shadeColor(p.color, -40));
+      ctx.fillStyle = bGrad;
+      ctx.beginPath();
+      ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Atmospheric Rim
+      ctx.save();
+      ctx.globalAlpha = 0.35 + hoverBoost * 0.45;
+      ctx.strokeStyle = p.glow;
+      ctx.lineWidth = 2 + hoverBoost * 3;
+      ctx.shadowColor = p.glow;
+      ctx.shadowBlur = 10 + hoverBoost * 22;
+      ctx.beginPath();
+      ctx.arc(px, py, p.r + 1.5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // Rings
+      if (p.ring) {
+        ctx.save();
+        ctx.globalAlpha = 0.6 + hoverBoost * 0.25;
+        ctx.strokeStyle = p.ringColor;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.ellipse(px, py, p.r * 1.85, p.r * 0.42, Math.PI * 0.18, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 0.25;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(px, py, p.r * 2.1, p.r * 0.5, Math.PI * 0.18, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Orbiting Moons
+      p.moons.forEach(m => {
+        const angle = m.phase + t * m.speed;
+        const mx = px + Math.cos(angle) * m.dist;
+        const my = py + Math.sin(angle) * m.dist * 0.42;
+        ctx.fillStyle = m.color;
+        ctx.beginPath();
+        ctx.arc(mx, my, m.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        const mg = ctx.createRadialGradient(mx, my, 0, mx, my, m.r * 3);
+        mg.addColorStop(0, m.color);
+        mg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = mg;
+        ctx.beginPath();
+        ctx.arc(mx, my, m.r * 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+    });
+  }
+
+  // --- Shooting Stars / Meteors ---
+  function spawnShooter() {
+    const side = Math.random() > 0.5;
+    shooters.push({
+      x: side ? -40 : W + 40,
+      y: Math.random() * H * 0.6,
+      vx: side ? (3 + Math.random() * 4) : -(3 + Math.random() * 4),
+      vy: 1.5 + Math.random() * 2.5,
+      len: 80 + Math.random() * 120,
+      alpha: 1,
+      r: Math.random() * 1.2 + 0.6,
+      color: ['#ffffff', '#c8f0ff', '#ffd6e8', '#e0d0ff'][Math.floor(Math.random() * 4)]
+    });
+  }
+
+  function updateShooters() {
+    shooters.forEach(s => {
+      s.x += s.vx;
+      s.y += s.vy;
+      s.alpha -= 0.012;
+    });
+    shooters = shooters.filter(s => s.alpha > 0 && s.x > -200 && s.x < W + 200);
+  }
+
+  function drawShooters() {
+    shooters.forEach(s => {
+      const angle = Math.atan2(s.vy, s.vx);
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, s.alpha));
+      const tail = ctx.createLinearGradient(
+        s.x - Math.cos(angle) * s.len, s.y - Math.sin(angle) * s.len, s.x, s.y
+      );
+      tail.addColorStop(0, 'rgba(255,255,255,0)');
+      tail.addColorStop(1, s.color);
+      ctx.strokeStyle = tail;
+      ctx.lineWidth = s.r;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(s.x - Math.cos(angle) * s.len, s.y - Math.sin(angle) * s.len);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
+      ctx.restore();
+    });
+  }
+
+  // --- AI Grid Warp with Space Motion ---
+  function drawGridWarp(t) {
+    const COLS = 8, ROWS = 5;
+    const cw = W / COLS, ch = H / ROWS;
+    ctx.save();
+    ctx.globalAlpha = 0.04;
+    ctx.strokeStyle = '#7c5cff';
+    ctx.lineWidth = 0.8;
+    const warpStr = 16;
+    for (let c = 0; c <= COLS; c++) {
+      for (let r = 0; r <= ROWS; r++) {
+        const wave = Math.sin(t * 0.0006 + c * 0.5 + r * 0.7) * warpStr;
+        const cx2 = c * cw + wave - (parallaxX * 60);
+        const cy2 = r * ch + Math.cos(t * 0.0005 + r * 0.6) * warpStr * 0.6 - (parallaxY * 30);
+        if (c > 0 && r === 0) {
+          ctx.beginPath(); ctx.moveTo((c - 1) * cw, cy2); ctx.lineTo(cx2, cy2); ctx.stroke();
+        }
+        if (r > 0 && c === 0) {
+          ctx.beginPath(); ctx.moveTo(cx2, (r - 1) * ch); ctx.lineTo(cx2, cy2); ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+  }
+
+  // --- Helper Color Shading (Robust Integer Clamping) ---
+  function shadeColor(hex, amount) {
+    try {
+      const amt = Math.round(Number(amount) || 0);
+      let r = parseInt(hex.slice(1, 3), 16) || 0;
+      let g = parseInt(hex.slice(3, 5), 16) || 0;
+      let b = parseInt(hex.slice(5, 7), 16) || 0;
+      r = Math.min(255, Math.max(0, Math.round(r + amt)));
+      g = Math.min(255, Math.max(0, Math.round(g + amt)));
+      b = Math.min(255, Math.max(0, Math.round(b + amt)));
+      return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    } catch (e) {
+      return hex;
+    }
+  }
+
+  // --- Scene Builder ---
+  function buildScene() {
+    makeStars();
+    makeNebulae();
+    makePlanets();
+    makeAsteroids();
+  }
+
+  let rafId;
+
+  // --- Main Animation Render Loop (Crash-Proof) ---
+  function render(t) {
+    try {
+      // Parallax damping with realistic space inertia
+      parallaxX += (targetNX - parallaxX) * 0.06;
+      parallaxY += (targetNY - parallaxY) * 0.06;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Deep Cosmic Background Gradient
+      const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
+      bg.addColorStop(0,   '#020510');
+      bg.addColorStop(0.5, '#050818');
+      bg.addColorStop(1,   '#030614');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // 1. Futuristic Grid Warp & Deep Nebulae (responsive to left-right hover)
+      drawGridWarp(t);
+      drawNebulae();
+
+      // 2. Asteroids Belt (foreground 3D space movement)
+      updateAsteroids();
+      drawAsteroids();
+
+      // 3. Stars (direct hover test only) & Dynamic Space Parallax Wrap
+      updateStarHover(t);
+      drawStars(t);
+      drawConstellation(t);
+
+      // 4. Planets & Moons (moving across the cosmic horizon)
+      drawPlanets(t);
+
+      // 5. Shooting Stars
+      shooterTimer += 16;
+      if (shooterTimer > 2600 + Math.random() * 1800 && shooters.length < MAX_SHOOTERS) {
+        spawnShooter();
+        shooterTimer = 0;
+      }
+      updateShooters();
+      drawShooters();
+
+      // 6. Interactive Black Hole / Singularity (hold/drag)
+      updateBlackHole();
+      drawBlackHole(t);
+
+      // 7. Cosmic Stardust Particles
+      updateDust();
+      drawDust();
+
+      // 8. Surface FX: Shockwave ripples & Comet Cursor Trail
+      updateRipples();
+      drawRipples();
+      drawCursorTrail();
+
+      // 9. Sync CSS background ambient orbs with left/right space motion
+      const orbs = document.querySelectorAll('.orb');
+      if (orbs.length > 0) {
+        orbs.forEach((orb, i) => {
+          const mult = (i + 1) * -35;
+          orb.style.transform = `translate(${parallaxX * mult}px, ${parallaxY * mult * 0.5}px)`;
+        });
+      }
+    } catch (renderError) {
+      // Even if any unexpected edge-case occurs, log and never terminate the loop!
+      console.warn('Hero space canvas frame warning:', renderError);
+    }
+
+    rafId = requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  rafId = requestAnimationFrame(render);
+
+  // Pause when hero is scrolled off-screen to conserve CPU/battery
+  if (heroEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          if (!rafId) rafId = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      });
+    }, { threshold: 0.01 }).observe(heroEl);
+  }
+})();
 /* ==================== VIBEBOT MASCOT CONTROLLER ==================== */
+
 (function initVibeBot() {
   'use strict';
 
@@ -840,7 +1913,7 @@
 
     // Throw Cute Heart Emojis Within Little Range on Click
     function spawnClickHearts() {
-      const hearts = ['💖', '💕', '❤️', '✨'];
+      const hearts = ['ðŸ’–', 'ðŸ’•', 'â¤ï¸', 'âœ¨'];
       const count = 3;
       for (let i = 0; i < count; i++) {
         setTimeout(() => {
@@ -886,10 +1959,10 @@
     function triggerDance() {
       closeMenu();
       actorGroup.classList.add('vb-dancing');
-      showMessage("Let's party! ✨", 3000);
+      showMessage("Let's party! âœ¨", 3000);
 
       const heartInterval = setInterval(() => {
-        spawnParticle('💖', '#ff6bd6');
+        spawnParticle('ðŸ’–', '#ff6bd6');
       }, 280);
 
       setTimeout(() => {
@@ -902,7 +1975,7 @@
       actorGroup.classList.remove('vb-flip');
       void actorGroup.offsetWidth;
       actorGroup.classList.add('vb-flip');
-      showMessage("Wheee! 360° flip!", 2000);
+      showMessage("Wheee! 360Â° flip!", 2000);
 
       setTimeout(() => {
         actorGroup.classList.remove('vb-flip');
@@ -914,7 +1987,7 @@
       if (isAsleep) {
         isAsleep = false;
         setMood('happy');
-        showMessage("Oh! You're back! ⚡", 3000);
+        showMessage("Oh! You're back! âš¡", 3000);
       }
     }
 
@@ -1035,7 +2108,7 @@
             isDragging = true;
             // Mouth looks like saying "Ohhh" :O while moving!
             setMood('wow');
-            showMessage("Ohhh! 😮", 0);
+            showMessage("Ohhh! ðŸ˜®", 0);
           }
           botX = e.clientX - dragOffset.x;
           botY = e.clientY - dragOffset.y;
@@ -1059,7 +2132,7 @@
       if (hasDragged) {
         isDragging = false;
         isCustomPlaced = true;
-        showMessage("Wheee! 🚀", 2000);
+        showMessage("Wheee! ðŸš€", 2000);
         setTimeout(() => {
           if (!isAsleep && currentMood === 'wow') {
             setMood('happy');
@@ -1142,7 +2215,7 @@
         e.stopPropagation();
         closeMenu();
         const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
-        showMessage(`💡 ${randomTip}`, 4200);
+        showMessage(`ðŸ’¡ ${randomTip}`, 4200);
         triggerSurprise();
       });
     }
@@ -1190,8 +2263,8 @@
         const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
         const name = nameEl ? nameEl.textContent.trim() : 'our team';
         setMood('love');
-        showMessage(`Say hi to ${name}! 💖`, 2600);
-        spawnParticle('💖', '#ff6bd6');
+        showMessage(`Say hi to ${name}! ðŸ’–`, 2600);
+        spawnParticle('ðŸ’–', '#ff6bd6');
       });
 
       card.addEventListener('mouseleave', () => {

@@ -485,20 +485,19 @@ body.cursor-click .cursor-ring {
   text-align: center;
   overflow: hidden;
 }
-.hero-bg-img {
+.hero-space-canvas {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center;
-  z-index: 0;
-  opacity: 0.25;
-  filter: blur(1px) brightness(0.9) contrast(1.05);
+  z-index: 1;
+  pointer-events: auto;
+  cursor: crosshair;
 }
 .hero-bg-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
   background: 
     radial-gradient(ellipse 85% 65% at 50% 45%, rgba(139,92,246,0.14) 0%, transparent 65%),
     linear-gradient(to bottom, rgba(5,8,17,0.18) 0%, rgba(5,8,17,0.45) 55%, var(--clr-bg) 100%);
@@ -506,7 +505,8 @@ body.cursor-click .cursor-ring {
 .hero-grid {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
   background-image:
     linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px);
@@ -519,7 +519,8 @@ body.cursor-click .cursor-ring {
   position: absolute;
   border-radius: 50%;
   filter: blur(60px);
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
   animation: orbFloat 8s ease-in-out infinite;
 }
 .orb-1 { width: 500px; height: 500px; background: rgba(139,92,246,0.15); top: -100px; left: -100px; }
@@ -537,6 +538,14 @@ body.cursor-click .cursor-ring {
   max-width: 900px;
   padding: 0 24px;
   margin-top: 80px;
+  pointer-events: none;
+}
+.hero-content a,
+.hero-content button,
+.hero-content .college-badge,
+.hero-content .meta-chip,
+.hero-content .countdown-wrap {
+  pointer-events: auto;
 }
 .college-badge {
   display: inline-flex;
