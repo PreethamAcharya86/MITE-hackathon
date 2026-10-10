@@ -574,6 +574,44 @@
     update();
   }
 
+  /* ─── TIMELINE SCROLL PROGRESS FILL ─────────────────────── */
+  function initTimelineProgressFill() {
+    const fill = document.getElementById('tl-progress-fill');
+    const timelineSection = document.getElementById('timeline');
+    const timelineInner = timelineSection
+      ? timelineSection.querySelector('.timeline')
+      : null;
+
+    if (!fill || !timelineSection || !timelineInner) return;
+
+    function updateFill() {
+      const sectionRect  = timelineInner.getBoundingClientRect();
+      const totalHeight  = timelineInner.offsetHeight;
+
+      // Viewport midpoint that acts as the "reading line"
+      const viewMid = window.innerHeight * 0.55;
+
+      // How far the reading line has traveled INTO the timeline
+      // 0 = reading line is at the very top of the timeline
+      // totalHeight = reading line is at the very bottom
+      const progress = viewMid - sectionRect.top;
+      const pct = Math.min(100, Math.max(0, (progress / totalHeight) * 100));
+
+      fill.style.height = pct + '%';
+
+      // Hide the pulsing tip dot when nothing has filled yet
+      if (pct < 1) {
+        fill.classList.add('tl-fill-hidden');
+      } else {
+        fill.classList.remove('tl-fill-hidden');
+      }
+    }
+
+    window.addEventListener('scroll', updateFill, { passive: true });
+    window.addEventListener('resize', updateFill, { passive: true });
+    updateFill(); // Run once on load
+  }
+
   /* ─── INIT ALL ─────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
@@ -586,6 +624,7 @@
     initRipple();
     initTypingEffect();
     initCoordinatorCarousel();
+    initTimelineProgressFill();
   });
 
 })();

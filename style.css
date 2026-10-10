@@ -881,6 +881,73 @@ body.cursor-click .cursor-ring {
   z-index: 1;
 }
 
+/* Scroll-driven glow progress fill — overlays the static line */
+.tl-progress-fill {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 15px;
+  width: 3px;
+  height: 0%;               /* Driven by JS */
+  background: linear-gradient(
+    to bottom,
+    #0a2540,
+    #0057b8 20%,
+    #00aaff 50%,
+    #00d4ff 75%,
+    #22d3ee
+  );
+  border-radius: 3px;
+  z-index: 2;               /* Above the faint static line */
+  pointer-events: none;
+  box-shadow:
+    0 0 6px 1px rgba(0, 180, 255, 0.55),
+    0 0 14px 3px rgba(0, 140, 255, 0.35),
+    0 0 30px 6px rgba(0, 90, 200, 0.2);
+  transition: height 0.08s linear;
+  will-change: height;
+}
+
+/* Animated glowing tip at the bottom of the fill line */
+.tl-progress-fill::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d4ff;
+  box-shadow:
+    0 0 8px 3px rgba(0, 212, 255, 0.9),
+    0 0 18px 6px rgba(0, 150, 255, 0.6),
+    0 0 32px 10px rgba(0, 90, 200, 0.35);
+  animation: tl-tip-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes tl-tip-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow:
+      0 0 8px 3px rgba(0, 212, 255, 0.9),
+      0 0 18px 6px rgba(0, 150, 255, 0.6),
+      0 0 32px 10px rgba(0, 90, 200, 0.35);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.45);
+    box-shadow:
+      0 0 14px 5px rgba(0, 212, 255, 1),
+      0 0 28px 10px rgba(0, 150, 255, 0.7),
+      0 0 48px 16px rgba(0, 90, 200, 0.45);
+  }
+}
+
+/* Hide tip dot when line is at 0% */
+.tl-progress-fill.tl-fill-hidden::after {
+  display: none;
+}
+
 /* Individual timeline item container */
 .timeline-item {
   position: relative;
@@ -2312,6 +2379,10 @@ body.cursor-click .cursor-ring {
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
   .footer-brand { grid-column: 1 / -1; }
   .timeline::before {
+    left: 24px;
+    transform: none;
+  }
+  .tl-progress-fill {
     left: 24px;
     transform: none;
   }
