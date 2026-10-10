@@ -37,21 +37,14 @@
     });
 
     function animateCursor() {
-      // Dot: instant (no lerp â€” crisp exact tracking)
-      cursorDot.style.left = mx + 'px';
-      cursorDot.style.top  = my + 'px';
+      // Both pointer dot and circle ring are perfectly aligned and centered at (mx, my)
+      cursorDot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+      cursorRing.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
 
-      // Ring: responsive and snappy tracking (speed factor 0.42)
-      rx += (mx - rx) * 0.42;
-      ry += (my - ry) * 0.42;
-      cursorRing.style.left = rx + 'px';
-      cursorRing.style.top  = ry + 'px';
-
-      // Glow: smooth fast ambient tracking (speed factor 0.22)
-      gx += (mx - gx) * 0.22;
-      gy += (my - gy) * 0.22;
-      cursorGlow.style.left = gx + 'px';
-      cursorGlow.style.top  = gy + 'px';
+      // Ambient glow
+      gx += (mx - gx) * 0.25;
+      gy += (my - gy) * 0.25;
+      cursorGlow.style.transform = `translate3d(${gx}px, ${gy}px, 0) translate(-50%, -50%)`;
 
       requestAnimationFrame(animateCursor);
     }
@@ -705,7 +698,7 @@
   const heroEl = document.getElementById('hero') || canvas;
 
   canvas.style.pointerEvents = 'auto';
-  canvas.style.cursor = 'crosshair';
+  canvas.style.cursor = 'none';
 
   let W = 0, H = 0;
   // Normalized parallax target (-0.5 to +0.5)
