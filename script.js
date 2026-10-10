@@ -827,7 +827,7 @@
   // --- Stars Setup with 3 Depth Tiers for Dynamic Space Parallax ---
   function makeStars() {
     stars = [];
-    const count = isMobile() ? 75 : 360;
+    const count = isMobile() ? 105 : 360;
     for (let i = 0; i < count; i++) {
       const tier = Math.random();
       let baseR, depth;
@@ -920,16 +920,25 @@
     const isMob = isMobile();
     stars.forEach(s => {
       const { px, py } = getStarCoords(s, t);
-      // On mobile screen: keep stars low glow (subtle, non-distracting) so hero text has maximum readability
-      const twinkle = isMob ? 0.22 : (0.55 + 0.45 * Math.sin(s.phase + t * s.speed));
-      const alpha = isMob ? (s.baseR > 0.6 ? 0.30 : 0.18) : Math.min(1, twinkle + s.hovered * 0.5);
-      const drawR = isMob ? Math.max(0.4, s.baseR * 0.65) : s.baseR * (1 + s.hovered * 1.5);
+      // On mobile screen: radiant glowing stars with colorful cosmic presence
+      const twinkle = isMob ? (0.42 + 0.36 * Math.sin(s.phase + (t || 0) * s.speed)) : (0.55 + 0.45 * Math.sin(s.phase + t * s.speed));
+      const alpha = isMob ? (s.baseR > 0.6 ? 0.65 : 0.46) : Math.min(1, twinkle + s.hovered * 0.5);
+      const drawR = isMob ? Math.max(0.65, s.baseR * 0.95) : s.baseR * (1 + s.hovered * 1.5);
 
       ctx.save();
       ctx.globalAlpha = alpha;
 
-      // Base glow for larger stars in background (Desktop only - skip halo on mobile to avoid text haze)
-      if (!isMob && s.baseR > 1.0) {
+      // Soft colorful glow for stars on mobile, and desktop stars
+      if (isMob && s.baseR > 0.55) {
+        const glowR = drawR * 2.6;
+        const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
+        grad.addColorStop(0, s.color + '88');
+        grad.addColorStop(1, s.color + '00');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(px, py, glowR, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (!isMob && s.baseR > 1.0) {
         const glowR = drawR * 3;
         const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
         grad.addColorStop(0, s.color + 'aa');
@@ -1223,8 +1232,8 @@
       }
       ctx.save();
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
-      const a1 = isMob ? (n.a1 * 0.35) : Math.min(0.3, n.a1 * boost);
-      const a2 = isMob ? (n.a2 * 0.35) : n.a2;
+      const a1 = isMob ? (n.a1 * 0.75) : Math.min(0.3, n.a1 * boost);
+      const a2 = isMob ? (n.a2 * 0.70) : n.a2;
       grad.addColorStop(0, `rgba(${n.r1},${n.g1},${n.b1},${a1.toFixed(3)})`);
       grad.addColorStop(0.5, `rgba(${n.r2},${n.g2},${n.b2},${a2.toFixed(3)})`);
       grad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -1780,10 +1789,10 @@
     function triggerDance() {
       closeMenu();
       actorGroup.classList.add('vb-dancing');
-      showMessage("Let's party! âœ¨", 3000);
+      showMessage("Let's party! ✨", 3000);
 
       const heartInterval = setInterval(() => {
-        spawnParticle('ðŸ’–', '#ff6bd6');
+        spawnParticle('💖', '#ff6bd6');
       }, 280);
 
       setTimeout(() => {
@@ -1796,7 +1805,7 @@
       actorGroup.classList.remove('vb-flip');
       void actorGroup.offsetWidth;
       actorGroup.classList.add('vb-flip');
-      showMessage("Wheee! 360Â° flip!", 2000);
+      showMessage("Wheee! 360° flip!", 2000);
 
       setTimeout(() => {
         actorGroup.classList.remove('vb-flip');
@@ -1808,7 +1817,7 @@
       if (isAsleep) {
         isAsleep = false;
         setMood('happy');
-        showMessage("Oh! You're back! âš¡", 3000);
+        showMessage("Oh! You're back! ⚡", 3000);
       }
     }
 
@@ -1929,7 +1938,7 @@
             isDragging = true;
             // Mouth looks like saying "Ohhh" :O while moving!
             setMood('wow');
-            showMessage("Ohhh! ðŸ˜®", 0);
+            showMessage("Ohhh! 😮", 0);
           }
           botX = e.clientX - dragOffset.x;
           botY = e.clientY - dragOffset.y;
@@ -1953,7 +1962,7 @@
       if (hasDragged) {
         isDragging = false;
         isCustomPlaced = true;
-        showMessage("Wheee! ðŸš€", 2000);
+        showMessage("Wheee! 🚀", 2000);
         setTimeout(() => {
           if (!isAsleep && currentMood === 'wow') {
             setMood('happy');
@@ -2036,7 +2045,7 @@
         e.stopPropagation();
         closeMenu();
         const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
-        showMessage(`ðŸ’¡ ${randomTip}`, 4200);
+        showMessage(`💡 ${randomTip}`, 4200);
         triggerSurprise();
       });
     }
@@ -2077,15 +2086,15 @@
       });
     });
 
-    const teamCards = document.querySelectorAll('.contributor-card, .coordinator-card, .leadership-card');
+    const teamCards = document.querySelectorAll('.leadership-card, .contributor-card:not(.coordinator-card)');
     teamCards.forEach(card => {
       card.addEventListener('mouseenter', () => {
         if (isAsleep) return;
         const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
         const name = nameEl ? nameEl.textContent.trim() : 'our team';
         setMood('love');
-        showMessage(`Say hi to ${name}! ðŸ’–`, 2600);
-        spawnParticle('ðŸ’–', '#ff6bd6');
+        showMessage(`Say hi to ${name}! 💖`, 2600);
+        spawnParticle('💖', '#ff6bd6');
       });
 
       card.addEventListener('mouseleave', () => {

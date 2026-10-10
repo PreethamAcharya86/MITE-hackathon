@@ -79,43 +79,49 @@ svg { display: block; }
 /* ─── CUSTOM CURSOR ──────────────────────────────────────── */
 .cursor-glow {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 400px;
   height: 400px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
   pointer-events: none;
-  transform: translate(-50%, -50%);
   z-index: 1;
   transition: opacity 0.3s;
+  will-change: transform;
 }
 
 /* Sharp inner dot — sits exactly on the pointer */
 .cursor-dot {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #fff;
   pointer-events: none;
-  transform: translate(-50%, -50%);
   z-index: 10001;
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+  transition: width 0.18s ease, height 0.18s ease, background 0.18s ease, opacity 0.18s ease;
   box-shadow: 0 0 6px rgba(139,92,246,0.9), 0 0 12px rgba(139,92,246,0.5);
   mix-blend-mode: difference;
+  will-change: transform;
 }
 
-/* Lagging outer ring */
+/* Outer ring — instantaneous tracking */
 .cursor-ring {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   border: 1.5px solid rgba(139,92,246,0.75);
   pointer-events: none;
-  transform: translate(-50%, -50%);
   z-index: 10000;
-  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+  transition: width 0.18s ease, height 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
   box-shadow: 0 0 10px rgba(139,92,246,0.25);
+  will-change: transform;
 }
 
 /* States: hovering a link / button */
@@ -1998,7 +2004,7 @@ body.cursor-click .cursor-ring {
   transform: translate(calc(-50% - 215px), -50%) translateZ(0px) rotateY(20deg) rotateZ(-4deg) scale(0.88);
   opacity: 0.78;
   z-index: 6;
-  filter: brightness(0.85) blur(0.4px);
+  filter: brightness(0.88);
   cursor: pointer;
 }
 
@@ -2014,7 +2020,7 @@ body.cursor-click .cursor-ring {
   transform: translate(calc(-50% + 215px), -50%) translateZ(0px) rotateY(-20deg) rotateZ(4deg) scale(0.88);
   opacity: 0.78;
   z-index: 6;
-  filter: brightness(0.85) blur(0.4px);
+  filter: brightness(0.88);
   cursor: pointer;
 }
 
@@ -2030,13 +2036,13 @@ body.cursor-click .cursor-ring {
   transform: translate(calc(-50% - 380px), -50%) translateZ(-90px) rotateY(30deg) rotateZ(-7deg) scale(0.74);
   opacity: 0.36;
   z-index: 3;
-  filter: brightness(0.65) blur(1.5px);
+  filter: brightness(0.7);
   cursor: pointer;
 }
 
 .coordinator-card.card-stack-far-prev:hover {
   opacity: 0.65;
-  filter: brightness(0.88);
+  filter: brightness(0.9);
   border-color: rgba(34, 211, 238, 0.4);
 }
 
@@ -2045,13 +2051,13 @@ body.cursor-click .cursor-ring {
   transform: translate(calc(-50% + 380px), -50%) translateZ(-90px) rotateY(-30deg) rotateZ(7deg) scale(0.74);
   opacity: 0.36;
   z-index: 3;
-  filter: brightness(0.65) blur(1.5px);
+  filter: brightness(0.7);
   cursor: pointer;
 }
 
 .coordinator-card.card-stack-far-next:hover {
   opacity: 0.65;
-  filter: brightness(0.88);
+  filter: brightness(0.9);
   border-color: rgba(34, 211, 238, 0.4);
 }
 
@@ -2596,17 +2602,17 @@ body.cursor-click .cursor-ring {
     min-height: auto;
     padding: 120px 0 60px;
   }
-  /* Low glow background overlay for mobile so hero texts are crisp and readable */
+  /* Glowing, radiant space background overlay for mobile */
   .hero-bg-overlay {
     background: 
-      radial-gradient(ellipse 95% 75% at 50% 40%, rgba(5, 8, 17, 0.78) 0%, rgba(5, 8, 17, 0.92) 65%, var(--clr-bg) 100%),
-      linear-gradient(to bottom, rgba(5, 8, 17, 0.82) 0%, rgba(5, 8, 17, 0.92) 50%, var(--clr-bg) 100%) !important;
+      radial-gradient(ellipse 90% 70% at 50% 40%, rgba(5, 8, 17, 0.45) 0%, rgba(5, 8, 17, 0.72) 65%, var(--clr-bg) 100%),
+      linear-gradient(to bottom, rgba(5, 8, 17, 0.45) 0%, rgba(5, 8, 17, 0.65) 50%, var(--clr-bg) 100%) !important;
   }
   .hero-grid {
-    opacity: 0.3;
+    opacity: 0.5;
   }
   .orb {
-    opacity: 0.2;
+    opacity: 0.4;
   }
   .hero-content {
     margin-top: 0;
@@ -2756,18 +2762,13 @@ body.cursor-click .cursor-ring {
     box-sizing: border-box;
   }
 
-  /* Coordinator 3D Stack Carousel on Mobile */
+  /* Coordinator 3D Stack on Mobile: hide left and right navigation buttons */
   .carousel-btn {
-    display: flex !important;
-    width: 40px;
-    height: 40px;
-    z-index: 25;
+    display: none !important;
   }
-  .carousel-btn-prev {
-    margin-right: 6px !important;
-  }
+  .carousel-btn-prev,
   .carousel-btn-next {
-    margin-left: 6px !important;
+    display: none !important;
   }
   /* Show dots nav on mobile */
   .carousel-dots-nav {
