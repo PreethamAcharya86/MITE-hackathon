@@ -51,6 +51,7 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
+    <span id="top" style="position:absolute;top:0;left:0;pointer-events:none;"></span>
     <div class="hero-bg-overlay"></div>
     <img src="assets/hero_bg.jpg" alt="AI Neural Network Background" class="hero-bg-img" />
 
@@ -111,11 +112,6 @@
           <span></span><span></span><span></span>
         </div>
       </div>
-    </div>
-
-    <div class="hero-scroll-hint">
-      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-      <span>Scroll to explore</span>
     </div>
   </section>
 
@@ -728,6 +724,130 @@
       </div>
     </div>
   </footer>
+
+  <!-- ==================== VIBEBOT MASCOT COMPONENT ==================== -->
+  <div id="vibebot-container" class="vibebot-root" data-mood="happy" aria-label="VibeBot Interactive Assistant">
+    <!-- Action Menu -->
+    <nav id="vibebot-menu" class="vibebot-menu" aria-hidden="true" role="menu">
+      <button type="button" class="vibebot-btn" id="vb-btn-next" role="menuitem">Next section</button>
+      <button type="button" class="vibebot-btn" id="vb-btn-register" role="menuitem">Register</button>
+      <button type="button" class="vibebot-btn" id="vb-btn-tip" role="menuitem">Tip</button>
+      <button type="button" class="vibebot-btn" id="vb-btn-dance" role="menuitem">Dance</button>
+    </nav>
+
+    <!-- Speech Bubble -->
+    <div id="vibebot-bubble" class="vibebot-bubble" role="status" aria-live="polite">
+      <span id="vibebot-message">Hey hacker! Let's vibe!</span>
+      <div class="vibebot-bubble-arrow"></div>
+    </div>
+
+    <!-- Floating Particles Canvas/Container (Hearts & Zzz) -->
+    <div id="vibebot-particles" class="vibebot-particles" aria-hidden="true"></div>
+
+    <!-- Soft Ground Shadow -->
+    <div class="vibebot-ground-shadow"></div>
+
+    <!-- VibeBot Inline SVG (viewBox 0 0 140 190) -->
+    <svg id="vibebot-svg" class="vibebot-svg" viewBox="0 0 140 190" width="140" height="190" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Head & Body Shell Gradient (#b9a8ff to #5b8cff) -->
+        <linearGradient id="vb-grad-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#b9a8ff" />
+          <stop offset="100%" stop-color="#5b8cff" />
+        </linearGradient>
+
+        <!-- Jet Thruster Flame Gradient (Yellow to Orange to Pink) -->
+        <linearGradient id="vb-grad-flame" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#fff275" />
+          <stop offset="40%" stop-color="#ff7b39" />
+          <stop offset="100%" stop-color="#ff6bd6" />
+        </linearGradient>
+
+        <!-- Cyan Neon Glow Filter -->
+        <filter id="vb-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        <!-- Purple Mascot Drop-Shadow Glow -->
+        <filter id="vb-robot-glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#7c5cff" flood-opacity="0.5" />
+        </filter>
+      </defs>
+
+      <!-- Master Robot Animation Wrapper (Tilts, Dances, and Flips) -->
+      <g id="vb-actor-group" filter="url(#vb-robot-glow)">
+        <!-- 1. Jet Flame Thruster (Under body) -->
+        <g id="vb-flame-group" class="vb-flame">
+          <path d="M 58 144 Q 70 182 70 186 Q 70 182 82 144 Z" fill="url(#vb-grad-flame)" filter="url(#vb-glow-cyan)" />
+          <path d="M 64 144 Q 70 170 70 173 Q 70 170 76 144 Z" fill="#ffffff" opacity="0.9" />
+        </g>
+
+        <!-- 2. Gentle Waving Arms -->
+        <path id="vb-arm-left" class="vb-arm vb-arm-left" d="M 37 106 Q 16 112 18 126 Q 26 136 34 115" fill="#7c5cff" stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
+        <path id="vb-arm-right" class="vb-arm vb-arm-right" d="M 103 106 Q 124 112 122 126 Q 114 136 106 115" fill="#7c5cff" stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
+
+        <!-- 3. Antenna with Blinking Pink Bulb -->
+        <line x1="70" y1="20" x2="70" y2="5" stroke="#7c5cff" stroke-width="3" stroke-linecap="round" />
+        <circle id="vb-antenna-bulb" class="vb-antenna-bulb" cx="70" cy="5" r="5" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+
+        <!-- 4. Side Ear-Pieces -->
+        <rect x="20" y="44" width="7" height="18" rx="3.5" fill="#5b8cff" />
+        <rect x="113" y="44" width="7" height="18" rx="3.5" fill="#5b8cff" />
+
+        <!-- 5. Rounded Body -->
+        <rect x="36" y="90" width="68" height="56" rx="20" fill="url(#vb-grad-metal)" />
+        <circle cx="70" cy="116" r="14" fill="#0b0c1a" />
+        <circle id="vb-core-indicator" class="vb-core-pulse" cx="70" cy="116" r="7" fill="#00e5ff" filter="url(#vb-glow-cyan)" />
+
+        <!-- 6. Rounded Square Head (rx 28) -->
+        <rect x="26" y="16" width="88" height="74" rx="28" fill="url(#vb-grad-metal)" />
+        <path d="M 44 23 C 58 19, 82 19, 96 23 C 98 27, 42 27, 44 23 Z" fill="#ffffff" opacity="0.6" />
+
+        <!-- 7. Dark Visor (#0b0c1a) -->
+        <rect x="34" y="32" width="72" height="46" rx="16" fill="#0b0c1a" />
+
+        <!-- Pink Blush Circles on Cheeks -->
+        <ellipse cx="45" cy="63" rx="4.5" ry="3" fill="#ff6bd6" opacity="0.65" />
+        <ellipse cx="95" cy="63" rx="4.5" ry="3" fill="#ff6bd6" opacity="0.65" />
+
+        <!-- 8. Eye Expressions -->
+        <!-- A. Open Eyes (Default Happy & Wow Moods) -->
+        <g id="vb-eyes-open" class="vb-expression-layer">
+          <circle id="vb-eye-left" cx="53" cy="48" r="8.5" fill="#00e5ff" filter="url(#vb-glow-cyan)" />
+          <circle id="vb-eye-right" cx="87" cy="48" r="8.5" fill="#00e5ff" filter="url(#vb-glow-cyan)" />
+          <circle id="vb-pupil-left" cx="53" cy="48" r="4" fill="#0b0c1a" />
+          <circle id="vb-pupil-right" cx="87" cy="48" r="4" fill="#0b0c1a" />
+        </g>
+
+        <!-- B. Sleeping Eyes (Closed Curved Lines) -->
+        <g id="vb-eyes-sleep" class="vb-expression-layer">
+          <path d="M 46 51 Q 53 57 60 51" fill="none" stroke="#00e5ff" stroke-width="2.8" stroke-linecap="round" />
+          <path d="M 80 51 Q 87 57 94 51" fill="none" stroke="#00e5ff" stroke-width="2.8" stroke-linecap="round" />
+        </g>
+
+        <!-- C. Love Mood Eyes (Glowing Heart Glyphs) -->
+        <g id="vb-eyes-love" class="vb-expression-layer">
+          <path d="M 53 47 C 53 43, 46 41, 46 47 C 46 53, 53 56, 53 56 C 53 56, 60 53, 60 47 C 60 41, 53 43, 53 47 Z" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+          <path d="M 87 47 C 87 43, 80 41, 80 47 C 80 53, 87 56, 87 56 C 87 56, 94 53, 94 47 C 94 41, 87 43, 87 47 Z" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+        </g>
+
+        <!-- D. Blink Eyelids Overlay -->
+        <g id="vb-eyelids" class="vb-eyelids-mask">
+          <rect x="42" y="38" width="22" height="20" fill="#0b0c1a" />
+          <rect x="76" y="38" width="22" height="20" fill="#0b0c1a" />
+        </g>
+
+        <!-- 9. Mouth Expressions -->
+        <path id="vb-mouth-happy" class="vb-mouth-layer" d="M 64 64 Q 70 70 76 64" fill="none" stroke="#00e5ff" stroke-width="2.4" stroke-linecap="round" />
+        <circle id="vb-mouth-wow" class="vb-mouth-layer" cx="70" cy="65" r="4.5" fill="#00e5ff" />
+        <line id="vb-mouth-sleep" class="vb-mouth-layer" x1="66" y1="65" x2="74" y2="65" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" />
+      </g>
+    </svg>
+  </div>
 
   <script src="script.js"></script>
 </body>

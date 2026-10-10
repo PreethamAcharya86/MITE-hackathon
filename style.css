@@ -139,18 +139,18 @@ body.cursor-click .cursor-ring {
   border-color: var(--clr-cyan);
 }
 
-/* ─── SCROLL PROGRESS BAR ────────────────────────────────── */
+/* ─── SCROLL PROGRESS BAR (DARK BLUE) ─────────────────────── */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
+  height: 3.5px;
   width: 0%;
-  background: linear-gradient(90deg, var(--clr-cyan), var(--clr-purple), var(--clr-pink), var(--clr-cyan));
+  background: linear-gradient(90deg, #0a192f, #1e3a8a, #1d4ed8, #2563eb, #1e40af, #0a192f);
   background-size: 300% 100%;
   z-index: 9999;
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.8), 0 0 24px rgba(139, 92, 246, 0.6);
-  animation: scrollGradShimmer 4s linear infinite;
+  box-shadow: 0 0 12px rgba(29, 78, 216, 0.85), 0 0 24px rgba(30, 58, 138, 0.65);
+  animation: scrollGradShimmer 3.5s linear infinite;
   pointer-events: none;
   transition: width 0.08s ease-out;
 }
@@ -2503,4 +2503,320 @@ body.cursor-click .cursor-ring {
   .contributor-card { padding: 32px 18px 28px; }
   .role-line-divider { flex-wrap: wrap; gap: 8px; }
   .role-line-divider::before, .role-line-divider::after { display: none; }
+}
+
+/* ==================== VIBEBOT MASCOT CORE STYLES ==================== */
+
+/* Root Fixed Container */
+.vibebot-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 140px;
+  height: 190px;
+  z-index: 999999;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.vibebot-root:active {
+  cursor: grabbing;
+}
+
+.vibebot-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Soft Ground Shadow */
+.vibebot-ground-shadow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 86px;
+  height: 14px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(124, 92, 255, 0.45) 0%, rgba(11, 12, 26, 0) 75%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: vb-shadow-drift 2.2s ease-in-out infinite;
+}
+
+@keyframes vb-shadow-drift {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+  50% { transform: translateX(-50%) scale(0.8); opacity: 0.45; }
+}
+
+/* Gentle Continuous Arm Wave */
+.vb-arm-left {
+  transform-origin: 36px 108px;
+  animation: vb-wave-l 3.2s ease-in-out infinite alternate;
+}
+
+.vb-arm-right {
+  transform-origin: 104px 108px;
+  animation: vb-wave-r 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes vb-wave-l {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-16deg); }
+}
+
+@keyframes vb-wave-r {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(16deg); }
+}
+
+/* Blinking Antenna Bulb */
+.vb-antenna-bulb {
+  animation: vb-antenna-blink 1.8s ease-in-out infinite;
+}
+
+@keyframes vb-antenna-blink {
+  0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 2px #ff6bd6); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px #ff6bd6); }
+}
+
+/* Blinking Cyan Core */
+.vb-core-pulse {
+  animation: vb-core-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes vb-core-pulse {
+  0% { opacity: 0.45; filter: drop-shadow(0 0 2px #00e5ff); }
+  100% { opacity: 1; filter: drop-shadow(0 0 8px #00e5ff); }
+}
+
+/* Flickering Jet Flame */
+.vb-flame {
+  transform-origin: 70px 146px;
+  animation: vb-flame-flicker 0.16s ease-in-out infinite alternate;
+}
+
+@keyframes vb-flame-flicker {
+  0% { transform: scaleY(0.9) scaleX(0.96); opacity: 0.85; }
+  100% { transform: scaleY(1.18) scaleX(1.05); opacity: 1; }
+}
+
+/* Blinking Eyelids */
+.vb-eyelids-mask {
+  transform-origin: center 38px;
+  transform: scaleY(0);
+  transition: transform 0.08s ease-out;
+}
+
+.vibebot-root.is-blinking .vb-eyelids-mask {
+  transform: scaleY(1);
+}
+
+/* Dance Wiggle Animation */
+.vb-dancing {
+  animation: vb-dance-wiggle 0.35s ease-in-out infinite alternate !important;
+}
+
+@keyframes vb-dance-wiggle {
+  0% { transform: rotate(-12deg) translateY(-6px); }
+  100% { transform: rotate(12deg) translateY(2px); }
+}
+
+/* 360° In-Place Rotation on Double-Tap / Double-Click */
+.vb-flip {
+  transform-origin: 70px 95px;
+  animation: vb-spin-360 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes vb-spin-360 {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mood System Visibility */
+.vb-expression-layer, .vb-mouth-layer {
+  display: none;
+}
+
+/* Happy Mood */
+.vibebot-root[data-mood="happy"] #vb-eyes-open,
+.vibebot-root[data-mood="happy"] #vb-mouth-happy {
+  display: block;
+}
+
+/* Wow Mood */
+.vibebot-root[data-mood="wow"] #vb-eyes-open,
+.vibebot-root[data-mood="wow"] #vb-mouth-wow {
+  display: block;
+}
+
+/* Love Mood */
+.vibebot-root[data-mood="love"] #vb-eyes-love,
+.vibebot-root[data-mood="love"] #vb-mouth-happy {
+  display: block;
+}
+
+/* Sleep Mood */
+.vibebot-root[data-mood="sleep"] #vb-eyes-sleep,
+.vibebot-root[data-mood="sleep"] #vb-mouth-sleep {
+  display: block;
+}
+
+.vibebot-root[data-mood="sleep"] #vb-flame-group,
+.vibebot-root[data-mood="sleep"] .vibebot-ground-shadow {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Speech Bubble */
+.vibebot-bubble {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #13142a;
+  color: #ffffff;
+  border: 1.5px solid #00d4ff;
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  box-shadow: 0 4px 18px rgba(0, 212, 255, 0.25), 0 2px 6px rgba(11, 12, 26, 0.8);
+  z-index: 10;
+}
+
+.vibebot-bubble.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.vibebot-bubble-arrow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: #13142a;
+  border-right: 1.5px solid #00d4ff;
+  border-bottom: 1.5px solid #00d4ff;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* Action Menu */
+.vibebot-menu {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.85);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #13142a;
+  border: 1.5px solid #7c5cff;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28), visibility 0.2s;
+  z-index: 20;
+}
+
+.vibebot-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) scale(1);
+}
+
+.vibebot-btn {
+  background: #0b0c1a;
+  color: #ffffff;
+  border: 1px solid #7c5cff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease, background-color 0.2s ease;
+}
+
+.vibebot-btn:hover {
+  background: #191b36;
+  border-color: #00d4ff;
+  color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Floating Particles (Hearts & Zzz) */
+.vibebot-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.vb-particle {
+  position: absolute;
+  user-select: none;
+  font-size: 18px;
+  font-weight: 700;
+  animation: vb-float-away 2.4s ease-out forwards;
+}
+
+@keyframes vb-float-away {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(var(--tx, 15px), var(--ty, -60px)) scale(1.2); opacity: 0; }
+}
+
+/* Responsive Park (<1300px) */
+@media (max-width: 1300px) {
+  .vibebot-root {
+    width: 84px;
+    height: 114px;
+  }
+
+  .vibebot-ground-shadow {
+    width: 52px;
+    height: 10px;
+    bottom: -4px;
+  }
+
+  .vibebot-bubble {
+    font-size: 11px;
+    padding: 6px 10px;
+    bottom: calc(100% + 8px);
+  }
+
+  .vibebot-menu {
+    bottom: calc(100% + 10px);
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .vibebot-btn {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
 }
