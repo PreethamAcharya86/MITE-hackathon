@@ -574,7 +574,7 @@
     update();
   }
 
-  /* ─── TIMELINE SCROLL PROGRESS FILL ─────────────────────── */
+  /* ─── TIMELINE SCROLL PROGRESS FILL + CARD GLOW ──────────── */
   function initTimelineProgressFill() {
     const fill = document.getElementById('tl-progress-fill');
     const timelineSection = document.getElementById('timeline');
@@ -584,16 +584,19 @@
 
     if (!fill || !timelineSection || !timelineInner) return;
 
+    // Collect all timeline items with their cards
+    const timelineItems = Array.from(
+      timelineInner.querySelectorAll('.timeline-item')
+    );
+
     function updateFill() {
-      const sectionRect  = timelineInner.getBoundingClientRect();
-      const totalHeight  = timelineInner.offsetHeight;
+      const sectionRect = timelineInner.getBoundingClientRect();
+      const totalHeight = timelineInner.offsetHeight;
 
       // Viewport midpoint that acts as the "reading line"
       const viewMid = window.innerHeight * 0.55;
 
       // How far the reading line has traveled INTO the timeline
-      // 0 = reading line is at the very top of the timeline
-      // totalHeight = reading line is at the very bottom
       const progress = viewMid - sectionRect.top;
       const pct = Math.min(100, Math.max(0, (progress / totalHeight) * 100));
 
@@ -605,6 +608,36 @@
       } else {
         fill.classList.remove('tl-fill-hidden');
       }
+
+      // ── Card glow: find which item the ball tip is touching ──────
+      const fillPx = (pct / 100) * totalHeight;
+      const tolerance = 80; // px proximity for glow trigger
+
+      let closestItem = null;
+      let closestDist = Infinity;
+
+      timelineItems.forEach(item => {
+        const card = item.querySelector('.tl-card');
+        if (!card) return;
+        // Mid-point of item relative to timelineInner top
+        const itemMid = item.offsetTop + item.offsetHeight * 0.35;
+        const dist = Math.abs(fillPx - itemMid);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestItem = item;
+        }
+      });
+
+      // Apply glow only to the closest card within tolerance
+      timelineItems.forEach(item => {
+        const card = item.querySelector('.tl-card');
+        if (!card) return;
+        if (item === closestItem && closestDist < tolerance && pct > 0 && pct < 100) {
+          card.classList.add('tl-card--active');
+        } else {
+          card.classList.remove('tl-card--active');
+        }
+      });
     }
 
     window.addEventListener('scroll', updateFill, { passive: true });
