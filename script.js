@@ -827,7 +827,7 @@
   // --- Stars Setup with 3 Depth Tiers for Dynamic Space Parallax ---
   function makeStars() {
     stars = [];
-    const count = isMobile() ? 105 : 360;
+    const count = isMobile() ? 150 : 360;
     for (let i = 0; i < count; i++) {
       const tier = Math.random();
       let baseR, depth;
@@ -920,19 +920,19 @@
     const isMob = isMobile();
     stars.forEach(s => {
       const { px, py } = getStarCoords(s, t);
-      // On mobile screen: radiant glowing stars with colorful cosmic presence
-      const twinkle = isMob ? (0.42 + 0.36 * Math.sin(s.phase + (t || 0) * s.speed)) : (0.55 + 0.45 * Math.sin(s.phase + t * s.speed));
-      const alpha = isMob ? (s.baseR > 0.6 ? 0.65 : 0.46) : Math.min(1, twinkle + s.hovered * 0.5);
-      const drawR = isMob ? Math.max(0.65, s.baseR * 0.95) : s.baseR * (1 + s.hovered * 1.5);
+      // On mobile screen: bright static stars with beautiful glowing aura
+      const alpha = isMob ? (s.baseR > 0.6 ? 0.92 : 0.72) : Math.min(1, (0.55 + 0.45 * Math.sin(s.phase + t * s.speed)) + s.hovered * 0.5);
+      const drawR = isMob ? Math.max(0.85, s.baseR * 1.1) : s.baseR * (1 + s.hovered * 1.5);
 
       ctx.save();
       ctx.globalAlpha = alpha;
 
-      // Soft colorful glow for stars on mobile, and desktop stars
-      if (isMob && s.baseR > 0.55) {
-        const glowR = drawR * 2.6;
+      // Soft glowing aura for stars on mobile (static) and desktop
+      if (isMob && s.baseR > 0.5) {
+        const glowR = drawR * 3.0;
         const grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
-        grad.addColorStop(0, s.color + '88');
+        grad.addColorStop(0, s.color + 'dd');
+        grad.addColorStop(0.35, s.color + '66');
         grad.addColorStop(1, s.color + '00');
         ctx.fillStyle = grad;
         ctx.beginPath();
@@ -1232,8 +1232,8 @@
       }
       ctx.save();
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
-      const a1 = isMob ? (n.a1 * 0.75) : Math.min(0.3, n.a1 * boost);
-      const a2 = isMob ? (n.a2 * 0.70) : n.a2;
+      const a1 = isMob ? (n.a1 * 1.4) : Math.min(0.3, n.a1 * boost);
+      const a2 = isMob ? (n.a2 * 1.3) : n.a2;
       grad.addColorStop(0, `rgba(${n.r1},${n.g1},${n.b1},${a1.toFixed(3)})`);
       grad.addColorStop(0.5, `rgba(${n.r2},${n.g2},${n.b2},${a2.toFixed(3)})`);
       grad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -1743,7 +1743,7 @@
 
     // Throw Cute Heart Emojis Within Little Range on Click
     function spawnClickHearts() {
-      const hearts = ['ðŸ’–', 'ðŸ’•', 'â¤ï¸', 'âœ¨'];
+      const hearts = ['💖', '💕', '❤️', '✨'];
       const count = 3;
       for (let i = 0; i < count; i++) {
         setTimeout(() => {
