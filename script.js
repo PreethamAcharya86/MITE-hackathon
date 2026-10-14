@@ -6,10 +6,10 @@
   if (window.innerWidth > 768) {
     const cursorGlow = document.getElementById('cursor-glow');
     const cursorRing = document.getElementById('cursor-ring');
-    const cursorDot  = document.getElementById('cursor-dot');
+    const cursorDot = document.getElementById('cursor-dot');
 
     // Current raw mouse position (dot follows this exactly)
-    let mx = window.innerWidth / 2,  my = window.innerHeight / 2;
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
     // Ring interpolation position (lags behind)
     let rx = mx, ry = my;
     // Glow interpolation position (lags even more)
@@ -22,7 +22,7 @@
 
     // Click states
     document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
-    document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
+    document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
 
     // Hover states on all interactive elements
     const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .strip-card, .flow-card, .why-card';
@@ -47,24 +47,24 @@
 
     // Hide cursors when mouse leaves window
     document.addEventListener('mouseleave', () => {
-      cursorDot.style.opacity  = '0';
+      cursorDot.style.opacity = '0';
       cursorRing.style.opacity = '0';
     });
     document.addEventListener('mouseenter', () => {
-      cursorDot.style.opacity  = '1';
+      cursorDot.style.opacity = '1';
       cursorRing.style.opacity = '1';
     });
   }
 
   /* â”€â”€â”€ 2. PARTICLE CANVAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const canvas = document.getElementById('particle-canvas');
-  const ctx    = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
 
-  let W = canvas.width  = window.innerWidth;
+  let W = canvas.width = window.innerWidth;
   let H = canvas.height = window.innerHeight;
 
   window.addEventListener('resize', () => {
-    W = canvas.width  = window.innerWidth;
+    W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
     initParticles();
   });
@@ -75,13 +75,13 @@
   class Particle {
     constructor() { this.reset(); }
     reset() {
-      this.x    = Math.random() * W;
-      this.y    = Math.random() * H;
-      this.r    = Math.random() * 1.5 + 0.4;
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.r = Math.random() * 1.5 + 0.4;
       this.speedX = (Math.random() - 0.5) * 0.3;
       this.speedY = (Math.random() - 0.5) * 0.3;
       this.opacity = Math.random() * 0.5 + 0.1;
-      this.color  = Math.random() > 0.5
+      this.color = Math.random() > 0.5
         ? `rgba(139,92,246,${this.opacity})`
         : `rgba(34,211,238,${this.opacity})`;
     }
@@ -113,7 +113,7 @@
         if (dist < CONNECTION_DIST) {
           const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
           ctx.strokeStyle = `rgba(139,92,246,${alpha})`;
-          ctx.lineWidth   = 0.8;
+          ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -135,10 +135,10 @@
   animate();
 
   /* â”€â”€â”€ 3. NAVBAR & MOBILE NAVIGATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  const navbar    = document.getElementById('navbar');
+  const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('nav-links');
-  let lastScroll  = 0;
+  const navLinks = document.getElementById('nav-links');
+  let lastScroll = 0;
 
   function closeMobileNav() {
     if (hamburger && hamburger.classList.contains('open')) {
@@ -236,7 +236,7 @@
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const el  = entry.target;
+          const el = entry.target;
           const delay = parseInt(el.dataset.aosDelay || '0', 10);
           setTimeout(() => el.classList.add('aos-animate'), delay);
           observer.unobserve(el);
@@ -302,7 +302,7 @@
         el.style.setProperty('--mouse-y', `${mouseY}px`);
 
         // Compute 3D tilt
-        const x = (mouseX / rect.width)  - 0.5;
+        const x = (mouseX / rect.width) - 0.5;
         const y = (mouseY / rect.height) - 0.5;
         el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-6px)`;
       });
@@ -349,7 +349,7 @@
   /* â”€â”€â”€ 9. HERO PARALLAX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initParallax() {
     const heroImg = document.querySelector('.hero-bg-img');
-    const orbs    = document.querySelectorAll('.orb');
+    const orbs = document.querySelectorAll('.orb');
     if (!heroImg) return;
 
     window.addEventListener('scroll', () => {
@@ -384,10 +384,10 @@
       `;
       document.body.appendChild(dot);
       requestAnimationFrame(() => {
-        dot.style.opacity   = '0';
-        dot.style.transform = `translate(${(Math.random()-0.5)*60 - 50}%, ${-Math.random()*60 - 50}%)`;
-        dot.style.width     = '2px';
-        dot.style.height    = '2px';
+        dot.style.opacity = '0';
+        dot.style.transform = `translate(${(Math.random() - 0.5) * 60 - 50}%, ${-Math.random() * 60 - 50}%)`;
+        dot.style.width = '2px';
+        dot.style.height = '2px';
       });
       setTimeout(() => dot.remove(), 1000);
     }, 60));
@@ -397,16 +397,16 @@
   function initRipple() {
     document.querySelectorAll('.btn-primary').forEach(btn => {
       btn.addEventListener('click', function (e) {
-        const rect   = btn.getBoundingClientRect();
+        const rect = btn.getBoundingClientRect();
         const ripple = document.createElement('span');
-        const size   = Math.max(rect.width, rect.height);
+        const size = Math.max(rect.width, rect.height);
         ripple.style.cssText = `
           position: absolute;
           border-radius: 50%;
           width: ${size}px; height: ${size}px;
           background: rgba(255,255,255,0.2);
-          top: ${e.clientY - rect.top - size/2}px;
-          left: ${e.clientX - rect.left - size/2}px;
+          top: ${e.clientY - rect.top - size / 2}px;
+          left: ${e.clientX - rect.left - size / 2}px;
           transform: scale(0);
           animation: ripple 0.6s linear;
           pointer-events: none;
@@ -428,7 +428,7 @@
     const text = tagline.textContent;
     tagline.textContent = '';
     tagline.style.borderRight = '2px solid var(--clr-purple)';
-    tagline.style.animation   = 'none';
+    tagline.style.animation = 'none';
     let i = 0;
     const type = () => {
       if (i < text.length) {
@@ -453,10 +453,10 @@
   /* â”€â”€â”€ 13. COORDINATOR CAROUSEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   /* ─── 13. COORDINATOR 3D STACK CAROUSEL (\ | /) ──────────────── */
   function initCoordinatorCarousel() {
-    const track    = document.getElementById('coordinators-track');
-    const row      = track ? track.querySelector('.coordinators-cards-row') : null;
-    const btnPrev  = document.getElementById('coord-prev');
-    const btnNext  = document.getElementById('coord-next');
+    const track = document.getElementById('coordinators-track');
+    const row = track ? track.querySelector('.coordinators-cards-row') : null;
+    const btnPrev = document.getElementById('coord-prev');
+    const btnNext = document.getElementById('coord-next');
     const dotsWrap = document.getElementById('coord-dots');
     if (!track || !row) return;
 
@@ -739,7 +739,7 @@
   // --- Resize Canvas ---
   function resize() {
     const rect = (heroEl || canvas).getBoundingClientRect();
-    W = canvas.width  = Math.max(300, Math.floor(rect.width  || window.innerWidth));
+    W = canvas.width = Math.max(300, Math.floor(rect.width || window.innerWidth));
     H = canvas.height = Math.max(300, Math.floor(rect.height || window.innerHeight));
     buildScene();
 
@@ -1449,9 +1449,9 @@
   function renderStaticFrame() {
     ctx.clearRect(0, 0, W, H);
     const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
-    bg.addColorStop(0,   '#02040b');
+    bg.addColorStop(0, '#02040b');
     bg.addColorStop(0.5, '#030612');
-    bg.addColorStop(1,   '#02040b');
+    bg.addColorStop(1, '#02040b');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -1480,9 +1480,9 @@
 
       // Deep Cosmic Background Gradient
       const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
-      bg.addColorStop(0,   '#020510');
+      bg.addColorStop(0, '#020510');
       bg.addColorStop(0.5, '#050818');
-      bg.addColorStop(1,   '#030614');
+      bg.addColorStop(1, '#030614');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
 
@@ -1552,421 +1552,834 @@
     }, { threshold: 0.01 }).observe(heroEl);
   }
 })();
-/* ==================== VIBEBOT MASCOT CONTROLLER ==================== */
-
-(function initVibeBot() {
+/* ==================== ARTIFERA 3D PARTICLE & LIQUID GLASS CONTROLLER ==================== */
+(function initArtiferaLogo() {
   'use strict';
-
-  function setup() {
-    const botRoot = document.getElementById('vibebot-container');
-    const actorGroup = document.getElementById('vb-actor-group');
-    const bubble = document.getElementById('vibebot-bubble');
-    const messageSpan = document.getElementById('vibebot-message');
-    const menu = document.getElementById('vibebot-menu');
-    const particlesContainer = document.getElementById('vibebot-particles');
-
-    const pupilL = document.getElementById('vb-pupil-left');
-    const pupilR = document.getElementById('vb-pupil-right');
-
-    const btnNext = document.getElementById('vb-btn-next');
-    const btnRegister = document.getElementById('vb-btn-register');
-    const btnTip = document.getElementById('vb-btn-tip');
-    const btnDance = document.getElementById('vb-btn-dance');
-
-    if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
-
-    // Config & Section Mappings
-    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'why', 'register', 'contributors'];
-    const SECTION_MESSAGES = {
-      top: "Welcome to AI VibeX 1.0! Let's vibe!",
-      about: "6 intense hours of pure AI innovation!",
-      timeline: "Follow the schedule to stay on track!",
-      flow: "Understand the hackathon flow: Build & win!",
-      why: "Discover why AI VibeX is your launchpad!",
-      register: "Register your team! Spots fill fast!",
-      contributors: "Meet the visionary team behind the event!"
-    };
-
-    const TIPS = [
-      "Keep your MVP small and polish the demo!",
-      "Test your AI API keys and rate limits early!",
-      "A working 2-minute live demo beats 20 slides!",
-      "Design for real-world impact and clear problem solving!",
-      "Stay hydrated and tap your mentors for rapid unblocking!"
-    ];
-
-    // State Variables
-    let botX = window.innerWidth + 200; // Flies in from off-screen right
-    let botY = 160;
-    let targetX = window.innerWidth - 180;
-    let targetY = 160;
-    let prevBotX = botX;
-    let prevBotY = botY;
-    let tiltAngle = 0;
-    let floatTime = 0;
-    let floatOffset = 0;
-
-    let isPointerDown = false;
-    let isDragging = false;
-    let dragOffset = { x: 0, y: 0 };
-    let dragStartPos = { x: 0, y: 0 };
-    let hasDragged = false;
-    let isCustomPlaced = false;
-
-    let currentSectionIdx = 0;
-    let currentMood = 'happy';
-    let isMenuOpen = false;
-    let speechTimeout = null;
-    let surpriseTimeout = null;
-    let lastActivityTime = performance.now();
-    let isAsleep = false;
-
-    // Pointer coordinates for pupil tracking
-    let mouseScreenX = window.innerWidth / 2;
-    let mouseScreenY = window.innerHeight / 2;
-
-    const leftEyeCenter = { x: 53, y: 48 };
-    const rightEyeCenter = { x: 87, y: 48 };
-    const maxPupilOffset = 3.6;
-
-    function getSectionElements() {
-      return SECTION_IDS.map(id => {
-        let el = document.getElementById(id);
-        if (!el && id === 'top') {
-          el = document.getElementById('hero') || document.querySelector('header') || document.body;
-        }
-        return { id, element: el };
-      }).filter(item => item.element !== null);
+  const canvas = document.getElementById('artifera-particle-canvas');
+  const wrapper = document.getElementById('artifera-particle-wrapper');
+  const glassBadge = document.getElementById('artifera-glass-badge');
+  const heroEl = document.getElementById('hero');
+  if (!canvas && !glassBadge) return;
+  const isMobile = () => window.innerWidth <= 768;
+  const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ----------------------------------------------------
+  // PART A: DESKTOP 3D VOLUMETRIC PARTICLE LOGO
+  // ----------------------------------------------------
+  let ctx = null;
+  let particles = [];
+  let brainConnections = [];
+  let sparks = [];
+  let rafId = null;
+  let isImageLoaded = false;
+  let isHeroVisible = true;
+  // Canvas dimensions
+  const LOGICAL_SIZE = 340;
+  const DISPLAY_SIZE = 240;
+  let dpr = 1;
+  // 3D Camera / Perspective settings
+  const FOCAL_LENGTH = 440;
+  let rotX = 0, rotY = 0;
+  let targetRotX = 0, targetRotY = 0;
+  let autoYaw = 0;
+  // Mouse tracking inside hero & canvas
+  let isMouseOverHero = false;
+  let mouseCanvasX = -9999, mouseCanvasY = -9999;
+  let isMouseOverCanvas = false;
+  // Color palette matching AI VibeX theme
+  const COLORS = {
+    cyan: '#22d3ee',
+    cyanBright: '#67e8f9',
+    purple: '#8b5cf6',
+    purpleBright: '#a78bfa',
+    pink: '#ec4899',
+    blue: '#3b82f6',
+    white: '#ffffff',
+    silver: '#cbd5e1'
+  }; class LogoParticle {
+    constructor(bx, by, bz, color, size, type, isNode = false) {
+      this.bx = bx; // 3D anchor
+      this.by = by;
+      this.bz = bz;
+      // Start with scattered explosion entrance
+      const angle = Math.random() * Math.PI * 2;
+      const spread = 80 + Math.random() * 90;
+      this.x = bx + Math.cos(angle) * spread;
+      this.y = by + Math.sin(angle) * spread;
+      this.z = bz + (Math.random() - 0.5) * 160;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
+      this.vz = (Math.random() - 0.5) * 2;
+      this.color = color;
+      this.baseSize = size;
+      this.type = type;
+      this.isNode = isNode;
+      this.phase = Math.random() * Math.PI * 2;
+      this.shimmerSpeed = 0.003 + Math.random() * 0.004;
+      // 2D projected coordinates
+      this.px = 0;
+      this.py = 0;
+      this.pz = 0;
+      this.pScale = 1;
+      this.alpha = 1;
     }
-
-    function resolveActiveSectionIndex() {
-      const sections = getSectionElements();
-      const scrollPos = window.scrollY + window.innerHeight * 0.35;
-      let activeIdx = 0;
-
-      sections.forEach((item, idx) => {
-        const top = item.element.offsetTop;
-        if (scrollPos >= top) {
-          activeIdx = idx;
-        }
-      });
-
-      return activeIdx;
-    }
-
-    function calculateTargetPosition() {
-      if (isCustomPlaced || window.innerWidth <= 768) return;
-
-      const isSmallScreen = window.innerWidth < 1300;
-      const botWidth = isSmallScreen ? 84 : 140;
-      const botHeight = isSmallScreen ? 114 : 190;
-
-      if (isSmallScreen) {
-        targetX = window.innerWidth - botWidth - 18;
-        targetY = window.innerHeight - botHeight - 20;
-        return;
-      }
-
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-
-      // Vertical drift downwards
-      const verticalRange = window.innerHeight * 0.45;
-      targetY = window.innerHeight * 0.20 + (scrollRatio * verticalRange);
-
-      // Alternating edges: even -> right, odd -> left
-      const isEvenSection = currentSectionIdx % 2 === 0;
-      if (isEvenSection) {
-        targetX = window.innerWidth - botWidth - 36;
-      } else {
-        targetX = 36;
-      }
-    }
-
-    function showMessage(text, durationMs = 3200) {
-      if (isMenuOpen) closeMenu();
-      messageSpan.textContent = text;
-      bubble.classList.add('is-visible');
-
-      if (speechTimeout) clearTimeout(speechTimeout);
-      if (durationMs > 0) {
-        speechTimeout = setTimeout(() => {
-          bubble.classList.remove('is-visible');
-        }, durationMs);
-      }
-    }
-
-    function setMood(mood) {
-      currentMood = mood;
-      botRoot.setAttribute('data-mood', mood);
-    }
-
-    function triggerSurprise(tempMessage = null) {
-      if (isAsleep) return;
-      setMood('wow');
-      if (tempMessage) showMessage(tempMessage, 1500);
-
-      if (surpriseTimeout) clearTimeout(surpriseTimeout);
-      surpriseTimeout = setTimeout(() => {
-        if (!isAsleep) setMood('happy');
-      }, 1400);
-    }
-
-    function spawnParticle(content, color = '#ff6bd6') {
-      const particle = document.createElement('span');
-      particle.className = 'vb-particle';
-      particle.textContent = content;
-      particle.style.color = color;
-
-      const tx = (Math.random() - 0.5) * 60;
-      const ty = -40 - Math.random() * 50;
-      particle.style.setProperty('--tx', `${tx}px`);
-      particle.style.setProperty('--ty', `${ty}px`);
-      particle.style.left = `${60 + (Math.random() - 0.5) * 20}px`;
-      particle.style.top = `${20 + (Math.random() - 0.5) * 20}px`;
-
-      particlesContainer.appendChild(particle);
-      setTimeout(() => particle.remove(), 2400);
-    }
-
-    // Throw Cute Heart Emojis Within Little Range on Click
-    function spawnClickHearts() {
-      const hearts = ['💖', '💕', '❤️', '✨'];
-      const count = 3;
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-          const heart = hearts[Math.floor(Math.random() * hearts.length)];
-          const particle = document.createElement('span');
-          particle.className = 'vb-particle vb-click-heart';
-          particle.textContent = heart;
-
-          // Little tight range: +/-18px horizontal, -16px to -36px vertical
-          const tx = (Math.random() - 0.5) * 36;
-          const ty = -16 - Math.random() * 20;
-          particle.style.setProperty('--tx', `${tx}px`);
-          particle.style.setProperty('--ty', `${ty}px`);
-          particle.style.left = `${58 + (Math.random() - 0.5) * 16}px`;
-          particle.style.top = `${36 + (Math.random() - 0.5) * 14}px`;
-
-          particlesContainer.appendChild(particle);
-          setTimeout(() => particle.remove(), 1400);
-        }, i * 75);
-      }
-    }
-
-    function openMenu() {
-      isMenuOpen = true;
-      menu.classList.add('is-open');
-      menu.setAttribute('aria-hidden', 'false');
-      bubble.classList.remove('is-visible');
-    }
-
-    function closeMenu() {
-      isMenuOpen = false;
-      menu.classList.remove('is-open');
-      menu.setAttribute('aria-hidden', 'true');
-    }
-
-    function scrollToSection(index) {
-      const sections = getSectionElements();
-      if (index >= 0 && index < sections.length) {
-        sections[index].element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function triggerDance() {
-      closeMenu();
-      actorGroup.classList.add('vb-dancing');
-      showMessage("Let's party! ✨", 3000);
-
-      const heartInterval = setInterval(() => {
-        spawnParticle('💖', '#ff6bd6');
-      }, 280);
-
-      setTimeout(() => {
-        clearInterval(heartInterval);
-        actorGroup.classList.remove('vb-dancing');
-      }, 3000);
-    }
-
-    function triggerBackflip() {
-      actorGroup.classList.remove('vb-flip');
-      void actorGroup.offsetWidth;
-      actorGroup.classList.add('vb-flip');
-      showMessage("Wheee! 360° flip!", 2000);
-
-      setTimeout(() => {
-        actorGroup.classList.remove('vb-flip');
-      }, 850);
-    }
-
-    function recordUserActivity() {
-      lastActivityTime = performance.now();
-      if (isAsleep) {
-        isAsleep = false;
-        setMood('happy');
-        showMessage("Oh! You're back! ⚡", 3000);
-      }
-    }
-
-    // Single requestAnimationFrame Loop
-    function tick() {
-      if (window.innerWidth <= 768) {
-        requestAnimationFrame(tick);
-        return;
-      }
-
-      floatTime += 0.04;
-
-      // 1. Idle Sleep Management (after 9s)
-      if (!isAsleep && performance.now() - lastActivityTime > 9000) {
-        isAsleep = true;
-        setMood('sleep');
-        showMessage("Zzz...", 0);
-      }
-
-      if (isAsleep && Math.random() < 0.02) {
-        spawnParticle('z', '#00e5ff');
-      }
-
-      // 2. Position Lerp
-      if (!isDragging) {
-        const lerpFactor = 0.065;
-        botX += (targetX - botX) * lerpFactor;
-        botY += (targetY - botY) * lerpFactor;
-      }
-
-      // 3. Sine Wave Float (only frozen when asleep or actively moving/dragging)
-      floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
-
-      // 4. Movement Tilt
-      const velocityX = botX - prevBotX;
-      prevBotX = botX;
-      prevBotY = botY;
-
-      const targetTilt = Math.min(18, Math.max(-18, velocityX * 1.6));
-      tiltAngle += (targetTilt - tiltAngle) * 0.1;
-
-      botRoot.style.transform = `translate3d(${botX}px, ${botY + floatOffset}px, 0px) rotate(${tiltAngle}deg)`;
-
-      // 5. Eye Pupil Tracking
-      if (!isAsleep && currentMood !== 'sleep') {
-        const botRect = botRoot.getBoundingClientRect();
-        const scale = botRect.width / 140;
-
-        const eyeL_ClientX = botRect.left + leftEyeCenter.x * scale;
-        const eyeL_ClientY = botRect.top + leftEyeCenter.y * scale;
-        const eyeR_ClientX = botRect.left + rightEyeCenter.x * scale;
-        const eyeR_ClientY = botRect.top + rightEyeCenter.y * scale;
-
-        const dxL = mouseScreenX - eyeL_ClientX;
-        const dyL = mouseScreenY - eyeL_ClientY;
-        const distL = Math.hypot(dxL, dyL) || 1;
-        const offsetL = Math.min(maxPupilOffset, distL * 0.035);
-
-        const dxR = mouseScreenX - eyeR_ClientX;
-        const dyR = mouseScreenY - eyeR_ClientY;
-        const distR = Math.hypot(dxR, dyR) || 1;
-        const offsetR = Math.min(maxPupilOffset, distR * 0.035);
-
-        pupilL.setAttribute('cx', (leftEyeCenter.x + (dxL / distL) * offsetL).toFixed(2));
-        pupilL.setAttribute('cy', (leftEyeCenter.y + (dyL / distL) * offsetL).toFixed(2));
-
-        pupilR.setAttribute('cx', (rightEyeCenter.x + (dxR / distR) * offsetR).toFixed(2));
-        pupilR.setAttribute('cy', (rightEyeCenter.y + (dyR / distR) * offsetR).toFixed(2));
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    // Natural Blink Interval
-    function scheduleBlink() {
-      const nextBlinkMs = 2800 + Math.random() * 3200;
-      setTimeout(() => {
-        if (!isAsleep && currentMood !== 'sleep') {
-          botRoot.classList.add('is-blinking');
-          setTimeout(() => {
-            botRoot.classList.remove('is-blinking');
-            scheduleBlink();
-          }, 140);
-        } else {
-          scheduleBlink();
-        }
-      }, nextBlinkMs);
-    }
-
-    // Pointer Dragging & Touch Handling
-    botRoot.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('.vibebot-menu')) return;
-
-      recordUserActivity();
-      isPointerDown = true;
-      isDragging = false;
-      hasDragged = false;
-      dragStartPos = { x: e.clientX, y: e.clientY };
-      // Include current floatOffset so position remains 100% intact if dragged
-      dragOffset = {
-        x: e.clientX - botX,
-        y: e.clientY - (botY + floatOffset)
-      };
-
-      botRoot.setPointerCapture(e.pointerId);
-    });
-
-    window.addEventListener('pointermove', (e) => {
-      mouseScreenX = e.clientX;
-      mouseScreenY = e.clientY;
-      recordUserActivity();
-
-      if (isPointerDown) {
-        const movedDist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
-        if (movedDist > 6) {
-          if (!hasDragged) {
-            hasDragged = true;
-            isDragging = true;
-            // Mouth looks like saying "Ohhh" :O while moving!
-            setMood('wow');
-            showMessage("Ohhh! 😮", 0);
-          }
-          botX = e.clientX - dragOffset.x;
-          botY = e.clientY - dragOffset.y;
-          targetX = botX;
-          targetY = botY;
+    update(time, repulsionX, repulsionY, repulseActive) {
+      // 1. Ambient micro-breathing drift
+      const breath = Math.sin(time * 0.0015 + this.phase) * 1.5;
+      const targetX = this.bx;
+      const targetY = this.by + breath;
+      const targetZ = this.bz + Math.cos(time * 0.0018 + this.phase) * 2.0;
+      // 2. Cursor Magnetic Repulsion (when pointer is near canvas projection)
+      if (repulseActive && this.px > 0 && this.py > 0) {
+        const dx = this.px - repulsionX;
+        const dy = this.py - repulsionY;
+        const dist = Math.hypot(dx, dy);
+        const REPULSE_RADIUS = 58;
+        if (dist < REPULSE_RADIUS && dist > 0.1) {
+          const force = (1 - dist / REPULSE_RADIUS) * 6.5;
+          const angle = Math.atan2(dy, dx);
+          this.vx += Math.cos(angle) * force;
+          this.vy += Math.sin(angle) * force;
+          this.vz += (Math.random() - 0.5) * force * 3;
         }
       }
-    });
-
-    let lastTapTime = 0;
-    let singleTapTimeout = null;
-
-    botRoot.addEventListener('pointerup', (e) => {
-      if (!isPointerDown) return;
-      isPointerDown = false;
-
+      // 3. Spring-dampened return physics
+      const k = 0.085; // spring stiffness
+      const damping = 0.82; // air resistance
+      this.vx += (targetX - this.x) * k;
+      this.vy += (targetY - this.y) * k;
+      this.vz += (targetZ - this.z) * k;
+      this.vx *= damping;
+      this.vy *= damping;
+      this.vz *= damping;
+      this.x += this.vx;
+      this.y += this.vy;
+      this.z += this.vz;
+      // 4. Calculate Twinkling Alpha
+      const twinkle = 0.72 + 0.28 * Math.sin(this.phase + time * this.shimmerSpeed);
+      this.alpha = Math.max(0.2, Math.min(1, twinkle));
+    }
+    project(totalRotX, totalRotY, cx, cy) {
+      // 3D Rotation Matrix
+      // Rotate around Y (yaw)
+      const cosY = Math.cos(totalRotY), sinY = Math.sin(totalRotY);
+      const x1 = this.x * cosY + this.z * sinY;
+      const z1 = -this.x * sinY + this.z * cosY;
+      const y1 = this.y;
+      // Rotate around X (pitch)
+      const cosX = Math.cos(totalRotX), sinX = Math.sin(totalRotX);
+      const y2 = y1 * cosX - z1 * sinX;
+      const z2 = y1 * sinX + z1 * cosX;
+      const x2 = x1;
+      this.pz = z2;
+      // Perspective Projection
+      const scale = FOCAL_LENGTH / (FOCAL_LENGTH + z2);
+      this.pScale = scale;
+      this.px = cx + x2 * scale;
+      this.py = cy + y2 * scale;
+    }
+  }
+  // --- Sample Logo Image into 3D Volumetric Points ---
+  function sampleLogoImage() {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = 'assets/artifera_logo.jpeg';
+    img.onload = () => {
       try {
-        botRoot.releasePointerCapture(e.pointerId);
-      } catch (_) {}
-
-      if (hasDragged) {
-        isDragging = false;
-        isCustomPlaced = true;
-        showMessage("Wheee! 🚀", 2000);
-        setTimeout(() => {
-          if (!isAsleep && currentMood === 'wow') {
-            setMood('happy');
+        const off = document.createElement('canvas');
+        const SAMPLE_W = 216;
+        const SAMPLE_H = 216;
+        off.width = SAMPLE_W;
+        off.height = SAMPLE_H;
+        const offCtx = off.getContext('2d', { willReadFrequently: true });
+        offCtx.drawImage(img, 0, 0, SAMPLE_W, SAMPLE_H);
+        const imgData = offCtx.getImageData(0, 0, SAMPLE_W, SAMPLE_H).data;
+        const cx = SAMPLE_W / 2;
+        const cy = SAMPLE_H / 2;
+        const R_MAX = SAMPLE_W * 0.47;
+        particles = [];
+        const brainNodes = [];
+        // Sample grid step (2px step for high definition, ~3,000 points)
+        const STEP = 2;
+        for (let y = 0; y < SAMPLE_H; y += STEP) {
+          for (let x = 0; x < SAMPLE_W; x += STEP) {
+            const idx = (y * SAMPLE_W + x) * 4;
+            const r = imgData[idx];
+            const g = imgData[idx + 1];
+            const b = imgData[idx + 2];
+            const a = imgData[idx + 3];
+            if (a < 50) continue;
+            const nx = (x - cx) / R_MAX;
+            const ny = (y - cy) / R_MAX;
+            const dist = Math.hypot(nx, ny);
+            // Ignore outer square black corners (dist > 1.0)
+            if (dist > 1.01 || dist < 0.04) continue;
+            // Greyscale luminance
+            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+            // Background is pure white (lum > 218)
+            if (lum > 218) continue;
+            // Base 2D coordinate on our 340px canvas (scale factor ~126)
+            const SCALE = 126;
+            const bx = nx * SCALE;
+            const by = ny * SCALE;
+            let bz = 0;
+            let color = COLORS.cyan;
+            let size = 1.35;
+            let type = 'general';
+            let isNode = false;
+            // 1. Outer Ring: (dist >= 0.82)
+            // Volumetric orbital tilt
+             if (dist >= 0.82) {
+               bz = Math.sin(nx * Math.PI) * 22;
+               size = 1.5;
+               const angle = Math.atan2(ny, nx);
+               // Gradient purple-cyan around the circle
+               color = Math.sin(angle * 2) > 0 ? COLORS.cyan : COLORS.purple;
+               if (Math.random() < 0.12) color = COLORS.white;
+             }
+             // 2. Curved Typography "ARTIFERA": (ny > 0.42 and inside ring)
+            else if (ny > 0.42 && lum < 160) {
+            type = 'text';
+            bz = 18; // Elevated forward plane so text is razor-sharp and never occluded
+            size = 1.6;
+            color = Math.random() < 0.8 ? COLORS.white : COLORS.cyanBright;
           }
-        }, 1500);
-      } else {
-        // Intact Click/Tap: throw heart emojis in a little range
-        spawnClickHearts();
+          // 3. Brain / Neural Net Lattice: (nx > -0.06 and ny < 0.25)
+          else if (nx > -0.06 && ny < 0.25) {
+            type = 'brain';
+            // Hemispherical 3D skull dome
+            const domeRadiusSq = Math.max(0, 0.7 - nx * nx - ny * ny);
+            bz = Math.sqrt(domeRadiusSq) * 52;
+            size = 1.45;
+            // Identify high-contrast nodes
+            if (lum < 75 && Math.random() < 0.18) {
+              isNode = true;
+              size = 2.4;
+              color = Math.random() > 0.5 ? COLORS.cyanBright : COLORS.pink;
+            } else {
+              color = Math.random() < 0.45 ? COLORS.cyan : (Math.random() < 0.75 ? COLORS.purpleBright : COLORS.pink);
+            }
+          }
+          // 4. Ear Headset Vortex: (around nx ~ 0.18, ny ~ 0.12)
+          else if (Math.hypot(nx - 0.18, ny - 0.12) < 0.18) {
+            type = 'ear';
+            bz = 28; // Projects outwards like a cybernetic headphone
+            size = 1.6;
+            color = lum < 90 ? COLORS.cyan : COLORS.purple;
+          }
+          // 5. Cyborg Face Profile & Jaw: (nx <= -0.06)
+          else if (nx <= -0.06 && ny < 0.42) {
+            type = 'face';
+            // Rounded smooth face curvature
+            bz = Math.cos(nx * 1.8) * 24 + 10;
+            size = 1.4;
+            color = lum < 100 ? COLORS.cyan : COLORS.purpleBright;
+            if (nx < -0.38) color = COLORS.cyanBright; // Highlight on nose/lip edge
+          }
+          // 6. Cybernetic Neck
+          else {
+            type = 'neck';
+            bz = 10;
+            size = 1.35;
+            color = COLORS.purple;
+          }
+          const p = new LogoParticle(bx, by, bz, color, size, type, isNode);
+          particles.push(p);
+          if (isNode) {
+            brainNodes.push(p);
+          }
+        }
+        }
+        brainConnections = [];
+        for (let i = 0; i < brainNodes.length; i++) {
+          for (let j = i + 1; j < brainNodes.length; j++) {
+            if (Math.hypot(brainNodes[i].bx - brainNodes[j].bx, brainNodes[i].by - brainNodes[j].by) < 24) {
+              brainConnections.push({ a: brainNodes[i], b: brainNodes[j] });
+            }
+          }
+        }
+        isImageLoaded = true;
+      } catch (error) {
+        console.warn('ARTIFERA logo sampling failed:', error);
+        createFallbackParticles();
+      }
+    };
+    img.onerror = createFallbackParticles;
+  }
+  // Fallback procedural geometry if image sampling fails
+  function createFallbackParticles() {
+        particles = [];
+        brainConnections = [];
+        const COUNT = 1600;
+        for (let i = 0; i < COUNT; i++) {
+          const theta = Math.random() * Math.PI * 2;
+          const r = Math.sqrt(Math.random()) * 110;
+          const bx = Math.cos(theta) * r;
+          const by = Math.sin(theta) * r;
+          const bz = Math.cos(r * 0.05) * 30;
+          const color = Math.random() > 0.5 ? COLORS.cyan : COLORS.purple;
+          particles.push(new LogoParticle(bx, by, bz, color, 1.4, 'fallback'));
+        }
+        isImageLoaded = true;
+        if (!isMobile() && !rafId) rafId = requestAnimationFrame(renderLogo);
+      }
+      // --- Canvas Setup & High-DPI Scaling ---
+      function initCanvas() {
+        if (!canvas) return;
+        ctx = canvas.getContext('2d');
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = LOGICAL_SIZE * dpr;
+        canvas.height = LOGICAL_SIZE * dpr;
+         canvas.style.width = `${DISPLAY_SIZE}px`;
+         canvas.style.height = `${DISPLAY_SIZE}px`;
+        ctx.scale(dpr, dpr);
+      }
+      // --- Neural Synaptic Spark Pulses ---
+      let sparkTimer = 0;
+      function updateSparks() {
+        sparkTimer += 16;
+        if (sparkTimer > 1800 && brainConnections.length > 0 && sparks.length < 4) {
+          sparkTimer = 0;
+          const conn = brainConnections[Math.floor(Math.random() * brainConnections.length)];
+          sparks.push({
+            conn,
+            progress: 0,
+            speed: 0.035 + Math.random() * 0.025,
+            color: Math.random() > 0.4 ? COLORS.cyanBright : COLORS.white
+          });
+        }
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          s.progress += s.speed;
+          if (s.progress >= 1) {
+            sparks.splice(i, 1);
+          }
+        }
+      }
+      function drawSparks() {
+        sparks.forEach(s => {
+          const { a, b } = s.conn;
+          const sx = a.px + (b.px - a.px) * s.progress;
+          const sy = a.py + (b.py - a.py) * s.progress;
+          const scale = a.pScale + (b.pScale - a.pScale) * s.progress;
+          ctx.save();
+          ctx.fillStyle = s.color;
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 2.6 * scale, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
 
-        if (!e.target.closest('.vibebot-menu')) {
-          const now = performance.now();
-          const tapInterval = now - lastTapTime;
+      function renderLogo(time) {
+        if (!ctx || !canvas || isMobile()) {
+          rafId = null;
+          return;
+        }
+        ctx.clearRect(0, 0, LOGICAL_SIZE, LOGICAL_SIZE);
+        const center = LOGICAL_SIZE / 2;
+        // Keep the logo facing forward; particles still shimmer and breathe.
+        rotX = 0;
+        rotY = 0;
+        particles.forEach(p => {
+          p.update(time, mouseCanvasX, mouseCanvasY, isMouseOverCanvas);
+          p.project(rotX, rotY, center, center);
+        });
+        particles.sort((a, b) => a.pz - b.pz);
+        particles.forEach(p => {
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.px, p.py, Math.max(0.55, p.baseSize * p.pScale), 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+        drawSparks();
+        rafId = requestAnimationFrame(renderLogo);
+      }
 
-          if (tapInterval < 320 && tapInterval > 30) {
-            // Double-tap detected
-            lastTapTime = 0;
+      function startLogo() {
+        if (!canvas || isMobile() || prefersReducedMotion()) return;
+        if (!rafId) rafId = requestAnimationFrame(renderLogo);
+      }
+
+      if (canvas) {
+        initCanvas();
+        // Render immediately so the animation is visible even while the image is loading.
+        createFallbackParticles();
+        sampleLogoImage();
+        canvas.addEventListener('mousemove', e => {
+          const rect = canvas.getBoundingClientRect();
+          mouseCanvasX = (e.clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+          mouseCanvasY = (e.clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+          isMouseOverCanvas = true;
+          targetRotX = 0;
+          targetRotY = 0;
+        });
+        canvas.addEventListener('mouseleave', () => {
+          isMouseOverCanvas = false;
+          mouseCanvasX = mouseCanvasY = -9999;
+          targetRotX = targetRotY = 0;
+        });
+        window.addEventListener('resize', () => {
+          initCanvas();
+          if (!isMobile()) startLogo();
+        });
+        startLogo();
+      }
+
+      if (glassBadge) {
+        glassBadge.addEventListener('pointermove', e => {
+          const rect = glassBadge.getBoundingClientRect();
+          glassBadge.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+          glassBadge.style.setProperty('--my', `${e.clientY - rect.top}px`);
+        });
+      }
+
+    })();
+
+      /* ==================== VIBEBOT MASCOT CONTROLLER ==================== */
+
+      (function initVibeBot() {
+        'use strict';
+
+        function setup() {
+          const botRoot = document.getElementById('vibebot-container');
+          const actorGroup = document.getElementById('vb-actor-group');
+          const bubble = document.getElementById('vibebot-bubble');
+          const messageSpan = document.getElementById('vibebot-message');
+          const menu = document.getElementById('vibebot-menu');
+          const particlesContainer = document.getElementById('vibebot-particles');
+
+          const pupilL = document.getElementById('vb-pupil-left');
+          const pupilR = document.getElementById('vb-pupil-right');
+
+          const btnNext = document.getElementById('vb-btn-next');
+          const btnRegister = document.getElementById('vb-btn-register');
+          const btnTip = document.getElementById('vb-btn-tip');
+          const btnDance = document.getElementById('vb-btn-dance');
+
+          if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
+
+          // Config & Section Mappings
+          const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'why', 'register', 'contributors'];
+          const SECTION_MESSAGES = {
+            top: "Welcome to AI VibeX 1.0! Let's vibe!",
+            about: "6 intense hours of pure AI innovation!",
+            timeline: "Follow the schedule to stay on track!",
+            flow: "Understand the hackathon flow: Build & win!",
+            why: "Discover why AI VibeX is your launchpad!",
+            register: "Register your team! Spots fill fast!",
+            contributors: "Meet the visionary team behind the event!"
+          };
+
+          const TIPS = [
+            "Keep your MVP small and polish the demo!",
+            "Test your AI API keys and rate limits early!",
+            "A working 2-minute live demo beats 20 slides!",
+            "Design for real-world impact and clear problem solving!",
+            "Stay hydrated and tap your mentors for rapid unblocking!"
+          ];
+
+          // State Variables
+          let botX = window.innerWidth + 200; // Flies in from off-screen right
+          let botY = 160;
+          let targetX = window.innerWidth - 180;
+          let targetY = 160;
+          let prevBotX = botX;
+          let prevBotY = botY;
+          let tiltAngle = 0;
+          let floatTime = 0;
+          let floatOffset = 0;
+
+          let isPointerDown = false;
+          let isDragging = false;
+          let dragOffset = { x: 0, y: 0 };
+          let dragStartPos = { x: 0, y: 0 };
+          let hasDragged = false;
+          let isCustomPlaced = false;
+
+          let currentSectionIdx = 0;
+          let currentMood = 'happy';
+          let isMenuOpen = false;
+          let speechTimeout = null;
+          let surpriseTimeout = null;
+          let lastActivityTime = performance.now();
+          let isAsleep = false;
+
+          // Pointer coordinates for pupil tracking
+          let mouseScreenX = window.innerWidth / 2;
+          let mouseScreenY = window.innerHeight / 2;
+
+          const leftEyeCenter = { x: 53, y: 48 };
+          const rightEyeCenter = { x: 87, y: 48 };
+          const maxPupilOffset = 3.6;
+
+          function getSectionElements() {
+            return SECTION_IDS.map(id => {
+              let el = document.getElementById(id);
+              if (!el && id === 'top') {
+                el = document.getElementById('hero') || document.querySelector('header') || document.body;
+              }
+              return { id, element: el };
+            }).filter(item => item.element !== null);
+          }
+
+          function resolveActiveSectionIndex() {
+            const sections = getSectionElements();
+            const scrollPos = window.scrollY + window.innerHeight * 0.35;
+            let activeIdx = 0;
+
+            sections.forEach((item, idx) => {
+              const top = item.element.offsetTop;
+              if (scrollPos >= top) {
+                activeIdx = idx;
+              }
+            });
+
+            return activeIdx;
+          }
+
+          function calculateTargetPosition() {
+            if (isCustomPlaced || window.innerWidth <= 768) return;
+
+            const isSmallScreen = window.innerWidth < 1300;
+            const botWidth = isSmallScreen ? 84 : 140;
+            const botHeight = isSmallScreen ? 114 : 190;
+
+            if (isSmallScreen) {
+              targetX = window.innerWidth - botWidth - 18;
+              targetY = window.innerHeight - botHeight - 20;
+              return;
+            }
+
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+            // Vertical drift downwards
+            const verticalRange = window.innerHeight * 0.45;
+            targetY = window.innerHeight * 0.20 + (scrollRatio * verticalRange);
+
+            // Alternating edges: even -> right, odd -> left
+            const isEvenSection = currentSectionIdx % 2 === 0;
+            if (isEvenSection) {
+              targetX = window.innerWidth - botWidth - 36;
+            } else {
+              targetX = 36;
+            }
+          }
+
+          function showMessage(text, durationMs = 3200) {
+            if (isMenuOpen) closeMenu();
+            messageSpan.textContent = text;
+            bubble.classList.add('is-visible');
+
+            if (speechTimeout) clearTimeout(speechTimeout);
+            if (durationMs > 0) {
+              speechTimeout = setTimeout(() => {
+                bubble.classList.remove('is-visible');
+              }, durationMs);
+            }
+          }
+
+          function setMood(mood) {
+            currentMood = mood;
+            botRoot.setAttribute('data-mood', mood);
+          }
+
+          function triggerSurprise(tempMessage = null) {
+            if (isAsleep) return;
+            setMood('wow');
+            if (tempMessage) showMessage(tempMessage, 1500);
+
+            if (surpriseTimeout) clearTimeout(surpriseTimeout);
+            surpriseTimeout = setTimeout(() => {
+              if (!isAsleep) setMood('happy');
+            }, 1400);
+          }
+
+          function spawnParticle(content, color = '#ff6bd6') {
+            const particle = document.createElement('span');
+            particle.className = 'vb-particle';
+            particle.textContent = content;
+            particle.style.color = color;
+
+            const tx = (Math.random() - 0.5) * 60;
+            const ty = -40 - Math.random() * 50;
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+            particle.style.left = `${60 + (Math.random() - 0.5) * 20}px`;
+            particle.style.top = `${20 + (Math.random() - 0.5) * 20}px`;
+
+            particlesContainer.appendChild(particle);
+            setTimeout(() => particle.remove(), 2400);
+          }
+
+          // Throw Cute Heart Emojis Within Little Range on Click
+          function spawnClickHearts() {
+            const hearts = ['💖', '💕', '❤️', '✨'];
+            const count = 3;
+            for (let i = 0; i < count; i++) {
+              setTimeout(() => {
+                const heart = hearts[Math.floor(Math.random() * hearts.length)];
+                const particle = document.createElement('span');
+                particle.className = 'vb-particle vb-click-heart';
+                particle.textContent = heart;
+
+                // Little tight range: +/-18px horizontal, -16px to -36px vertical
+                const tx = (Math.random() - 0.5) * 36;
+                const ty = -16 - Math.random() * 20;
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.left = `${58 + (Math.random() - 0.5) * 16}px`;
+                particle.style.top = `${36 + (Math.random() - 0.5) * 14}px`;
+
+                particlesContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 1400);
+              }, i * 75);
+            }
+          }
+
+          function openMenu() {
+            isMenuOpen = true;
+            menu.classList.add('is-open');
+            menu.setAttribute('aria-hidden', 'false');
+            bubble.classList.remove('is-visible');
+          }
+
+          function closeMenu() {
+            isMenuOpen = false;
+            menu.classList.remove('is-open');
+            menu.setAttribute('aria-hidden', 'true');
+          }
+
+          function scrollToSection(index) {
+            const sections = getSectionElements();
+            if (index >= 0 && index < sections.length) {
+              sections[index].element.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+
+          function triggerDance() {
+            closeMenu();
+            actorGroup.classList.add('vb-dancing');
+            showMessage("Let's party! ✨", 3000);
+
+            const heartInterval = setInterval(() => {
+              spawnParticle('💖', '#ff6bd6');
+            }, 280);
+
+            setTimeout(() => {
+              clearInterval(heartInterval);
+              actorGroup.classList.remove('vb-dancing');
+            }, 3000);
+          }
+
+          function triggerBackflip() {
+            actorGroup.classList.remove('vb-flip');
+            void actorGroup.offsetWidth;
+            actorGroup.classList.add('vb-flip');
+            showMessage("Wheee! 360° flip!", 2000);
+
+            setTimeout(() => {
+              actorGroup.classList.remove('vb-flip');
+            }, 850);
+          }
+
+          function recordUserActivity() {
+            lastActivityTime = performance.now();
+            if (isAsleep) {
+              isAsleep = false;
+              setMood('happy');
+              showMessage("Oh! You're back! ⚡", 3000);
+            }
+          }
+
+          // Single requestAnimationFrame Loop
+          function tick() {
+            if (window.innerWidth <= 768) {
+              requestAnimationFrame(tick);
+              return;
+            }
+
+            floatTime += 0.04;
+
+            // 1. Idle Sleep Management (after 9s)
+            if (!isAsleep && performance.now() - lastActivityTime > 9000) {
+              isAsleep = true;
+              setMood('sleep');
+              showMessage("Zzz...", 0);
+            }
+
+            if (isAsleep && Math.random() < 0.02) {
+              spawnParticle('z', '#00e5ff');
+            }
+
+            // 2. Position Lerp
+            if (!isDragging) {
+              const lerpFactor = 0.065;
+              botX += (targetX - botX) * lerpFactor;
+              botY += (targetY - botY) * lerpFactor;
+            }
+
+            // 3. Sine Wave Float (only frozen when asleep or actively moving/dragging)
+            floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
+
+            // 4. Movement Tilt
+            const velocityX = botX - prevBotX;
+            prevBotX = botX;
+            prevBotY = botY;
+
+            const targetTilt = Math.min(18, Math.max(-18, velocityX * 1.6));
+            tiltAngle += (targetTilt - tiltAngle) * 0.1;
+
+            botRoot.style.transform = `translate3d(${botX}px, ${botY + floatOffset}px, 0px) rotate(${tiltAngle}deg)`;
+
+            // 5. Eye Pupil Tracking
+            if (!isAsleep && currentMood !== 'sleep') {
+              const botRect = botRoot.getBoundingClientRect();
+              const scale = botRect.width / 140;
+
+              const eyeL_ClientX = botRect.left + leftEyeCenter.x * scale;
+              const eyeL_ClientY = botRect.top + leftEyeCenter.y * scale;
+              const eyeR_ClientX = botRect.left + rightEyeCenter.x * scale;
+              const eyeR_ClientY = botRect.top + rightEyeCenter.y * scale;
+
+              const dxL = mouseScreenX - eyeL_ClientX;
+              const dyL = mouseScreenY - eyeL_ClientY;
+              const distL = Math.hypot(dxL, dyL) || 1;
+              const offsetL = Math.min(maxPupilOffset, distL * 0.035);
+
+              const dxR = mouseScreenX - eyeR_ClientX;
+              const dyR = mouseScreenY - eyeR_ClientY;
+              const distR = Math.hypot(dxR, dyR) || 1;
+              const offsetR = Math.min(maxPupilOffset, distR * 0.035);
+
+              pupilL.setAttribute('cx', (leftEyeCenter.x + (dxL / distL) * offsetL).toFixed(2));
+              pupilL.setAttribute('cy', (leftEyeCenter.y + (dyL / distL) * offsetL).toFixed(2));
+
+              pupilR.setAttribute('cx', (rightEyeCenter.x + (dxR / distR) * offsetR).toFixed(2));
+              pupilR.setAttribute('cy', (rightEyeCenter.y + (dyR / distR) * offsetR).toFixed(2));
+            }
+
+            requestAnimationFrame(tick);
+          }
+
+          // Natural Blink Interval
+          function scheduleBlink() {
+            const nextBlinkMs = 2800 + Math.random() * 3200;
+            setTimeout(() => {
+              if (!isAsleep && currentMood !== 'sleep') {
+                botRoot.classList.add('is-blinking');
+                setTimeout(() => {
+                  botRoot.classList.remove('is-blinking');
+                  scheduleBlink();
+                }, 140);
+              } else {
+                scheduleBlink();
+              }
+            }, nextBlinkMs);
+          }
+
+          // Pointer Dragging & Touch Handling
+          botRoot.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('.vibebot-menu')) return;
+
+            recordUserActivity();
+            isPointerDown = true;
+            isDragging = false;
+            hasDragged = false;
+            dragStartPos = { x: e.clientX, y: e.clientY };
+            // Include current floatOffset so position remains 100% intact if dragged
+            dragOffset = {
+              x: e.clientX - botX,
+              y: e.clientY - (botY + floatOffset)
+            };
+
+            botRoot.setPointerCapture(e.pointerId);
+          });
+
+          window.addEventListener('pointermove', (e) => {
+            mouseScreenX = e.clientX;
+            mouseScreenY = e.clientY;
+            recordUserActivity();
+
+            if (isPointerDown) {
+              const movedDist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
+              if (movedDist > 6) {
+                if (!hasDragged) {
+                  hasDragged = true;
+                  isDragging = true;
+                  // Mouth looks like saying "Ohhh" :O while moving!
+                  setMood('wow');
+                  showMessage("Ohhh! 😮", 0);
+                }
+                botX = e.clientX - dragOffset.x;
+                botY = e.clientY - dragOffset.y;
+                targetX = botX;
+                targetY = botY;
+              }
+            }
+          });
+
+          let lastTapTime = 0;
+          let singleTapTimeout = null;
+
+          botRoot.addEventListener('pointerup', (e) => {
+            if (!isPointerDown) return;
+            isPointerDown = false;
+
+            try {
+              botRoot.releasePointerCapture(e.pointerId);
+            } catch (_) { }
+
+            if (hasDragged) {
+              isDragging = false;
+              isCustomPlaced = true;
+              showMessage("Wheee! 🚀", 2000);
+              setTimeout(() => {
+                if (!isAsleep && currentMood === 'wow') {
+                  setMood('happy');
+                }
+              }, 1500);
+            } else {
+              // Intact Click/Tap: throw heart emojis in a little range
+              spawnClickHearts();
+
+              if (!e.target.closest('.vibebot-menu')) {
+                const now = performance.now();
+                const tapInterval = now - lastTapTime;
+
+                if (tapInterval < 320 && tapInterval > 30) {
+                  // Double-tap detected
+                  lastTapTime = 0;
+                  if (singleTapTimeout) {
+                    clearTimeout(singleTapTimeout);
+                    singleTapTimeout = null;
+                  }
+                  closeMenu();
+                  recordUserActivity();
+                  triggerBackflip();
+                } else {
+                  lastTapTime = now;
+                  if (singleTapTimeout) clearTimeout(singleTapTimeout);
+                  singleTapTimeout = setTimeout(() => {
+                    if (!hasDragged) {
+                      if (isMenuOpen) {
+                        closeMenu();
+                      } else {
+                        openMenu();
+                      }
+                    }
+                  }, 250);
+                }
+              }
+            }
+          });
+
+          botRoot.addEventListener('dblclick', (e) => {
+            e.stopPropagation();
             if (singleTapTimeout) {
               clearTimeout(singleTapTimeout);
               singleTapTimeout = null;
@@ -1974,147 +2387,121 @@
             closeMenu();
             recordUserActivity();
             triggerBackflip();
-          } else {
-            lastTapTime = now;
-            if (singleTapTimeout) clearTimeout(singleTapTimeout);
-            singleTapTimeout = setTimeout(() => {
-              if (!hasDragged) {
-                if (isMenuOpen) {
-                  closeMenu();
-                } else {
-                  openMenu();
-                }
-              }
-            }, 250);
+          });
+
+          document.addEventListener('click', (e) => {
+            if (isMenuOpen && !e.target.closest('#vibebot-container')) {
+              closeMenu();
+            }
+          });
+
+          // Menu Actions
+          if (btnNext) {
+            btnNext.addEventListener('click', (e) => {
+              e.stopPropagation();
+              closeMenu();
+              const sections = getSectionElements();
+              const nextIdx = (currentSectionIdx + 1) % sections.length;
+              scrollToSection(nextIdx);
+            });
           }
-        }
-      }
-    });
 
-    botRoot.addEventListener('dblclick', (e) => {
-      e.stopPropagation();
-      if (singleTapTimeout) {
-        clearTimeout(singleTapTimeout);
-        singleTapTimeout = null;
-      }
-      closeMenu();
-      recordUserActivity();
-      triggerBackflip();
-    });
+          if (btnRegister) {
+            btnRegister.addEventListener('click', (e) => {
+              e.stopPropagation();
+              closeMenu();
+              const regSection = document.getElementById('register');
+              if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
+            });
+          }
 
-    document.addEventListener('click', (e) => {
-      if (isMenuOpen && !e.target.closest('#vibebot-container')) {
-        closeMenu();
-      }
-    });
+          if (btnTip) {
+            btnTip.addEventListener('click', (e) => {
+              e.stopPropagation();
+              closeMenu();
+              const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
+              showMessage(`💡 ${randomTip}`, 4200);
+              triggerSurprise();
+            });
+          }
 
-    // Menu Actions
-    if (btnNext) {
-      btnNext.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeMenu();
-        const sections = getSectionElements();
-        const nextIdx = (currentSectionIdx + 1) % sections.length;
-        scrollToSection(nextIdx);
-      });
-    }
+          if (btnDance) {
+            btnDance.addEventListener('click', (e) => {
+              e.stopPropagation();
+              triggerDance();
+            });
+          }
 
-    if (btnRegister) {
-      btnRegister.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeMenu();
-        const regSection = document.getElementById('register');
-        if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
-      });
-    }
+          // Scroll & Section Tracking
+          window.addEventListener('scroll', () => {
+            recordUserActivity();
+            const newIdx = resolveActiveSectionIndex();
 
-    if (btnTip) {
-      btnTip.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeMenu();
-        const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
-        showMessage(`💡 ${randomTip}`, 4200);
-        triggerSurprise();
-      });
-    }
+            if (newIdx !== currentSectionIdx) {
+              currentSectionIdx = newIdx;
+              isCustomPlaced = false;
 
-    if (btnDance) {
-      btnDance.addEventListener('click', (e) => {
-        e.stopPropagation();
-        triggerDance();
-      });
-    }
+              const sections = getSectionElements();
+              const activeSection = sections[currentSectionIdx];
+              if (activeSection && SECTION_MESSAGES[activeSection.id]) {
+                showMessage(SECTION_MESSAGES[activeSection.id], 3000);
+              }
+            }
 
-    // Scroll & Section Tracking
-    window.addEventListener('scroll', () => {
-      recordUserActivity();
-      const newIdx = resolveActiveSectionIndex();
+            calculateTargetPosition();
+          }, { passive: true });
 
-      if (newIdx !== currentSectionIdx) {
-        currentSectionIdx = newIdx;
-        isCustomPlaced = false;
+          window.addEventListener('resize', calculateTargetPosition, { passive: true });
 
-        const sections = getSectionElements();
-        const activeSection = sections[currentSectionIdx];
-        if (activeSection && SECTION_MESSAGES[activeSection.id]) {
-          showMessage(SECTION_MESSAGES[activeSection.id], 3000);
-        }
-      }
+          // Hover Reactions on External Elements
+          const interactiveButtons = document.querySelectorAll('button:not(.vibebot-btn), a.btn, a.btn-primary, a.btn-secondary, a.nav-cta, .carousel-btn');
+          interactiveButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+              triggerSurprise();
+            });
+          });
 
-      calculateTargetPosition();
-    }, { passive: true });
+          const teamCards = document.querySelectorAll('.leadership-card, .contributor-card:not(.coordinator-card)');
+          teamCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+              if (isAsleep) return;
+              const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
+              const name = nameEl ? nameEl.textContent.trim() : 'our team';
+              setMood('love');
+              showMessage(`Say hi to ${name}! 💖`, 2600);
+              spawnParticle('💖', '#ff6bd6');
+            });
 
-    window.addEventListener('resize', calculateTargetPosition, { passive: true });
+            card.addEventListener('mouseleave', () => {
+              if (!isAsleep) {
+                setTimeout(() => {
+                  if (!isAsleep && currentMood === 'love') setMood('happy');
+                }, 1200);
+              }
+            });
+          });
 
-    // Hover Reactions on External Elements
-    const interactiveButtons = document.querySelectorAll('button:not(.vibebot-btn), a.btn, a.btn-primary, a.btn-secondary, a.nav-cta, .carousel-btn');
-    interactiveButtons.forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        triggerSurprise();
-      });
-    });
+          // Initial positioning and greet
+          currentSectionIdx = resolveActiveSectionIndex();
+          calculateTargetPosition();
 
-    const teamCards = document.querySelectorAll('.leadership-card, .contributor-card:not(.coordinator-card)');
-    teamCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        if (isAsleep) return;
-        const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
-        const name = nameEl ? nameEl.textContent.trim() : 'our team';
-        setMood('love');
-        showMessage(`Say hi to ${name}! 💖`, 2600);
-        spawnParticle('💖', '#ff6bd6');
-      });
-
-      card.addEventListener('mouseleave', () => {
-        if (!isAsleep) {
           setTimeout(() => {
-            if (!isAsleep && currentMood === 'love') setMood('happy');
-          }, 1200);
+            const sections = getSectionElements();
+            const activeSection = sections[currentSectionIdx];
+            const initialMsg = activeSection && SECTION_MESSAGES[activeSection.id]
+              ? SECTION_MESSAGES[activeSection.id]
+              : "Welcome to AI VibeX 1.0! Let's vibe!";
+            showMessage(initialMsg, 3500);
+          }, 900);
+
+          scheduleBlink();
+          requestAnimationFrame(tick);
         }
-      });
-    });
 
-    // Initial positioning and greet
-    currentSectionIdx = resolveActiveSectionIndex();
-    calculateTargetPosition();
-
-    setTimeout(() => {
-      const sections = getSectionElements();
-      const activeSection = sections[currentSectionIdx];
-      const initialMsg = activeSection && SECTION_MESSAGES[activeSection.id]
-        ? SECTION_MESSAGES[activeSection.id]
-        : "Welcome to AI VibeX 1.0! Let's vibe!";
-      showMessage(initialMsg, 3500);
-    }, 900);
-
-    scheduleBlink();
-    requestAnimationFrame(tick);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setup);
-  } else {
-    setup();
-  }
-})();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', setup);
+        } else {
+          setup();
+        }
+      })();
 

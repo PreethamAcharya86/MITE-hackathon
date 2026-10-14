@@ -557,9 +557,185 @@ body.cursor-click .cursor-ring {
 .hero-content button,
 .hero-content .college-badge,
 .hero-content .meta-chip,
-.hero-content .countdown-wrap {
+.hero-content .countdown-wrap,
+.hero-content .hero-logo-showcase {
   pointer-events: auto;
 }
+
+/* ─── ARTIFERA HERO LOGO SHOWCASE ─────────────────────────── */
+.hero-logo-showcase {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 4px auto;
+  pointer-events: auto;
+  user-select: none;
+  z-index: 5;
+}
+/* --- Desktop 3D Particle Wrapper & Canvas --- */
+.artifera-particle-wrapper {
+  position: relative;
+   width: 240px;
+   height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+.artifera-particle-canvas {
+   width: 240px;
+   height: 240px;
+  display: block;
+  cursor: grab;
+  filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.35)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.25));
+  transition: filter 0.3s ease;
+  touch-action: none;
+}
+.artifera-particle-canvas:active {
+  cursor: grabbing;
+}
+.artifera-particle-glow {
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.16) 0%, rgba(139, 92, 246, 0.12) 45%, transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: -1;
+  animation: particleGlowPulse 4s ease-in-out infinite alternate;
+}
+@keyframes particleGlowPulse {
+  0% { transform: scale(0.92); opacity: 0.6; }
+  100% { transform: scale(1.1); opacity: 0.95; }
+}
+
+/* --- Mobile / Tablet Liquid Glass Badge (<769px) --- */
+.artifera-glass-badge {
+  display: none;
+  position: relative;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.18) 0%, rgba(15, 23, 42, 0.5) 60%, rgba(139, 92, 246, 0.2) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(34, 211, 238, 0.28),
+    0 0 45px rgba(139, 92, 246, 0.22),
+    inset 0 2px 4px rgba(255, 255, 255, 0.65),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.55);
+  animation: mobileGlassFloat 5s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+  touch-action: pan-y;
+}
+@keyframes mobileGlassFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(0deg);
+  }
+}
+.glass-orb-glow {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 75%);
+  filter: blur(16px);
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-reflection-crescent {
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  right: 15px;
+  height: 50px;
+  border-radius: 50% / 100% 100% 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 75%, transparent 100%);
+  pointer-events: none;
+  z-index: 4;
+}
+.glass-logo-frame {
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+.glass-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  filter: contrast(1.08) brightness(1.02);
+}
+.glass-specular-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, transparent 20%, rgba(255, 255, 255, 0.3) 45%, rgba(34, 211, 238, 0.22) 52%, transparent 70%);
+  background-size: 250% 250%;
+  pointer-events: none;
+  z-index: 3;
+  animation: glassShimmerFlow 4.5s ease-in-out infinite;
+}
+@keyframes glassShimmerFlow {
+  0% { background-position: -80% -80%; }
+  50% { background-position: 180% 180%; }
+  100% { background-position: 180% 180%; }
+}
+.glass-rim-ring {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(34, 211, 238, 0.45), rgba(139, 92, 246, 0.35), rgba(255, 255, 255, 0.65)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
+}
+/* Responsive display toggle */
+@media (max-width: 768px) {
+  .hero-logo-showcase {
+    margin-bottom: 18px;
+  }
+  .artifera-particle-wrapper {
+    display: none !important;
+  }
+  .artifera-glass-badge {
+    display: inline-flex !important;
+  }
+}
+@media (min-width: 769px) {
+  .artifera-particle-wrapper {
+    display: flex !important;
+  }
+  .artifera-glass-badge {
+    display: none !important;
+  }
+}
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .artifera-particle-glow,
+  .artifera-glass-badge,
+  .glass-specular-shimmer {
+    animation: none !important;
+  }
+}
+
 .college-badge {
   display: inline-flex;
   align-items: center;

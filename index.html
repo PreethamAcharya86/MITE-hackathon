@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI VibeX 1.0 — The premier AI Hackathon by Mangalore Institute of Technology & Engineering. A 6-hour innovation sprint from 9:15 AM to 4:00 PM. Build, Vibe, Innovate." />
+  <meta name="description"
+    content="AI VibeX 1.0 — The premier AI Hackathon by Mangalore Institute of Technology & Engineering. A 6-hour innovation sprint from 9:15 AM to 4:00 PM. Build, Vibe, Innovate." />
   <meta property="og:title" content="AI VibeX 1.0 | MITE Hackathon" />
   <meta property="og:description" content="6-hour AI innovation sprint at MITE. Build, Vibe, Innovate." />
   <title>AI VibeX 1.0 | MITE Hackathon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <!-- SCROLL PROGRESS BAR -->
@@ -22,9 +27,9 @@
 
   <!-- CURSOR GLOW -->
   <!-- Custom cursor layers -->
-  <div class="cursor-glow"  id="cursor-glow"></div>
-  <div class="cursor-ring"  id="cursor-ring"></div>
-  <div class="cursor-dot"   id="cursor-dot"></div>
+  <div class="cursor-glow" id="cursor-glow"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
@@ -86,15 +91,25 @@
 
       <div class="hero-meta" data-aos="fade-up" data-aos-delay="200">
         <div class="meta-chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
           9:15 AM &ndash; 4:00 PM
         </div>
         <div class="meta-chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
           Date To Be Announced
         </div>
         <div class="meta-chip">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
           6 Hours of Innovation
         </div>
       </div>
@@ -102,11 +117,34 @@
       <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
         <a href="#register" class="btn-primary" id="hero-register-btn">
           <span>Register Now</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
         </a>
         <a href="#timeline" class="btn-secondary" id="hero-timeline-btn">
           View Timeline
         </a>
+      </div>
+
+      <!-- ARTIFERA HERO LOGO SHOWCASE -->
+      <div class="hero-logo-showcase" id="hero-logo-showcase" data-aos="zoom-in" data-aos-duration="1000">
+        <!-- Desktop (Laptop/PC): Interactive 3D Volumetric Particle Logo -->
+        <div class="artifera-particle-wrapper" id="artifera-particle-wrapper">
+          <canvas id="artifera-particle-canvas" class="artifera-particle-canvas" width="360" height="360"
+            aria-label="Interactive 3D Particle ARTIFERA Logo"></canvas>
+          <div class="artifera-particle-glow" aria-hidden="true"></div>
+        </div>
+        <!-- Mobile & Tablet: Translucent Liquid Glass Floating Emblem -->
+        <div class="artifera-glass-badge" id="artifera-glass-badge" aria-label="ARTIFERA Logo">
+          <div class="glass-orb-glow" aria-hidden="true"></div>
+          <div class="glass-reflection-crescent" aria-hidden="true"></div>
+          <div class="glass-logo-frame">
+            <img src="assets/artifera_logo.jpeg" alt="ARTIFERA Official Logo" class="glass-logo-img" />
+          </div>
+          <div class="glass-specular-shimmer" aria-hidden="true"></div>
+          <div class="glass-rim-ring" aria-hidden="true"></div>
+        </div>
       </div>
 
       <div class="countdown-wrap" data-aos="fade-up" data-aos-delay="400">
@@ -124,28 +162,42 @@
       <div class="strip-grid">
         <div class="strip-card" data-aos="fade-up">
           <div class="strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+            </svg>
           </div>
           <h3>6 Hours</h3>
           <p>Intense sprint to build something extraordinary with AI</p>
         </div>
         <div class="strip-card" data-aos="fade-up" data-aos-delay="80">
           <div class="strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
           </div>
           <h3>Team Spirit</h3>
           <p>Collaborate, ideate, and ship together under pressure</p>
         </div>
         <div class="strip-card" data-aos="fade-up" data-aos-delay="160">
           <div class="strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
           </div>
           <h3>AI-First</h3>
           <p>Every project must harness the power of Artificial Intelligence</p>
         </div>
         <div class="strip-card" data-aos="fade-up" data-aos-delay="240">
           <div class="strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+            </svg>
           </div>
           <h3>Win Prizes</h3>
           <p>Exciting rewards await the teams that vibe the hardest</p>
@@ -172,14 +224,19 @@
         <div class="timeline-item" data-aos="fade-right" id="tl-reporting">
           <div class="tl-marker">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card">
             <div class="tl-time">09:15 AM &ndash; 09:30 AM</div>
             <h3 class="tl-title">Reporting, Desk Setup &amp; Power/Wi-Fi Verification</h3>
-            <p class="tl-desc">Teams report to the venue, settle into assigned workstations, setup hardware, and verify power outlets and high-speed Wi-Fi connectivity.</p>
+            <p class="tl-desc">Teams report to the venue, settle into assigned workstations, setup hardware, and verify
+              power outlets and high-speed Wi-Fi connectivity.</p>
             <div class="tl-tag">Desk Setup</div>
           </div>
         </div>
@@ -188,14 +245,17 @@
         <div class="timeline-item tl-right" data-aos="fade-left" id="tl-keynote">
           <div class="tl-marker">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card">
             <div class="tl-time">09:30 AM &ndash; 09:45 AM</div>
             <h3 class="tl-title">Keynote, Rules &amp; Reveal of On-Spot Problem Statements</h3>
-            <p class="tl-desc">Official keynote by the AIML Department. Hackathon rules, evaluation rubric, and the surprise on-spot challenge statements are revealed.</p>
+            <p class="tl-desc">Official keynote by the AIML Department. Hackathon rules, evaluation rubric, and the
+              surprise on-spot challenge statements are revealed.</p>
             <div class="tl-tag">Challenge Reveal</div>
           </div>
         </div>
@@ -204,14 +264,18 @@
         <div class="timeline-item" data-aos="fade-right" id="tl-ideation">
           <div class="tl-marker">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4M12 8h.01" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card">
             <div class="tl-time">09:45 AM &ndash; 10:00 AM</div>
             <h3 class="tl-title">Ideation &amp; Repository Setup (Vibe Begins)</h3>
-            <p class="tl-desc">Strategy brainstorming, solution architecture planning, GitHub repository initialization, and team role distribution. The vibe begins!</p>
+            <p class="tl-desc">Strategy brainstorming, solution architecture planning, GitHub repository initialization,
+              and team role distribution. The vibe begins!</p>
             <div class="tl-tag tl-tag-hot">Vibe Begins</div>
           </div>
         </div>
@@ -220,14 +284,18 @@
         <div class="timeline-item tl-right" data-aos="fade-left" id="tl-sprint-1">
           <div class="tl-marker">
             <div class="tl-dot tl-dot-primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card tl-card-highlight">
             <div class="tl-time">10:00 AM &ndash; 01:00 PM</div>
             <h3 class="tl-title">⚡ Core Sprint 1: Prompting, API Integration &amp; UI Build</h3>
-            <p class="tl-desc">3-hour high-intensity build sprint! Prompt engineering, LLM &amp; AI API integration, core application logic, and rapid UI development.</p>
+            <p class="tl-desc">3-hour high-intensity build sprint! Prompt engineering, LLM &amp; AI API integration,
+              core application logic, and rapid UI development.</p>
             <div class="tl-tag tl-tag-hot">Core Sprint 1</div>
           </div>
         </div>
@@ -236,14 +304,21 @@
         <div class="timeline-item" data-aos="fade-right" id="tl-lunch">
           <div class="tl-marker">
             <div class="tl-dot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                <line x1="6" y1="1" x2="6" y2="4" />
+                <line x1="10" y1="1" x2="10" y2="4" />
+                <line x1="14" y1="1" x2="14" y2="4" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card">
             <div class="tl-time">01:00 PM &ndash; 01:45 PM</div>
             <h3 class="tl-title">Lunch Break (Staggered / Networking)</h3>
-            <p class="tl-desc">Recharge with lunch, exchange ideas with fellow builders, network with faculty and peer innovators, and align afternoon sprint goals.</p>
+            <p class="tl-desc">Recharge with lunch, exchange ideas with fellow builders, network with faculty and peer
+              innovators, and align afternoon sprint goals.</p>
             <div class="tl-tag">Networking Break</div>
           </div>
         </div>
@@ -252,14 +327,18 @@
         <div class="timeline-item tl-right" data-aos="fade-left" id="tl-sprint-2">
           <div class="tl-marker">
             <div class="tl-dot tl-dot-primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
             </div>
             <div class="tl-line"></div>
           </div>
           <div class="tl-card tl-card-highlight">
             <div class="tl-time">01:45 PM &ndash; 03:30 PM</div>
             <h3 class="tl-title">🚀 Core Sprint 2: Feature Freeze, Debugging &amp; Deployment</h3>
-            <p class="tl-desc">Final build sprint! Lock in features, perform comprehensive debugging, and deploy live prototypes on Vercel, Render, or cloud environments.</p>
+            <p class="tl-desc">Final build sprint! Lock in features, perform comprehensive debugging, and deploy live
+              prototypes on Vercel, Render, or cloud environments.</p>
             <div class="tl-tag tl-tag-warn">Feature Freeze &amp; Deploy</div>
           </div>
         </div>
@@ -268,13 +347,17 @@
         <div class="timeline-item" data-aos="fade-right" id="tl-judging">
           <div class="tl-marker">
             <div class="tl-dot tl-dot-gold">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="6" />
+                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+              </svg>
             </div>
           </div>
           <div class="tl-card">
             <div class="tl-time">03:30 PM &ndash; 04:00 PM</div>
             <h3 class="tl-title">🏆 Live Demos &amp; Speed Judging</h3>
-            <p class="tl-desc">High-speed judging showdown! 2-minute elevator pitches per desk, real-time live demonstrations to the panel, jury scoring, and wrap-up.</p>
+            <p class="tl-desc">High-speed judging showdown! 2-minute elevator pitches per desk, real-time live
+              demonstrations to the panel, jury scoring, and wrap-up.</p>
             <div class="tl-tag tl-tag-gold">Speed Judging</div>
           </div>
         </div>
@@ -296,7 +379,10 @@
         <div class="flow-card" data-aos="zoom-in" id="flow-step-1">
           <div class="flow-number">01</div>
           <div class="flow-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
           </div>
           <h3>Form Your Team</h3>
           <p>Assemble a team of passionate builders. Mix skills &mdash; design, code, ML &mdash; for maximum impact.</p>
@@ -306,7 +392,11 @@
         <div class="flow-card" data-aos="zoom-in" data-aos-delay="80" id="flow-step-2">
           <div class="flow-number">02</div>
           <div class="flow-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
           </div>
           <h3>Pick a Problem</h3>
           <p>Choose from curated AI-focused problem statements that tackle real-world challenges.</p>
@@ -316,7 +406,10 @@
         <div class="flow-card" data-aos="zoom-in" data-aos-delay="160" id="flow-step-3">
           <div class="flow-number">03</div>
           <div class="flow-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
           </div>
           <h3>Build &amp; Iterate</h3>
           <p>Code furiously. Use APIs, models, frameworks. Mentors are available to guide you throughout.</p>
@@ -326,7 +419,11 @@
         <div class="flow-card" data-aos="zoom-in" data-aos-delay="240" id="flow-step-4">
           <div class="flow-number">04</div>
           <div class="flow-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
           </div>
           <h3>Demo &amp; Win</h3>
           <p>Present your solution to the judges. Impress with impact, creativity, and technical depth.</p>
@@ -341,28 +438,36 @@
               <span class="criteria-label">Innovation</span>
               <span class="criteria-percent">30%</span>
             </div>
-            <div class="criteria-bar"><div class="criteria-fill" style="--pct:30%"></div></div>
+            <div class="criteria-bar">
+              <div class="criteria-fill" style="--pct:30%"></div>
+            </div>
           </div>
           <div class="criteria-item" id="criteria-impact">
             <div class="criteria-bar-wrap">
               <span class="criteria-label">Real-World Impact</span>
               <span class="criteria-percent">25%</span>
             </div>
-            <div class="criteria-bar"><div class="criteria-fill" style="--pct:25%"></div></div>
+            <div class="criteria-bar">
+              <div class="criteria-fill" style="--pct:25%"></div>
+            </div>
           </div>
           <div class="criteria-item" id="criteria-tech">
             <div class="criteria-bar-wrap">
               <span class="criteria-label">Technical Complexity</span>
               <span class="criteria-percent">25%</span>
             </div>
-            <div class="criteria-bar"><div class="criteria-fill" style="--pct:25%"></div></div>
+            <div class="criteria-bar">
+              <div class="criteria-fill" style="--pct:25%"></div>
+            </div>
           </div>
           <div class="criteria-item" id="criteria-presentation">
             <div class="criteria-bar-wrap">
               <span class="criteria-label">Presentation</span>
               <span class="criteria-percent">20%</span>
             </div>
-            <div class="criteria-bar"><div class="criteria-fill" style="--pct:20%"></div></div>
+            <div class="criteria-bar">
+              <div class="criteria-fill" style="--pct:20%"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -382,22 +487,26 @@
         <div class="why-card" data-aos="fade-up" id="why-card-1">
           <div class="why-glow"></div>
           <h3>AI-First Culture</h3>
-          <p>Every challenge revolves around building with AI. Get hands-on experience with LLMs, computer vision, generative models, and more.</p>
+          <p>Every challenge revolves around building with AI. Get hands-on experience with LLMs, computer vision,
+            generative models, and more.</p>
         </div>
         <div class="why-card" data-aos="fade-up" data-aos-delay="80" id="why-card-2">
           <div class="why-glow"></div>
           <h3>Expert Mentors</h3>
-          <p>Learn from industry professionals and faculty. Get live feedback, unblock challenges, and level up your skills in real time.</p>
+          <p>Learn from industry professionals and faculty. Get live feedback, unblock challenges, and level up your
+            skills in real time.</p>
         </div>
         <div class="why-card" data-aos="fade-up" data-aos-delay="160" id="why-card-3">
           <div class="why-glow"></div>
           <h3>Accelerated Growth</h3>
-          <p>6 hours of focused building is worth months of casual learning. Push your limits and discover what you're truly capable of.</p>
+          <p>6 hours of focused building is worth months of casual learning. Push your limits and discover what you're
+            truly capable of.</p>
         </div>
         <div class="why-card" data-aos="fade-up" data-aos-delay="240" id="why-card-4">
           <div class="why-glow"></div>
           <h3>Recognition &amp; Prizes</h3>
-          <p>Win exciting prizes, certificates, and gain recognition from MITE faculty and the broader tech community.</p>
+          <p>Win exciting prizes, certificates, and gain recognition from MITE faculty and the broader tech community.
+          </p>
         </div>
         <div class="why-card" data-aos="fade-up" data-aos-delay="320" id="why-card-5">
           <div class="why-glow"></div>
@@ -407,7 +516,8 @@
         <div class="why-card" data-aos="fade-up" data-aos-delay="400" id="why-card-6">
           <div class="why-glow"></div>
           <h3>Real Problem Solving</h3>
-          <p>Tackle carefully designed problems that matter. Ship something you'd actually be proud to put in your portfolio.</p>
+          <p>Tackle carefully designed problems that matter. Ship something you'd actually be proud to put in your
+            portfolio.</p>
         </div>
       </div>
     </div>
@@ -423,7 +533,7 @@
         </div>
         <h2 class="reg-title">Ready to <span class="gradient-text">Vibe?</span></h2>
         <p class="reg-subtitle">
-          Presented by the <strong>Department of AIML (3rd Year)</strong><br/>
+          Presented by the <strong>Department of AIML (3rd Year)</strong><br />
           <strong>Mangalore Institute of Technology &amp; Engineering</strong>
         </p>
         <div class="reg-meta">
@@ -431,9 +541,13 @@
           <span>&#9889; 6 Hours</span>
           <span>&#129302; AI-Powered</span>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfosNBAJMrsxhXJu0Xqzt_0jqMMuvOu74zvJcYXlvWNINL1xg/viewform" target="_blank" rel="noopener noreferrer" class="btn-primary btn-large" id="main-register-btn">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfosNBAJMrsxhXJu0Xqzt_0jqMMuvOu74zvJcYXlvWNINL1xg/viewform"
+          target="_blank" rel="noopener noreferrer" class="btn-primary btn-large" id="main-register-btn">
           <span>Register Now</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
         </a>
         <p class="reg-note">Click above to register your team via the Google Form.</p>
       </div>
@@ -455,7 +569,9 @@
       <div class="contributors-row-wrapper" data-aos="fade-up">
         <div class="role-line-divider">
           <span class="line-tag-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
             Leadership
           </span>
         </div>
@@ -486,7 +602,8 @@
             <div class="contributor-avatar-container">
               <div class="avatar-neon-halo"></div>
               <div class="avatar-photo-frame">
-                <img src="assets/Head_coordinator.jpg" alt="Manjunath Prasad H. R. - Head Coordinator" class="contributor-photo" />
+                <img src="assets/Head_coordinator.jpg" alt="Manjunath Prasad H. R. - Head Coordinator"
+                  class="contributor-photo" />
               </div>
               <div class="avatar-role-badge head-coord-badge">
                 <span class="badge-dot pulse"></span> Lead
@@ -505,181 +622,219 @@
       <div class="contributors-row-wrapper coordinators-section-row" data-aos="fade-up" data-aos-delay="250">
         <div class="role-line-divider coordinator-divider-bar">
           <span class="line-tag-pill coordinator-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
             Meet Our Team
           </span>
         </div>
 
         <div class="coordinators-carousel-wrapper">
           <button class="carousel-btn carousel-btn-prev" id="coord-prev" aria-label="Previous">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </button>
 
           <div class="coordinators-carousel-track" id="coordinators-track">
             <div class="coordinators-cards-row">
-            <!-- Coordinator Card 1: Lead Coordinator - Sudeep U Nayak -->
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/lead_coordinator.jpeg" alt="Sudeep U Nayak - Lead Coordinator" class="contributor-photo" />
+              <!-- Coordinator Card 1: Lead Coordinator - Sudeep U Nayak -->
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/lead_coordinator.jpeg" alt="Sudeep U Nayak - Lead Coordinator"
+                      class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge lead-badge">
+                    <span class="badge-dot pulse"></span> Lead
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge lead-badge">
-                  <span class="badge-dot pulse"></span> Lead
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill lead-pill">Lead Coordinator</span>
+                  <h3 class="contributor-name">Sudeep U Nayak</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/sudeep-u-nayak-b69313374" target="_blank"
+                    rel="noopener noreferrer" class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill lead-pill">Lead Coordinator</span>
-                <h3 class="contributor-name">Sudeep U Nayak</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/sudeep-u-nayak-b69313374" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <!-- Coordinator Card 2: Rachith R Amin -->
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/coordinator1.jpeg" alt="Rachith R Amin" class="contributor-photo" />
+              <!-- Coordinator Card 2: Rachith R Amin -->
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/coordinator1.jpeg" alt="Rachith R Amin" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge">
+                    <span class="badge-dot"></span> Core
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge">
-                  <span class="badge-dot"></span> Core
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill">Coordinator</span>
+                  <h3 class="contributor-name">Rachith R Amin</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/rachith-r-amin/" target="_blank" rel="noopener noreferrer"
+                    class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill">Coordinator</span>
-                <h3 class="contributor-name">Rachith R Amin</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/rachith-r-amin/" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/coordinator4.jpeg" alt="Savin" class="contributor-photo" />
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/coordinator4.jpeg" alt="Savin" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge">
+                    <span class="badge-dot"></span> Core
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge">
-                  <span class="badge-dot"></span> Core
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill">Coordinator</span>
+                  <h3 class="contributor-name">Savin</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/savin-moolya-7170683b6" target="_blank" rel="noopener noreferrer"
+                    class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill">Coordinator</span>
-                <h3 class="contributor-name">Savin</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/savin-moolya-7170683b6" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <!-- Coordinator Card 2: Jestin Jimmy -->
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/coordinator2.jpeg" alt="Jestin Jimmy" class="contributor-photo" />
+              <!-- Coordinator Card 2: Jestin Jimmy -->
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/coordinator2.jpeg" alt="Jestin Jimmy" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge">
+                    <span class="badge-dot"></span> Core
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge">
-                  <span class="badge-dot"></span> Core
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill">Coordinator</span>
+                  <h3 class="contributor-name">Jestin Jimmy</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/jestin-jimmy-7b18a2441" target="_blank" rel="noopener noreferrer"
+                    class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill">Coordinator</span>
-                <h3 class="contributor-name">Jestin Jimmy</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/jestin-jimmy-7b18a2441" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/coordinator5.png" alt="lloyd Dsouza" class="contributor-photo" />
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/coordinator5.png" alt="lloyd Dsouza" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge">
+                    <span class="badge-dot"></span> Core
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge">
-                  <span class="badge-dot"></span> Core
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill">Coordinator</span>
+                  <h3 class="contributor-name">lloyd Dsouza</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/lloyd-dsouza-391396306" target="_blank" rel="noopener noreferrer"
+                    class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill">Coordinator</span>
-                <h3 class="contributor-name">lloyd Dsouza</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/lloyd-dsouza-391396306" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <!-- Designer Card: Preetham Acharya -->
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/web_designer.png" alt="Preetham Acharya" class="contributor-photo" />
+              <!-- Designer Card: Preetham Acharya -->
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/web_designer.png" alt="Preetham Acharya" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge designer-badge">
+                    <span class="badge-dot"></span> Designer
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge designer-badge">
-                  <span class="badge-dot"></span> Designer
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill designer-pill">Web Designer &amp; Dev</span>
+                  <h3 class="contributor-name">Preetham Acharya</h3>
+                  <p class="contributor-org">Technical Lead</p>
+                  <a href="https://www.linkedin.com/in/preetham-acharya" target="_blank" rel="noopener noreferrer"
+                    class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill designer-pill">Web Designer &amp; Dev</span>
-                <h3 class="contributor-name">Preetham Acharya</h3>
-                <p class="contributor-org">Technical Lead</p>
-                <a href="https://www.linkedin.com/in/preetham-acharya" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
 
-            <div class="contributor-card coordinator-card">
-              <div class="card-glow-layer"></div>
-              <div class="contributor-avatar-container compact">
-                <div class="avatar-neon-halo"></div>
-                <div class="avatar-photo-frame">
-                  <img src="assets/coordinator3.jpeg" alt="Alok M Poojary" class="contributor-photo" />
+              <div class="contributor-card coordinator-card">
+                <div class="card-glow-layer"></div>
+                <div class="contributor-avatar-container compact">
+                  <div class="avatar-neon-halo"></div>
+                  <div class="avatar-photo-frame">
+                    <img src="assets/coordinator3.jpeg" alt="Alok M Poojary" class="contributor-photo" />
+                  </div>
+                  <div class="avatar-role-badge coord-badge">
+                    <span class="badge-dot"></span> Core
+                  </div>
                 </div>
-                <div class="avatar-role-badge coord-badge">
-                  <span class="badge-dot"></span> Core
+                <div class="contributor-meta">
+                  <span class="role-title-pill coord-pill">Coordinator</span>
+                  <h3 class="contributor-name">Alok M Poojary</h3>
+                  <p class="contributor-org">Organizing Committee</p>
+                  <a href="https://www.linkedin.com/in/alok-m-poojary-3690513b2" target="_blank"
+                    rel="noopener noreferrer" class="contributor-social-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <span>Connect on LinkedIn</span>
+                  </a>
                 </div>
               </div>
-              <div class="contributor-meta">
-                <span class="role-title-pill coord-pill">Coordinator</span>
-                <h3 class="contributor-name">Alok M Poojary</h3>
-                <p class="contributor-org">Organizing Committee</p>
-                <a href="https://www.linkedin.com/in/alok-m-poojary-3690513b2" target="_blank" rel="noopener noreferrer" class="contributor-social-link">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                  <span>Connect on LinkedIn</span>
-                </a>
-              </div>
-            </div>
               <!-- Future coordinators added here will seamlessly populate the row -->
             </div>
           </div>
 
           <button class="carousel-btn carousel-btn-next" id="coord-next" aria-label="Next">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
           </button>
         </div>
 
@@ -704,7 +859,7 @@
           </div>
           <p>Presented with passion by 3rd Year AIML<br />at MITE, Mangalore.</p>
         </div>
-        
+
         <div class="footer-contact">
           <span class="footer-link-head">Presented By</span>
           <p><strong>Department of AIML (3rd Year)</strong></p>
@@ -747,7 +902,8 @@
     <div class="vibebot-ground-shadow"></div>
 
     <!-- VibeBot Inline SVG (viewBox 0 0 140 190) -->
-    <svg id="vibebot-svg" class="vibebot-svg" viewBox="0 0 140 190" width="140" height="190" xmlns="http://www.w3.org/2000/svg">
+    <svg id="vibebot-svg" class="vibebot-svg" viewBox="0 0 140 190" width="140" height="190"
+      xmlns="http://www.w3.org/2000/svg">
       <defs>
         <!-- Head & Body Shell Gradient (#b9a8ff to #5b8cff) -->
         <linearGradient id="vb-grad-metal" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -786,12 +942,15 @@
         </g>
 
         <!-- 2. Gentle Waving Arms -->
-        <path id="vb-arm-left" class="vb-arm vb-arm-left" d="M 37 106 Q 16 112 18 126 Q 26 136 34 115" fill="#7c5cff" stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
-        <path id="vb-arm-right" class="vb-arm vb-arm-right" d="M 103 106 Q 124 112 122 126 Q 114 136 106 115" fill="#7c5cff" stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
+        <path id="vb-arm-left" class="vb-arm vb-arm-left" d="M 37 106 Q 16 112 18 126 Q 26 136 34 115" fill="#7c5cff"
+          stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
+        <path id="vb-arm-right" class="vb-arm vb-arm-right" d="M 103 106 Q 124 112 122 126 Q 114 136 106 115"
+          fill="#7c5cff" stroke="#5b8cff" stroke-width="2.2" stroke-linecap="round" />
 
         <!-- 3. Antenna with Blinking Pink Bulb -->
         <line x1="70" y1="20" x2="70" y2="5" stroke="#7c5cff" stroke-width="3" stroke-linecap="round" />
-        <circle id="vb-antenna-bulb" class="vb-antenna-bulb" cx="70" cy="5" r="5" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+        <circle id="vb-antenna-bulb" class="vb-antenna-bulb" cx="70" cy="5" r="5" fill="#ff6bd6"
+          filter="url(#vb-glow-cyan)" />
 
         <!-- 4. Side Ear-Pieces -->
         <rect x="20" y="44" width="7" height="18" rx="3.5" fill="#5b8cff" />
@@ -800,7 +959,8 @@
         <!-- 5. Rounded Body -->
         <rect x="36" y="90" width="68" height="56" rx="20" fill="url(#vb-grad-metal)" />
         <circle cx="70" cy="116" r="14" fill="#0b0c1a" />
-        <circle id="vb-core-indicator" class="vb-core-pulse" cx="70" cy="116" r="7" fill="#00e5ff" filter="url(#vb-glow-cyan)" />
+        <circle id="vb-core-indicator" class="vb-core-pulse" cx="70" cy="116" r="7" fill="#00e5ff"
+          filter="url(#vb-glow-cyan)" />
 
         <!-- 6. Rounded Square Head (rx 28) -->
         <rect x="26" y="16" width="88" height="74" rx="28" fill="url(#vb-grad-metal)" />
@@ -830,8 +990,10 @@
 
         <!-- C. Love Mood Eyes (Glowing Heart Glyphs) -->
         <g id="vb-eyes-love" class="vb-expression-layer">
-          <path d="M 53 47 C 53 43, 46 41, 46 47 C 46 53, 53 56, 53 56 C 53 56, 60 53, 60 47 C 60 41, 53 43, 53 47 Z" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
-          <path d="M 87 47 C 87 43, 80 41, 80 47 C 80 53, 87 56, 87 56 C 87 56, 94 53, 94 47 C 94 41, 87 43, 87 47 Z" fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+          <path d="M 53 47 C 53 43, 46 41, 46 47 C 46 53, 53 56, 53 56 C 53 56, 60 53, 60 47 C 60 41, 53 43, 53 47 Z"
+            fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
+          <path d="M 87 47 C 87 43, 80 41, 80 47 C 80 53, 87 56, 87 56 C 87 56, 94 53, 94 47 C 94 41, 87 43, 87 47 Z"
+            fill="#ff6bd6" filter="url(#vb-glow-cyan)" />
         </g>
 
         <!-- D. Blink Eyelids Overlay -->
@@ -841,13 +1003,16 @@
         </g>
 
         <!-- 9. Mouth Expressions -->
-        <path id="vb-mouth-happy" class="vb-mouth-layer" d="M 64 64 Q 70 70 76 64" fill="none" stroke="#00e5ff" stroke-width="2.4" stroke-linecap="round" />
+        <path id="vb-mouth-happy" class="vb-mouth-layer" d="M 64 64 Q 70 70 76 64" fill="none" stroke="#00e5ff"
+          stroke-width="2.4" stroke-linecap="round" />
         <circle id="vb-mouth-wow" class="vb-mouth-layer" cx="70" cy="65" r="4.5" fill="#00e5ff" />
-        <line id="vb-mouth-sleep" class="vb-mouth-layer" x1="66" y1="65" x2="74" y2="65" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" />
+        <line id="vb-mouth-sleep" class="vb-mouth-layer" x1="66" y1="65" x2="74" y2="65" stroke="#00e5ff"
+          stroke-width="2" stroke-linecap="round" />
       </g>
     </svg>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
