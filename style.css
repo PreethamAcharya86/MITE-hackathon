@@ -562,33 +562,45 @@ body.cursor-click .cursor-ring {
   pointer-events: auto;
 }
 
-/* ─── ARTIFERA HERO LOGO SHOWCASE ─────────────────────────── */
-.hero-logo-showcase {
+/* ─── DEDICATED 3D PARTICLE SHOWCASE SECTION ────────────────── */
+.particle-showcase-section {
   position: relative;
+  z-index: 2;
+  padding: 40px 0 60px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 8px auto 4px auto;
-  pointer-events: auto;
-  user-select: none;
-  z-index: 5;
+  overflow: hidden;
 }
+
+.particle-showcase-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
 /* --- Desktop 3D Particle Wrapper & Canvas --- */
 .artifera-particle-wrapper {
   position: relative;
-   width: 240px;
-   height: 240px;
+  width: 500px;
+  height: 500px;
+  max-width: 85vw;
+  max-height: 85vw;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 1000px;
+  user-select: none;
 }
 .artifera-particle-canvas {
-   width: 240px;
-   height: 240px;
+  width: 500px;
+  height: 500px;
+  max-width: 85vw;
+  max-height: 85vw;
   display: block;
   cursor: grab;
-  filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.35)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.25));
+  filter: drop-shadow(0 0 35px rgba(34, 211, 238, 0.42)) drop-shadow(0 0 75px rgba(139, 92, 246, 0.32));
   transition: filter 0.3s ease;
   touch-action: none;
 }
@@ -597,10 +609,10 @@ body.cursor-click .cursor-ring {
 }
 .artifera-particle-glow {
   position: absolute;
-  inset: 15%;
+  inset: 5%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.16) 0%, rgba(139, 92, 246, 0.12) 45%, transparent 70%);
-  filter: blur(28px);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.22) 0%, rgba(139, 92, 246, 0.16) 45%, transparent 70%);
+  filter: blur(40px);
   pointer-events: none;
   z-index: -1;
   animation: particleGlowPulse 4s ease-in-out infinite alternate;
@@ -707,19 +719,22 @@ body.cursor-click .cursor-ring {
   pointer-events: none;
   z-index: 5;
 }
-/* Responsive display toggle */
+/* Responsive display toggle - hide particle section on mobile */
 @media (max-width: 768px) {
-  .hero-logo-showcase {
-    margin-bottom: 18px;
+  .particle-showcase-section {
+    display: none !important;
   }
   .artifera-particle-wrapper {
     display: none !important;
   }
   .artifera-glass-badge {
-    display: inline-flex !important;
+    display: none !important;
   }
 }
 @media (min-width: 769px) {
+  .particle-showcase-section {
+    display: flex !important;
+  }
   .artifera-particle-wrapper {
     display: flex !important;
   }
@@ -922,7 +937,7 @@ body.cursor-click .cursor-ring {
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 56px;
+  margin-bottom: 36px;
 }
 
 .countdown-wrap { text-align: center; }

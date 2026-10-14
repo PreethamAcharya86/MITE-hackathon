@@ -1,4 +1,4 @@
-﻿
+
 
 (function () {
   'use strict';
@@ -1573,11 +1573,11 @@
   let isImageLoaded = false;
   let isHeroVisible = true;
   // Canvas dimensions
-  const LOGICAL_SIZE = 340;
-  const DISPLAY_SIZE = 240;
+  const LOGICAL_SIZE = 500;
+  const DISPLAY_SIZE = 500;
   let dpr = 1;
   // 3D Camera / Perspective settings
-  const FOCAL_LENGTH = 440;
+  const FOCAL_LENGTH = 580;
   let rotX = 0, rotY = 0;
   let targetRotX = 0, targetRotY = 0;
   let autoYaw = 0;
@@ -1633,9 +1633,9 @@
         const dx = this.px - repulsionX;
         const dy = this.py - repulsionY;
         const dist = Math.hypot(dx, dy);
-        const REPULSE_RADIUS = 58;
+        const REPULSE_RADIUS = 85;
         if (dist < REPULSE_RADIUS && dist > 0.1) {
-          const force = (1 - dist / REPULSE_RADIUS) * 6.5;
+          const force = (1 - dist / REPULSE_RADIUS) * 8.5;
           const angle = Math.atan2(dy, dx);
           this.vx += Math.cos(angle) * force;
           this.vy += Math.sin(angle) * force;
@@ -1717,20 +1717,20 @@
             const lum = 0.299 * r + 0.587 * g + 0.114 * b;
             // Background is pure white (lum > 218)
             if (lum > 218) continue;
-            // Base 2D coordinate on our 340px canvas (scale factor ~126)
-            const SCALE = 126;
+            // Base 2D coordinate on our 500px canvas (scale factor ~185)
+            const SCALE = 185;
             const bx = nx * SCALE;
             const by = ny * SCALE;
             let bz = 0;
             let color = COLORS.cyan;
-            let size = 1.35;
+            let size = 1.85;
             let type = 'general';
             let isNode = false;
             // 1. Outer Ring: (dist >= 0.82)
             // Volumetric orbital tilt
              if (dist >= 0.82) {
-               bz = Math.sin(nx * Math.PI) * 22;
-               size = 1.5;
+               bz = Math.sin(nx * Math.PI) * 32;
+               size = 2.0;
                const angle = Math.atan2(ny, nx);
                // Gradient purple-cyan around the circle
                color = Math.sin(angle * 2) > 0 ? COLORS.cyan : COLORS.purple;
@@ -1739,8 +1739,8 @@
              // 2. Curved Typography "ARTIFERA": (ny > 0.42 and inside ring)
             else if (ny > 0.42 && lum < 160) {
             type = 'text';
-            bz = 18; // Elevated forward plane so text is razor-sharp and never occluded
-            size = 1.6;
+            bz = 26; // Elevated forward plane so text is razor-sharp and never occluded
+            size = 2.1;
             color = Math.random() < 0.8 ? COLORS.white : COLORS.cyanBright;
           }
           // 3. Brain / Neural Net Lattice: (nx > -0.06 and ny < 0.25)
@@ -1748,12 +1748,12 @@
             type = 'brain';
             // Hemispherical 3D skull dome
             const domeRadiusSq = Math.max(0, 0.7 - nx * nx - ny * ny);
-            bz = Math.sqrt(domeRadiusSq) * 52;
-            size = 1.45;
+            bz = Math.sqrt(domeRadiusSq) * 75;
+            size = 1.95;
             // Identify high-contrast nodes
             if (lum < 75 && Math.random() < 0.18) {
               isNode = true;
-              size = 2.4;
+              size = 3.2;
               color = Math.random() > 0.5 ? COLORS.cyanBright : COLORS.pink;
             } else {
               color = Math.random() < 0.45 ? COLORS.cyan : (Math.random() < 0.75 ? COLORS.purpleBright : COLORS.pink);
@@ -1762,24 +1762,24 @@
           // 4. Ear Headset Vortex: (around nx ~ 0.18, ny ~ 0.12)
           else if (Math.hypot(nx - 0.18, ny - 0.12) < 0.18) {
             type = 'ear';
-            bz = 28; // Projects outwards like a cybernetic headphone
-            size = 1.6;
+            bz = 40; // Projects outwards like a cybernetic headphone
+            size = 2.2;
             color = lum < 90 ? COLORS.cyan : COLORS.purple;
           }
           // 5. Cyborg Face Profile & Jaw: (nx <= -0.06)
           else if (nx <= -0.06 && ny < 0.42) {
             type = 'face';
             // Rounded smooth face curvature
-            bz = Math.cos(nx * 1.8) * 24 + 10;
-            size = 1.4;
+            bz = Math.cos(nx * 1.8) * 35 + 15;
+            size = 1.95;
             color = lum < 100 ? COLORS.cyan : COLORS.purpleBright;
             if (nx < -0.38) color = COLORS.cyanBright; // Highlight on nose/lip edge
           }
           // 6. Cybernetic Neck
           else {
             type = 'neck';
-            bz = 10;
-            size = 1.35;
+            bz = 15;
+            size = 1.85;
             color = COLORS.purple;
           }
           const p = new LogoParticle(bx, by, bz, color, size, type, isNode);
@@ -1792,7 +1792,7 @@
         brainConnections = [];
         for (let i = 0; i < brainNodes.length; i++) {
           for (let j = i + 1; j < brainNodes.length; j++) {
-            if (Math.hypot(brainNodes[i].bx - brainNodes[j].bx, brainNodes[i].by - brainNodes[j].by) < 24) {
+            if (Math.hypot(brainNodes[i].bx - brainNodes[j].bx, brainNodes[i].by - brainNodes[j].by) < 36) {
               brainConnections.push({ a: brainNodes[i], b: brainNodes[j] });
             }
           }
@@ -1809,15 +1809,15 @@
   function createFallbackParticles() {
         particles = [];
         brainConnections = [];
-        const COUNT = 1600;
+        const COUNT = 2000;
         for (let i = 0; i < COUNT; i++) {
           const theta = Math.random() * Math.PI * 2;
-          const r = Math.sqrt(Math.random()) * 110;
+          const r = Math.sqrt(Math.random()) * 165;
           const bx = Math.cos(theta) * r;
           const by = Math.sin(theta) * r;
-          const bz = Math.cos(r * 0.05) * 30;
+          const bz = Math.cos(r * 0.035) * 44;
           const color = Math.random() > 0.5 ? COLORS.cyan : COLORS.purple;
-          particles.push(new LogoParticle(bx, by, bz, color, 1.4, 'fallback'));
+          particles.push(new LogoParticle(bx, by, bz, color, 1.9, 'fallback'));
         }
         isImageLoaded = true;
         if (!isMobile() && !rafId) rafId = requestAnimationFrame(renderLogo);
@@ -1864,9 +1864,9 @@
           ctx.save();
           ctx.fillStyle = s.color;
           ctx.shadowColor = s.color;
-          ctx.shadowBlur = 10;
+          ctx.shadowBlur = 12;
           ctx.beginPath();
-          ctx.arc(sx, sy, 2.6 * scale, 0, Math.PI * 2);
+          ctx.arc(sx, sy, 3.6 * scale, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
         });
@@ -1891,7 +1891,7 @@
           ctx.globalAlpha = p.alpha;
           ctx.fillStyle = p.color;
           ctx.beginPath();
-          ctx.arc(p.px, p.py, Math.max(0.55, p.baseSize * p.pScale), 0, Math.PI * 2);
+          ctx.arc(p.px, p.py, Math.max(0.75, p.baseSize * p.pScale), 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.globalAlpha = 1;
@@ -1924,9 +1924,31 @@
         });
         window.addEventListener('resize', () => {
           initCanvas();
-          if (!isMobile()) startLogo();
+          if (!isMobile()) {
+            startLogo();
+          } else if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
         });
-        startLogo();
+
+        // Pause animation when scrolled out of view, resume when in view
+        const showcaseSection = document.getElementById('particle-showcase');
+        if (showcaseSection && 'IntersectionObserver' in window) {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                startLogo();
+              } else if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+              }
+            });
+          }, { threshold: 0.05 });
+          obs.observe(showcaseSection);
+        } else {
+          startLogo();
+        }
       }
 
       if (glassBadge) {
