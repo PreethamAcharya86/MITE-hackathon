@@ -1,13 +1,8 @@
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   AI VibeX â€” script.js
-   Particle canvas, cursor tracking, scroll animations,
-   navbar behaviour, AOS, hamburger menu, criteria bars
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+﻿
 
 (function () {
   'use strict';
 
-  /* â”€â”€â”€ 1. CUSTOM CURSOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   if (window.innerWidth > 768) {
     const cursorGlow = document.getElementById('cursor-glow');
     const cursorRing = document.getElementById('cursor-ring');
