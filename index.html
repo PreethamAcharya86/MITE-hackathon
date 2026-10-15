@@ -48,10 +48,20 @@
         <li><a href="#contributors" class="nav-link">Team</a></li>
         <li><a href="#register" class="nav-link nav-cta">Register</a></li>
       </ul>
+      <button class="music-toggle" id="music-toggle" type="button" aria-label="Play background music"
+        aria-pressed="false" title="Play background music">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 10v4h4l5 4V6l-5 4H4z" />
+          <path class="music-wave" d="M16 9a5 5 0 0 1 0 6m2.5-8.5a8.5 8.5 0 0 1 0 11" />
+          <path class="music-muted" d="m16 9 5 6m0-6-5 6" />
+        </svg>
+      </button>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
     </div>
+    <audio id="background-music" src="assets/kulakovka-phonk-reel-614877.mp3" preload="none" loop hidden></audio>
   </nav>
 
   <!-- HERO -->

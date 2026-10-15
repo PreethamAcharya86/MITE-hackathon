@@ -138,7 +138,38 @@
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('nav-links');
+  const musicButton = document.getElementById('music-toggle');
+  const backgroundMusic = document.getElementById('background-music');
   let lastScroll = 0;
+
+  if (musicButton && backgroundMusic) {
+    function setMusicButtonPlaying(isPlaying) {
+      musicButton.classList.toggle('is-playing', isPlaying);
+      musicButton.setAttribute('aria-pressed', String(isPlaying));
+      const label = isPlaying ? 'Pause background music' : 'Play background music';
+      musicButton.setAttribute('aria-label', label);
+      musicButton.title = label;
+    }
+
+    musicButton.addEventListener('click', () => {
+      if (!backgroundMusic.paused) {
+        backgroundMusic.pause();
+        setMusicButtonPlaying(false);
+        return;
+      }
+
+      musicButton.disabled = true;
+      backgroundMusic.play()
+        .then(() => setMusicButtonPlaying(true))
+        .catch(error => {
+          console.error('Background music could not be played:', error);
+          musicButton.title = 'Could not play music. Click to try again.';
+        })
+        .finally(() => {
+          musicButton.disabled = false;
+        });
+    });
+  }
 
   function closeMobileNav() {
     if (hamburger && hamburger.classList.contains('open')) {

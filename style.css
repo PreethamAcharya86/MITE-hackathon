@@ -486,6 +486,51 @@ body.cursor-click .cursor-ring {
   box-shadow: 0 0 20px rgba(139,92,246,0.3);
 }
 .nav-cta:hover { box-shadow: 0 0 30px rgba(139,92,246,0.5); transform: translateY(-1px); }
+.music-toggle {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  padding: 0;
+  color: #a5f3fc;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.music-toggle:hover,
+.music-toggle.is-playing {
+  color: #fff;
+  background: rgba(34, 211, 238, 0.2);
+  border-color: var(--clr-cyan);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.3);
+}
+.music-toggle:focus-visible {
+  outline: 2px solid var(--clr-cyan);
+  outline-offset: 3px;
+}
+.music-toggle:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.music-toggle svg {
+  width: 21px;
+  height: 21px;
+}
+.music-toggle .music-muted {
+  display: block;
+}
+.music-toggle .music-wave {
+  display: none;
+}
+.music-toggle.is-playing .music-muted {
+  display: none;
+}
+.music-toggle.is-playing .music-wave {
+  display: block;
+}
 .hamburger { display: none; }
 
 /* ─── HERO ───────────────────────────────────────────────── */
