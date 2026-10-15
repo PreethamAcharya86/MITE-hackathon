@@ -622,6 +622,56 @@ body.cursor-click .cursor-ring {
   100% { transform: scale(1.1); opacity: 0.95; }
 }
 
+/* --- Centered AI VibeX Particle Wordmark --- */
+.vibex-wordmark-section {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 24px 48px;
+  overflow: hidden;
+}
+.vibex-wordmark-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(840px, 92vw);
+  aspect-ratio: 800 / 260;
+  transition: transform 350ms ease;
+}
+.vibex-wordmark-canvas {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.42)) drop-shadow(0 0 52px rgba(139, 92, 246, 0.32));
+  transition: filter 350ms ease;
+}
+.vibex-wordmark-glow {
+  position: absolute;
+  inset: 8% 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(34, 211, 238, 0.2), rgba(139, 92, 246, 0.14) 48%, transparent 74%);
+  filter: blur(36px);
+  opacity: 0.75;
+  pointer-events: none;
+  animation: particleGlowPulse 4s ease-in-out infinite alternate;
+  transition: filter 350ms ease, opacity 350ms ease;
+}
+.vibex-wordmark-wrap:hover {
+  transform: translateY(-6px) scale(1.025);
+}
+.vibex-wordmark-wrap:hover .vibex-wordmark-canvas {
+  filter: drop-shadow(0 0 34px rgba(34, 211, 238, 0.68)) drop-shadow(0 0 68px rgba(139, 92, 246, 0.5));
+}
+.vibex-wordmark-wrap:hover .vibex-wordmark-glow {
+  filter: blur(30px) saturate(1.35);
+  opacity: 1;
+}
+
 /* --- Mobile / Tablet Liquid Glass Badge (<769px) --- */
 .artifera-glass-badge {
   display: none;
@@ -746,8 +796,17 @@ body.cursor-click .cursor-ring {
 @media (prefers-reduced-motion: reduce) {
   .artifera-particle-glow,
   .artifera-glass-badge,
-  .glass-specular-shimmer {
+  .glass-specular-shimmer,
+  .vibex-wordmark-glow {
     animation: none !important;
+  }
+  .vibex-wordmark-wrap,
+  .vibex-wordmark-canvas,
+  .vibex-wordmark-glow {
+    transition: none !important;
+  }
+  .vibex-wordmark-wrap:hover {
+    transform: none;
   }
 }
 

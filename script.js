@@ -1556,10 +1556,11 @@
 (function initArtiferaLogo() {
   'use strict';
   const canvas = document.getElementById('artifera-particle-canvas');
+  const wordmarkCanvas = document.getElementById('vibex-wordmark-canvas');
   const wrapper = document.getElementById('artifera-particle-wrapper');
   const glassBadge = document.getElementById('artifera-glass-badge');
   const heroEl = document.getElementById('hero');
-  if (!canvas && !glassBadge) return;
+  if (!canvas && !glassBadge && !wordmarkCanvas) return;
   const isMobile = () => window.innerWidth <= 768;
   const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // ----------------------------------------------------
@@ -1957,6 +1958,138 @@
           glassBadge.style.setProperty('--mx', `${e.clientX - rect.left}px`);
           glassBadge.style.setProperty('--my', `${e.clientY - rect.top}px`);
         });
+      }
+
+      if (wordmarkCanvas) {
+        const wordmarkSection = document.getElementById('vibex-wordmark');
+        const wordmarkWidth = 800;
+        const wordmarkHeight = 260;
+        const wordmarkParticles = [];
+        let wordmarkCtx = null;
+        let wordmarkRafId = null;
+        let wordmarkPointerX = -9999;
+        let wordmarkPointerY = -9999;
+        let isPointerOverWordmark = false;
+
+        function initWordmarkCanvas() {
+          wordmarkCtx = wordmarkCanvas.getContext('2d');
+          if (!wordmarkCtx) return false;
+          const wordmarkDpr = Math.min(window.devicePixelRatio || 1, 2);
+          wordmarkCanvas.width = wordmarkWidth * wordmarkDpr;
+          wordmarkCanvas.height = wordmarkHeight * wordmarkDpr;
+          wordmarkCtx.setTransform(wordmarkDpr, 0, 0, wordmarkDpr, 0, 0);
+          return true;
+        }
+
+        function createWordmarkParticles() {
+          const sampleCanvas = document.createElement('canvas');
+          sampleCanvas.width = wordmarkWidth;
+          sampleCanvas.height = wordmarkHeight;
+          const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+          if (!sampleCtx) return;
+
+          sampleCtx.font = '900 118px Outfit, Arial, sans-serif';
+          sampleCtx.textAlign = 'center';
+          sampleCtx.textBaseline = 'middle';
+          sampleCtx.fillStyle = '#ffffff';
+          sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth - 72);
+
+          const pixels = sampleCtx.getImageData(0, 0, wordmarkWidth, wordmarkHeight).data;
+          const sampleStep = isMobile() ? 8 : 5;
+          for (let y = 0; y < wordmarkHeight; y += sampleStep) {
+            for (let x = 0; x < wordmarkWidth; x += sampleStep) {
+              if (pixels[(y * wordmarkWidth + x) * 4 + 3] < 128) continue;
+              const bx = x - wordmarkWidth / 2;
+              const by = y - wordmarkHeight / 2;
+              const color = Math.random() < 0.48
+                ? COLORS.cyanBright
+                : (Math.random() < 0.56 ? COLORS.purpleBright : COLORS.white);
+              wordmarkParticles.push(new LogoParticle(bx, by, (Math.random() - 0.5) * 24, color, 2.1, 'wordmark'));
+            }
+          }
+        }
+
+        function renderWordmark(time, isStatic = false) {
+          if (!wordmarkCtx) return;
+          wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
+          wordmarkParticles.forEach(particle => {
+            if (!isStatic) {
+              particle.update(time, wordmarkPointerX, wordmarkPointerY, isPointerOverWordmark);
+            }
+            particle.project(0, 0, wordmarkWidth / 2, wordmarkHeight / 2);
+          });
+          wordmarkParticles.sort((a, b) => a.pz - b.pz);
+          wordmarkParticles.forEach(particle => {
+            wordmarkCtx.globalAlpha = particle.alpha;
+            wordmarkCtx.fillStyle = particle.color;
+            wordmarkCtx.beginPath();
+            wordmarkCtx.arc(particle.px, particle.py, Math.max(0.8, particle.baseSize * particle.pScale), 0, Math.PI * 2);
+            wordmarkCtx.fill();
+          });
+          wordmarkCtx.globalAlpha = 1;
+          if (!isStatic) wordmarkRafId = requestAnimationFrame(renderWordmark);
+        }
+
+        function startWordmark() {
+          if (prefersReducedMotion()) {
+            stopWordmark();
+            renderWordmark(0, true);
+          } else if (!wordmarkRafId) {
+            wordmarkRafId = requestAnimationFrame(renderWordmark);
+          }
+        }
+
+        function stopWordmark() {
+          if (wordmarkRafId) {
+            cancelAnimationFrame(wordmarkRafId);
+            wordmarkRafId = null;
+          }
+        }
+
+        if (initWordmarkCanvas()) {
+          createWordmarkParticles();
+          wordmarkCanvas.addEventListener('pointermove', event => {
+            const rect = wordmarkCanvas.getBoundingClientRect();
+            wordmarkPointerX = (event.clientX - rect.left) * (wordmarkWidth / rect.width);
+            wordmarkPointerY = (event.clientY - rect.top) * (wordmarkHeight / rect.height);
+            isPointerOverWordmark = true;
+          });
+          wordmarkCanvas.addEventListener('pointerleave', () => {
+            isPointerOverWordmark = false;
+            wordmarkPointerX = wordmarkPointerY = -9999;
+          });
+
+          if (prefersReducedMotion()) {
+            wordmarkParticles.forEach(particle => {
+              particle.x = particle.bx;
+              particle.y = particle.by;
+              particle.z = particle.bz;
+            });
+          }
+
+          if (wordmarkSection && 'IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  startWordmark();
+                } else {
+                  stopWordmark();
+                }
+              });
+            }, { threshold: 0.05 }).observe(wordmarkSection);
+          } else {
+            startWordmark();
+          }
+
+          window.addEventListener('resize', () => {
+            initWordmarkCanvas();
+            if (prefersReducedMotion()) {
+              renderWordmark(0, true);
+            } else if (!wordmarkSection || wordmarkSection.getBoundingClientRect().top < window.innerHeight) {
+              startWordmark();
+            }
+          });
+        }
       }
 
     })();
@@ -2526,4 +2659,3 @@
           setup();
         }
       })();
-
