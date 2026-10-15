@@ -2031,6 +2031,10 @@
         }
 
         function startWordmark() {
+          if (isMobile()) {
+            stopWordmark();
+            return;
+          }
           if (prefersReducedMotion()) {
             stopWordmark();
             renderWordmark(0, true);
@@ -2082,6 +2086,10 @@
           }
 
           window.addEventListener('resize', () => {
+            if (isMobile()) {
+              stopWordmark();
+              return;
+            }
             initWordmarkCanvas();
             if (prefersReducedMotion()) {
               renderWordmark(0, true);
