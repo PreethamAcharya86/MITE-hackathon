@@ -2698,3 +2698,425 @@
           setup();
         }
       })();
+
+/* ==================== HERO PARTICLE COUNTDOWN (H : M : S) ==================== */
+(function initHeroParticleCountdown() {
+  'use strict';
+
+  const canvas = document.getElementById('countdown-particle-canvas');
+  const wrap = document.getElementById('hero-countdown-wrap');
+  if (!canvas || !wrap) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const isReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Logical canvas dimensions
+  const LOGICAL_WIDTH = 640;
+  const LOGICAL_HEIGHT = 130;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resizeCanvas() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = LOGICAL_WIDTH * dpr;
+    canvas.height = LOGICAL_HEIGHT * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resizeCanvas();
+
+  // Offscreen sampling canvas
+  const sampleCanvas = document.createElement('canvas');
+  sampleCanvas.width = LOGICAL_WIDTH;
+  sampleCanvas.height = LOGICAL_HEIGHT;
+  const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+
+  // Color palettes matching AI VibeX 1.0 brand colors
+  const COLORS = {
+    hours: ['#22d3ee', '#38bdf8', '#67e8f9', '#a5f3fc', '#ffffff'],
+    colon: ['#ffffff', '#c084fc', '#e0e7ff'],
+    minutes: ['#8b5cf6', '#a855f7', '#c084fc', '#d8b4fe', '#ffffff'],
+    seconds: ['#ec4899', '#f43f5e', '#fb7185', '#fda4af', '#ffffff'],
+    embers: ['#22d3ee', '#8b5cf6', '#ec4899']
+  };
+
+  // Segment horizontal slot centers
+  const cy = LOGICAL_HEIGHT / 2;
+  const cx = LOGICAL_WIDTH / 2;
+  const slotX = [
+    cx - 176, // Segment 0: Hours
+    cx - 88,  // Segment 1: Colon 1
+    cx,       // Segment 2: Minutes
+    cx + 88,  // Segment 3: Colon 2
+    cx + 176  // Segment 4: Seconds
+  ];
+
+  class Particle {
+    constructor(x, y, palette, defaultSize) {
+      this.x = x + (Math.random() - 0.5) * 40;
+      this.y = y + (Math.random() - 0.5) * 40;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
+      this.tx = x;
+      this.ty = y;
+      this.palette = palette;
+      this.color = palette[Math.floor(Math.random() * palette.length)];
+      this.baseSize = defaultSize || (Math.random() * 1.0 + 1.25);
+      this.size = this.baseSize;
+      this.alpha = 0;
+      this.targetAlpha = 0.95;
+      this.spring = Math.random() * 0.035 + 0.075;
+      this.friction = Math.random() * 0.03 + 0.83;
+      this.active = false;
+      this.jitterPhase = Math.random() * Math.PI * 2;
+      this.jitterSpeed = Math.random() * 0.04 + 0.02;
+    }
+
+    setTarget(tx, ty, isInitial = false) {
+      const dx = tx - this.tx;
+      const dy = ty - this.ty;
+      const distSq = dx * dx + dy * dy;
+
+      if (!isInitial && distSq > 9) {
+        // Kick velocity on target change for smooth fluid swirl alignment
+        this.vx += (Math.random() - 0.5) * 3.2;
+        this.vy += (Math.random() - 0.5) * 3.2;
+      }
+
+      this.tx = tx;
+      this.ty = ty;
+      this.active = true;
+      this.targetAlpha = Math.random() * 0.15 + 0.85;
+      this.color = this.palette[Math.floor(Math.random() * this.palette.length)];
+    }
+
+    setIdle(slotCenterX, slotCenterY) {
+      this.active = false;
+      const angle = Math.random() * Math.PI * 2;
+      const dist = Math.random() * 32 + 10;
+      this.tx = slotCenterX + Math.cos(angle) * dist;
+      this.ty = slotCenterY + Math.sin(angle) * dist;
+      this.targetAlpha = Math.random() * 0.12 + 0.08;
+    }
+
+    update(ptrX, ptrY, ptrActive, time) {
+      // Spring attraction to target position
+      const dx = this.tx - this.x;
+      const dy = this.ty - this.y;
+      this.vx += dx * this.spring;
+      this.vy += dy * this.spring;
+
+      // Interactive cursor repulsion
+      if (ptrActive) {
+        const pdx = this.x - ptrX;
+        const pdy = this.y - ptrY;
+        const pdistSq = pdx * pdx + pdy * pdy;
+        const maxDist = 65;
+        if (pdistSq < maxDist * maxDist && pdistSq > 0.1) {
+          const pdist = Math.sqrt(pdistSq);
+          const force = (maxDist - pdist) / maxDist;
+          this.vx += (pdx / pdist) * force * 5.0;
+          this.vy += (pdy / pdist) * force * 5.0;
+        }
+      }
+
+      // Micro-breathing oscillation when settled
+      if (this.active) {
+        this.jitterPhase += this.jitterSpeed;
+        this.x += Math.cos(this.jitterPhase) * 0.12;
+        this.y += Math.sin(this.jitterPhase) * 0.12;
+      }
+
+      this.vx *= this.friction;
+      this.vy *= this.friction;
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Smooth opacity lerp
+      this.alpha += (this.targetAlpha - this.alpha) * 0.12;
+    }
+
+    draw(targetCtx, colonAlphaMod = 1) {
+      const renderAlpha = Math.min(1, Math.max(0, this.alpha * colonAlphaMod));
+      if (renderAlpha <= 0.02) return;
+
+      targetCtx.save();
+      targetCtx.globalAlpha = renderAlpha;
+      targetCtx.fillStyle = this.color;
+      targetCtx.beginPath();
+      targetCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      targetCtx.fill();
+      targetCtx.restore();
+    }
+  }
+
+  // Particle pools for each segment (Hours, Colon1, Minutes, Colon2, Seconds)
+  const SEGMENT_CAPACITIES = [160, 36, 160, 36, 160];
+  const SEGMENT_PALETTES = [COLORS.hours, COLORS.colon, COLORS.minutes, COLORS.colon, COLORS.seconds];
+  const segmentPools = SEGMENT_CAPACITIES.map((capacity, i) => {
+    const pool = [];
+    for (let k = 0; k < capacity; k++) {
+      pool.push(new Particle(slotX[i], cy, SEGMENT_PALETTES[i], i === 1 || i === 3 ? 1.6 : 1.4));
+    }
+    return pool;
+  });
+
+  // Ambient floating background ember particles
+  const emberPool = [];
+  for (let k = 0; k < 35; k++) {
+    const ep = new Particle(cx, cy, COLORS.embers, 1.0);
+    ep.setIdle(cx, cy);
+    emberPool.push(ep);
+  }
+
+  // Cache previously rendered segment texts
+  let prevSegTexts = ['', '', '', '', ''];
+
+  // Sample targets for a given segment text at slotX[i]
+  function sampleSegmentTargets(text, segIdx) {
+    if (!sampleCtx) return [];
+    sampleCtx.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+
+    // Font configuration
+    const isColon = segIdx === 1 || segIdx === 3;
+    const fontSize = isColon ? 60 : 66;
+    sampleCtx.font = `800 ${fontSize}px 'Outfit', 'Space Grotesk', -apple-system, sans-serif`;
+    sampleCtx.textAlign = 'center';
+    sampleCtx.textBaseline = 'middle';
+    sampleCtx.fillStyle = '#ffffff';
+
+    const sx = slotX[segIdx];
+    sampleCtx.fillText(text, sx, cy);
+
+    const halfW = isColon ? 30 : 65;
+    const halfH = 46;
+    const startX = Math.max(0, Math.floor(sx - halfW));
+    const startY = Math.max(0, Math.floor(cy - halfH));
+    const width = Math.min(LOGICAL_WIDTH - startX, halfW * 2);
+    const height = Math.min(LOGICAL_HEIGHT - startY, halfH * 2);
+
+    const imgData = sampleCtx.getImageData(startX, startY, width, height);
+    const pixels = imgData.data;
+    const targets = [];
+    const step = isColon ? 3 : 4;
+
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const idx = (y * width + x) * 4;
+        if (pixels[idx + 3] > 110) {
+          targets.push({ x: startX + x, y: startY + y });
+        }
+      }
+    }
+    return targets;
+  }
+
+  // Assign particles to new target positions smoothly
+  function updateSegmentParticles(segIdx, newTargets, isInitial = false) {
+    const pool = segmentPools[segIdx];
+    const poolCopy = pool.slice();
+
+    // Map each target to nearest available particle in the pool
+    for (let tIdx = 0; tIdx < newTargets.length; tIdx++) {
+      const target = newTargets[tIdx];
+      let bestDistSq = Infinity;
+      let bestParticleIdx = -1;
+
+      for (let pIdx = 0; pIdx < poolCopy.length; pIdx++) {
+        const p = poolCopy[pIdx];
+        const dx = p.x - target.x;
+        const dy = p.y - target.y;
+        const dSq = dx * dx + dy * dy;
+        if (dSq < bestDistSq) {
+          bestDistSq = dSq;
+          bestParticleIdx = pIdx;
+        }
+      }
+
+      if (bestParticleIdx !== -1) {
+        const assignedParticle = poolCopy.splice(bestParticleIdx, 1)[0];
+        assignedParticle.setTarget(target.x, target.y, isInitial);
+      }
+    }
+
+    // Any remaining particles in the pool float as subtle surrounding particles
+    const sx = slotX[segIdx];
+    for (let pIdx = 0; pIdx < poolCopy.length; pIdx++) {
+      poolCopy[pIdx].setIdle(sx, cy);
+    }
+  }
+
+  // Calculate remaining countdown time in format h : m : s
+  function getRemainingTime() {
+    const now = Date.now();
+    let targetTime;
+
+    const dataTarget = wrap.getAttribute('data-target');
+    if (dataTarget) {
+      const parsed = Date.parse(dataTarget);
+      if (!isNaN(parsed) && parsed > now) {
+        targetTime = parsed;
+      }
+    }
+
+    if (!targetTime) {
+      const STORAGE_KEY = 'vibex_countdown_target_timestamp';
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored && !isNaN(parseInt(stored, 10)) && parseInt(stored, 10) > now) {
+          targetTime = parseInt(stored, 10);
+        } else {
+          // Default: 6 hours 00 minutes 00 seconds sprint countdown
+          targetTime = now + (6 * 3600 * 1000);
+          localStorage.setItem(STORAGE_KEY, String(targetTime));
+        }
+      } catch (e) {
+        targetTime = now + (6 * 3600 * 1000);
+      }
+    }
+
+    const diffSec = Math.max(0, Math.floor((targetTime - now) / 1000));
+    const h = Math.floor(diffSec / 3600);
+    const m = Math.floor((diffSec % 3600) / 60);
+    const s = diffSec % 60;
+
+    return {
+      hStr: String(h).padStart(2, '0'),
+      mStr: String(m).padStart(2, '0'),
+      sStr: String(s).padStart(2, '0')
+    };
+  }
+
+  // Check and update countdown segments
+  function updateCountdown(isInitial = false) {
+    const { hStr, mStr, sStr } = getRemainingTime();
+    const currentSegTexts = [hStr, ':', mStr, ':', sStr];
+
+    for (let i = 0; i < 5; i++) {
+      if (isInitial || currentSegTexts[i] !== prevSegTexts[i]) {
+        const targets = sampleSegmentTargets(currentSegTexts[i], i);
+        updateSegmentParticles(i, targets, isInitial);
+        prevSegTexts[i] = currentSegTexts[i];
+      }
+    }
+  }
+
+  // Pointer tracking for repulsion effect
+  let pointerX = -9999, pointerY = -9999;
+  let isPointerActive = false;
+
+  function updatePointer(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    pointerX = (clientX - rect.left) * (LOGICAL_WIDTH / rect.width);
+    pointerY = (clientY - rect.top) * (LOGICAL_HEIGHT / rect.height);
+    isPointerActive = true;
+  }
+
+  canvas.addEventListener('mousemove', e => updatePointer(e.clientX, e.clientY));
+  canvas.addEventListener('mouseenter', e => updatePointer(e.clientX, e.clientY));
+  canvas.addEventListener('mouseleave', () => {
+    isPointerActive = false;
+    pointerX = -9999;
+    pointerY = -9999;
+  });
+
+  canvas.addEventListener('touchstart', e => {
+    if (e.touches && e.touches[0]) updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  canvas.addEventListener('touchmove', e => {
+    if (e.touches && e.touches[0]) updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  canvas.addEventListener('touchend', () => {
+    isPointerActive = false;
+    pointerX = -9999;
+    pointerY = -9999;
+  });
+
+  // Main animation render loop
+  let isVisible = true;
+  let rafId = null;
+
+  function render(time) {
+    ctx.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+
+    // Pulse factor for colon separators
+    const colonPulse = 0.8 + Math.sin(time * 0.005) * 0.2;
+
+    // Render segment particles
+    for (let sIdx = 0; sIdx < segmentPools.length; sIdx++) {
+      const pool = segmentPools[sIdx];
+      const colonMod = (sIdx === 1 || sIdx === 3) ? colonPulse : 1;
+      for (let pIdx = 0; pIdx < pool.length; pIdx++) {
+        const p = pool[pIdx];
+        p.update(pointerX, pointerY, isPointerActive, time);
+        p.draw(ctx, colonMod);
+      }
+    }
+
+    // Render ambient embers
+    for (let eIdx = 0; eIdx < emberPool.length; eIdx++) {
+      const ep = emberPool[eIdx];
+      ep.update(pointerX, pointerY, isPointerActive, time);
+      ep.draw(ctx, 0.4);
+    }
+
+    if (isVisible && !isReducedMotion()) {
+      rafId = requestAnimationFrame(render);
+    }
+  }
+
+  function start() {
+    if (!rafId) {
+      rafId = requestAnimationFrame(render);
+    }
+  }
+
+  function stop() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  // Handle visibility with IntersectionObserver
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+          start();
+        } else {
+          isVisible = false;
+          stop();
+        }
+      });
+    }, { threshold: 0.05 }).observe(wrap);
+  } else {
+    start();
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    if (isReducedMotion()) {
+      updateCountdown(true);
+      render(0);
+    }
+  }, { passive: true });
+
+  // Initial countdown render
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      updateCountdown(true);
+      start();
+    });
+  } else {
+    updateCountdown(true);
+    start();
+  }
+
+  // Continuous 1-second countdown ticker
+  setInterval(() => {
+    updateCountdown(false);
+  }, 1000);
+})();
