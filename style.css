@@ -1054,84 +1054,44 @@ body.cursor-click .cursor-ring {
 .countdown-wrap {
   position: relative;
   width: 100%;
-  max-width: 620px;
+  max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
 
 .countdown-card-inner {
   position: relative;
-  background: rgba(10, 16, 32, 0.72);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 20px;
-  padding: 18px 20px 16px 20px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(34, 211, 238, 0.12),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;
 }
 
 .countdown-card-inner:hover {
-  border-color: rgba(34, 211, 238, 0.45);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
-              0 0 45px rgba(139, 92, 246, 0.25),
-              inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
-}
-
-.countdown-header-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 14px;
-  border-radius: 999px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  margin-bottom: 8px;
-}
-
-.countdown-badge-title {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  color: #cbd5e1;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.countdown-badge-format {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--clr-cyan);
-  background: rgba(34, 211, 238, 0.12);
-  padding: 2px 7px;
-  border-radius: 6px;
-  border: 1px solid rgba(34, 211, 238, 0.25);
+  border: none;
+  box-shadow: none;
+  transform: none;
 }
 
 .countdown-canvas-wrapper {
   position: relative;
   width: 100%;
-  max-width: 580px;
+  max-width: 700px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 110px;
+  min-height: 140px;
 }
 
 .countdown-particle-canvas {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 580px;
+  max-width: 700px;
   height: auto;
-  aspect-ratio: 640 / 130;
+  aspect-ratio: 700 / 150;
   display: block;
   cursor: crosshair;
 }
@@ -1141,10 +1101,10 @@ body.cursor-click .cursor-ring {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
-  height: 70%;
-  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.16) 0%, rgba(34, 211, 238, 0.1) 45%, transparent 75%);
-  filter: blur(28px);
+  width: 85%;
+  height: 80%;
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.18) 0%, rgba(34, 211, 238, 0.12) 40%, transparent 75%);
+  filter: blur(36px);
   pointer-events: none;
   z-index: 0;
 }
@@ -1153,80 +1113,49 @@ body.cursor-click .cursor-ring {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 4px;
+  max-width: 680px;
+  margin: 6px auto 0 auto;
+  padding: 0 16px;
+  gap: 0;
 }
 
 .legend-unit {
+  flex: 1;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  min-width: 76px;
-}
-
-.legend-char {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.unit-hours .legend-char {
-  color: var(--clr-cyan);
-  text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
-}
-
-.unit-minutes .legend-char {
-  color: var(--clr-purple);
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
-}
-
-.unit-seconds .legend-char {
-  color: var(--clr-pink);
-  text-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
 }
 
 .legend-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-top: 2px;
+}
+
+.unit-hours .legend-label {
+  color: var(--clr-cyan);
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+}
+
+.unit-minutes .legend-label {
+  color: var(--clr-purple);
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+}
+
+.unit-seconds .legend-label {
+  color: var(--clr-pink);
+  text-shadow: 0 0 12px rgba(236, 72, 153, 0.6);
 }
 
 .legend-sep {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #475569;
-  opacity: 0.7;
-  transform: translateY(-5px);
-}
-
-.countdown-footer-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: #94a3b8;
-  letter-spacing: 0.05em;
-}
-
-.countdown-pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--clr-cyan);
-  box-shadow: 0 0 8px var(--clr-cyan);
-  animation: pulseDot 2s infinite ease-in-out;
-}
-
-@keyframes pulseDot {
-  0%, 100% { opacity: 0.4; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.2); }
+  opacity: 0.45;
+  padding: 0 8px;
 }
 
 /* Fallback countdown dots & label (preserved for backward compatibility) */

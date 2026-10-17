@@ -2713,8 +2713,8 @@
   const isReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Logical canvas dimensions
-  const LOGICAL_WIDTH = 640;
-  const LOGICAL_HEIGHT = 130;
+  const LOGICAL_WIDTH = 700;
+  const LOGICAL_HEIGHT = 150;
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
   function resizeCanvas() {
@@ -2744,11 +2744,11 @@
   const cy = LOGICAL_HEIGHT / 2;
   const cx = LOGICAL_WIDTH / 2;
   const slotX = [
-    cx - 176, // Segment 0: Hours
-    cx - 88,  // Segment 1: Colon 1
+    cx - 195, // Segment 0: Hours
+    cx - 98,  // Segment 1: Colon 1
     cx,       // Segment 2: Minutes
-    cx + 88,  // Segment 3: Colon 2
-    cx + 176  // Segment 4: Seconds
+    cx + 98,  // Segment 3: Colon 2
+    cx + 195  // Segment 4: Seconds
   ];
 
   class Particle {
@@ -2761,7 +2761,7 @@
       this.ty = y;
       this.palette = palette;
       this.color = palette[Math.floor(Math.random() * palette.length)];
-      this.baseSize = defaultSize || (Math.random() * 1.0 + 1.25);
+      this.baseSize = defaultSize || (Math.random() * 1.1 + 1.35);
       this.size = this.baseSize;
       this.alpha = 0;
       this.targetAlpha = 0.95;
@@ -2811,7 +2811,7 @@
         const pdx = this.x - ptrX;
         const pdy = this.y - ptrY;
         const pdistSq = pdx * pdx + pdy * pdy;
-        const maxDist = 65;
+        const maxDist = 75;
         if (pdistSq < maxDist * maxDist && pdistSq > 0.1) {
           const pdist = Math.sqrt(pdistSq);
           const force = (maxDist - pdist) / maxDist;
@@ -2851,12 +2851,12 @@
   }
 
   // Particle pools for each segment (Hours, Colon1, Minutes, Colon2, Seconds)
-  const SEGMENT_CAPACITIES = [160, 36, 160, 36, 160];
+  const SEGMENT_CAPACITIES = [220, 46, 220, 46, 220];
   const SEGMENT_PALETTES = [COLORS.hours, COLORS.colon, COLORS.minutes, COLORS.colon, COLORS.seconds];
   const segmentPools = SEGMENT_CAPACITIES.map((capacity, i) => {
     const pool = [];
     for (let k = 0; k < capacity; k++) {
-      pool.push(new Particle(slotX[i], cy, SEGMENT_PALETTES[i], i === 1 || i === 3 ? 1.6 : 1.4));
+      pool.push(new Particle(slotX[i], cy, SEGMENT_PALETTES[i], i === 1 || i === 3 ? 1.7 : 1.45));
     }
     return pool;
   });
@@ -2879,7 +2879,7 @@
 
     // Font configuration
     const isColon = segIdx === 1 || segIdx === 3;
-    const fontSize = isColon ? 60 : 66;
+    const fontSize = isColon ? 76 : 84;
     sampleCtx.font = `800 ${fontSize}px 'Outfit', 'Space Grotesk', -apple-system, sans-serif`;
     sampleCtx.textAlign = 'center';
     sampleCtx.textBaseline = 'middle';
@@ -2888,8 +2888,8 @@
     const sx = slotX[segIdx];
     sampleCtx.fillText(text, sx, cy);
 
-    const halfW = isColon ? 30 : 65;
-    const halfH = 46;
+    const halfW = isColon ? 34 : 78;
+    const halfH = 58;
     const startX = Math.max(0, Math.floor(sx - halfW));
     const startY = Math.max(0, Math.floor(cy - halfH));
     const width = Math.min(LOGICAL_WIDTH - startX, halfW * 2);
