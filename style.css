@@ -815,15 +815,27 @@ body.cursor-click .cursor-ring {
   z-index: 5;
 }
 /* Responsive display toggle - hide particle section on mobile */
+/* Responsive display toggle - Artifera particle section visible on all screens */
 @media (max-width: 768px) {
   .particle-showcase-section {
-    display: none !important;
+    display: flex !important;
+    padding: 30px 0 20px 0;
+  }
+  .artifera-particle-wrapper {
+    display: flex !important;
+    width: min(340px, 86vw) !important;
+    height: min(340px, 86vw) !important;
+    max-width: 86vw !important;
+    max-height: 86vw !important;
+  }
+  .artifera-particle-canvas {
+    width: min(340px, 86vw) !important;
+    height: min(340px, 86vw) !important;
+    max-width: 86vw !important;
+    max-height: 86vw !important;
   }
   .vibex-wordmark-section {
     display: none;
-  }
-  .artifera-particle-wrapper {
-    display: none !important;
   }
   .artifera-glass-badge {
     display: none !important;

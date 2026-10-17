@@ -1852,7 +1852,7 @@
           particles.push(new LogoParticle(bx, by, bz, color, 1.9, 'fallback'));
         }
         isImageLoaded = true;
-        if (!isMobile() && !rafId) rafId = requestAnimationFrame(renderLogo);
+        if (!rafId) rafId = requestAnimationFrame(renderLogo);
       }
       // --- Canvas Setup & High-DPI Scaling ---
       function initCanvas() {
@@ -1861,8 +1861,9 @@
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = LOGICAL_SIZE * dpr;
         canvas.height = LOGICAL_SIZE * dpr;
-         canvas.style.width = `${DISPLAY_SIZE}px`;
-         canvas.style.height = `${DISPLAY_SIZE}px`;
+        const currentDisplaySize = isMobile() ? Math.min(340, Math.floor(window.innerWidth * 0.86)) : DISPLAY_SIZE;
+        canvas.style.width = `${currentDisplaySize}px`;
+        canvas.style.height = `${currentDisplaySize}px`;
         ctx.scale(dpr, dpr);
       }
       // --- Neural Synaptic Spark Pulses ---
@@ -1905,7 +1906,7 @@
       }
 
       function renderLogo(time) {
-        if (!ctx || !canvas || isMobile()) {
+        if (!ctx || !canvas) {
           rafId = null;
           return;
         }
@@ -1932,7 +1933,7 @@
       }
 
       function startLogo() {
-        if (!canvas || isMobile() || prefersReducedMotion()) return;
+        if (!canvas || prefersReducedMotion()) return;
         if (!rafId) rafId = requestAnimationFrame(renderLogo);
       }
 
@@ -1954,14 +1955,29 @@
           mouseCanvasX = mouseCanvasY = -9999;
           targetRotX = targetRotY = 0;
         });
+        canvas.addEventListener('touchstart', e => {
+          if (e.touches && e.touches[0]) {
+            const rect = canvas.getBoundingClientRect();
+            mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+            mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+            isMouseOverCanvas = true;
+          }
+        }, { passive: true });
+        canvas.addEventListener('touchmove', e => {
+          if (e.touches && e.touches[0]) {
+            const rect = canvas.getBoundingClientRect();
+            mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+            mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+            isMouseOverCanvas = true;
+          }
+        }, { passive: true });
+        canvas.addEventListener('touchend', () => {
+          isMouseOverCanvas = false;
+          mouseCanvasX = mouseCanvasY = -9999;
+        });
         window.addEventListener('resize', () => {
           initCanvas();
-          if (!isMobile()) {
-            startLogo();
-          } else if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-          }
+          startLogo();
         });
 
         // Pause animation when scrolled out of view, resume when in view
