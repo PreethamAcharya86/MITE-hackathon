@@ -1760,66 +1760,66 @@
             let isNode = false;
             // 1. Outer Ring: (dist >= 0.82)
             // Volumetric orbital tilt
-             if (dist >= 0.82) {
-               bz = Math.sin(nx * Math.PI) * 32;
-               size = 2.0;
-               const angle = Math.atan2(ny, nx);
-               // Gradient purple-cyan around the circle
-               color = Math.sin(angle * 2) > 0 ? COLORS.cyan : COLORS.purple;
-               if (Math.random() < 0.12) color = COLORS.white;
-             }
-             // 2. Curved Typography "ARTIFERA": (ny > 0.42 and inside ring)
+            if (dist >= 0.82) {
+              bz = Math.sin(nx * Math.PI) * 32;
+              size = 2.0;
+              const angle = Math.atan2(ny, nx);
+              // Gradient purple-cyan around the circle
+              color = Math.sin(angle * 2) > 0 ? COLORS.cyan : COLORS.purple;
+              if (Math.random() < 0.12) color = COLORS.white;
+            }
+            // 2. Curved Typography "ARTIFERA": (ny > 0.42 and inside ring)
             else if (ny > 0.42 && lum < 160) {
-            type = 'text';
-            bz = 26; // Elevated forward plane so text is razor-sharp and never occluded
-            size = 2.1;
-            color = Math.random() < 0.8 ? COLORS.white : COLORS.cyanBright;
-          }
-          // 3. Brain / Neural Net Lattice: (nx > -0.06 and ny < 0.25)
-          else if (nx > -0.06 && ny < 0.25) {
-            type = 'brain';
-            // Hemispherical 3D skull dome
-            const domeRadiusSq = Math.max(0, 0.7 - nx * nx - ny * ny);
-            bz = Math.sqrt(domeRadiusSq) * 75;
-            size = 1.95;
-            // Identify high-contrast nodes
-            if (lum < 75 && Math.random() < 0.18) {
-              isNode = true;
-              size = 3.2;
-              color = Math.random() > 0.5 ? COLORS.cyanBright : COLORS.pink;
-            } else {
-              color = Math.random() < 0.45 ? COLORS.cyan : (Math.random() < 0.75 ? COLORS.purpleBright : COLORS.pink);
+              type = 'text';
+              bz = 26; // Elevated forward plane so text is razor-sharp and never occluded
+              size = 2.1;
+              color = Math.random() < 0.8 ? COLORS.white : COLORS.cyanBright;
+            }
+            // 3. Brain / Neural Net Lattice: (nx > -0.06 and ny < 0.25)
+            else if (nx > -0.06 && ny < 0.25) {
+              type = 'brain';
+              // Hemispherical 3D skull dome
+              const domeRadiusSq = Math.max(0, 0.7 - nx * nx - ny * ny);
+              bz = Math.sqrt(domeRadiusSq) * 75;
+              size = 1.95;
+              // Identify high-contrast nodes
+              if (lum < 75 && Math.random() < 0.18) {
+                isNode = true;
+                size = 3.2;
+                color = Math.random() > 0.5 ? COLORS.cyanBright : COLORS.pink;
+              } else {
+                color = Math.random() < 0.45 ? COLORS.cyan : (Math.random() < 0.75 ? COLORS.purpleBright : COLORS.pink);
+              }
+            }
+            // 4. Ear Headset Vortex: (around nx ~ 0.18, ny ~ 0.12)
+            else if (Math.hypot(nx - 0.18, ny - 0.12) < 0.18) {
+              type = 'ear';
+              bz = 40; // Projects outwards like a cybernetic headphone
+              size = 2.2;
+              color = lum < 90 ? COLORS.cyan : COLORS.purple;
+            }
+            // 5. Cyborg Face Profile & Jaw: (nx <= -0.06)
+            else if (nx <= -0.06 && ny < 0.42) {
+              type = 'face';
+              // Rounded smooth face curvature
+              bz = Math.cos(nx * 1.8) * 35 + 15;
+              size = 1.95;
+              color = lum < 100 ? COLORS.cyan : COLORS.purpleBright;
+              if (nx < -0.38) color = COLORS.cyanBright; // Highlight on nose/lip edge
+            }
+            // 6. Cybernetic Neck
+            else {
+              type = 'neck';
+              bz = 15;
+              size = 1.85;
+              color = COLORS.purple;
+            }
+            const p = new LogoParticle(bx, by, bz, color, size, type, isNode);
+            particles.push(p);
+            if (isNode) {
+              brainNodes.push(p);
             }
           }
-          // 4. Ear Headset Vortex: (around nx ~ 0.18, ny ~ 0.12)
-          else if (Math.hypot(nx - 0.18, ny - 0.12) < 0.18) {
-            type = 'ear';
-            bz = 40; // Projects outwards like a cybernetic headphone
-            size = 2.2;
-            color = lum < 90 ? COLORS.cyan : COLORS.purple;
-          }
-          // 5. Cyborg Face Profile & Jaw: (nx <= -0.06)
-          else if (nx <= -0.06 && ny < 0.42) {
-            type = 'face';
-            // Rounded smooth face curvature
-            bz = Math.cos(nx * 1.8) * 35 + 15;
-            size = 1.95;
-            color = lum < 100 ? COLORS.cyan : COLORS.purpleBright;
-            if (nx < -0.38) color = COLORS.cyanBright; // Highlight on nose/lip edge
-          }
-          // 6. Cybernetic Neck
-          else {
-            type = 'neck';
-            bz = 15;
-            size = 1.85;
-            color = COLORS.purple;
-          }
-          const p = new LogoParticle(bx, by, bz, color, size, type, isNode);
-          particles.push(p);
-          if (isNode) {
-            brainNodes.push(p);
-          }
-        }
         }
         brainConnections = [];
         for (let i = 0; i < brainNodes.length; i++) {
@@ -1839,757 +1839,731 @@
   }
   // Fallback procedural geometry if image sampling fails
   function createFallbackParticles() {
-        particles = [];
-        brainConnections = [];
-        const COUNT = 2000;
-        for (let i = 0; i < COUNT; i++) {
-          const theta = Math.random() * Math.PI * 2;
-          const r = Math.sqrt(Math.random()) * 165;
-          const bx = Math.cos(theta) * r;
-          const by = Math.sin(theta) * r;
-          const bz = Math.cos(r * 0.035) * 44;
-          const color = Math.random() > 0.5 ? COLORS.cyan : COLORS.purple;
-          particles.push(new LogoParticle(bx, by, bz, color, 1.9, 'fallback'));
-        }
-        isImageLoaded = true;
-        if (!rafId) rafId = requestAnimationFrame(renderLogo);
+    particles = [];
+    brainConnections = [];
+    const COUNT = 2000;
+    for (let i = 0; i < COUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const r = Math.sqrt(Math.random()) * 165;
+      const bx = Math.cos(theta) * r;
+      const by = Math.sin(theta) * r;
+      const bz = Math.cos(r * 0.035) * 44;
+      const color = Math.random() > 0.5 ? COLORS.cyan : COLORS.purple;
+      particles.push(new LogoParticle(bx, by, bz, color, 1.9, 'fallback'));
+    }
+    isImageLoaded = true;
+    if (!rafId) rafId = requestAnimationFrame(renderLogo);
+  }
+  // --- Canvas Setup & High-DPI Scaling ---
+  function initCanvas() {
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = LOGICAL_SIZE * dpr;
+    canvas.height = LOGICAL_SIZE * dpr;
+    const currentDisplaySize = isMobile() ? Math.min(340, Math.floor(window.innerWidth * 0.86)) : DISPLAY_SIZE;
+    canvas.style.width = `${currentDisplaySize}px`;
+    canvas.style.height = `${currentDisplaySize}px`;
+    ctx.scale(dpr, dpr);
+  }
+  // --- Neural Synaptic Spark Pulses ---
+  let sparkTimer = 0;
+  function updateSparks() {
+    sparkTimer += 16;
+    if (sparkTimer > 1800 && brainConnections.length > 0 && sparks.length < 4) {
+      sparkTimer = 0;
+      const conn = brainConnections[Math.floor(Math.random() * brainConnections.length)];
+      sparks.push({
+        conn,
+        progress: 0,
+        speed: 0.035 + Math.random() * 0.025,
+        color: Math.random() > 0.4 ? COLORS.cyanBright : COLORS.white
+      });
+    }
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.progress += s.speed;
+      if (s.progress >= 1) {
+        sparks.splice(i, 1);
       }
-      // --- Canvas Setup & High-DPI Scaling ---
-      function initCanvas() {
-        if (!canvas) return;
-        ctx = canvas.getContext('2d');
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = LOGICAL_SIZE * dpr;
-        canvas.height = LOGICAL_SIZE * dpr;
-        const currentDisplaySize = isMobile() ? Math.min(340, Math.floor(window.innerWidth * 0.86)) : DISPLAY_SIZE;
-        canvas.style.width = `${currentDisplaySize}px`;
-        canvas.style.height = `${currentDisplaySize}px`;
-        ctx.scale(dpr, dpr);
+    }
+  }
+  function drawSparks() {
+    sparks.forEach(s => {
+      const { a, b } = s.conn;
+      const sx = a.px + (b.px - a.px) * s.progress;
+      const sy = a.py + (b.py - a.py) * s.progress;
+      const scale = a.pScale + (b.pScale - a.pScale) * s.progress;
+      ctx.save();
+      ctx.fillStyle = s.color;
+      ctx.shadowColor = s.color;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 3.6 * scale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  function renderLogo(time) {
+    if (!ctx || !canvas) {
+      rafId = null;
+      return;
+    }
+    ctx.clearRect(0, 0, LOGICAL_SIZE, LOGICAL_SIZE);
+    const center = LOGICAL_SIZE / 2;
+    // Keep the logo facing forward; particles still shimmer and breathe.
+    rotX = 0;
+    rotY = 0;
+    particles.forEach(p => {
+      p.update(time, mouseCanvasX, mouseCanvasY, isMouseOverCanvas);
+      p.project(rotX, rotY, center, center);
+    });
+    particles.sort((a, b) => a.pz - b.pz);
+    particles.forEach(p => {
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.px, p.py, Math.max(0.75, p.baseSize * p.pScale), 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    drawSparks();
+    rafId = requestAnimationFrame(renderLogo);
+  }
+
+  function startLogo() {
+    if (!canvas || prefersReducedMotion()) return;
+    if (!rafId) rafId = requestAnimationFrame(renderLogo);
+  }
+
+  if (canvas) {
+    initCanvas();
+    // Render immediately so the animation is visible even while the image is loading.
+    createFallbackParticles();
+    sampleLogoImage();
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      mouseCanvasX = (e.clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+      mouseCanvasY = (e.clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+      isMouseOverCanvas = true;
+      targetRotX = 0;
+      targetRotY = 0;
+    });
+    canvas.addEventListener('mouseleave', () => {
+      isMouseOverCanvas = false;
+      mouseCanvasX = mouseCanvasY = -9999;
+      targetRotX = targetRotY = 0;
+    });
+    canvas.addEventListener('touchstart', e => {
+      if (e.touches && e.touches[0]) {
+        const rect = canvas.getBoundingClientRect();
+        mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+        mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+        isMouseOverCanvas = true;
       }
-      // --- Neural Synaptic Spark Pulses ---
-      let sparkTimer = 0;
-      function updateSparks() {
-        sparkTimer += 16;
-        if (sparkTimer > 1800 && brainConnections.length > 0 && sparks.length < 4) {
-          sparkTimer = 0;
-          const conn = brainConnections[Math.floor(Math.random() * brainConnections.length)];
-          sparks.push({
-            conn,
-            progress: 0,
-            speed: 0.035 + Math.random() * 0.025,
-            color: Math.random() > 0.4 ? COLORS.cyanBright : COLORS.white
-          });
-        }
-        for (let i = sparks.length - 1; i >= 0; i--) {
-          const s = sparks[i];
-          s.progress += s.speed;
-          if (s.progress >= 1) {
-            sparks.splice(i, 1);
+    }, { passive: true });
+    canvas.addEventListener('touchmove', e => {
+      if (e.touches && e.touches[0]) {
+        const rect = canvas.getBoundingClientRect();
+        mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
+        mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
+        isMouseOverCanvas = true;
+      }
+    }, { passive: true });
+    canvas.addEventListener('touchend', () => {
+      isMouseOverCanvas = false;
+      mouseCanvasX = mouseCanvasY = -9999;
+    });
+    window.addEventListener('resize', () => {
+      initCanvas();
+      startLogo();
+    });
+
+    // Pause animation when scrolled out of view, resume when in view
+    const showcaseSection = document.getElementById('particle-showcase');
+    if (showcaseSection && 'IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startLogo();
+          } else if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
           }
+        });
+      }, { threshold: 0.05 });
+      obs.observe(showcaseSection);
+    } else {
+      startLogo();
+    }
+  }
+
+  if (glassBadge) {
+    glassBadge.addEventListener('pointermove', e => {
+      const rect = glassBadge.getBoundingClientRect();
+      glassBadge.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      glassBadge.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    });
+  }
+
+  if (wordmarkCanvas) {
+    const wordmarkSection = document.getElementById('vibex-wordmark');
+    const wordmarkWidth = 800;
+    const wordmarkHeight = 260;
+    const wordmarkParticles = [];
+    let wordmarkCtx = null;
+    let wordmarkRafId = null;
+    let wordmarkPointerX = -9999;
+    let wordmarkPointerY = -9999;
+    let isPointerOverWordmark = false;
+
+    function initWordmarkCanvas() {
+      wordmarkCtx = wordmarkCanvas.getContext('2d');
+      if (!wordmarkCtx) return false;
+      const wordmarkDpr = Math.min(window.devicePixelRatio || 1, 2);
+      wordmarkCanvas.width = wordmarkWidth * wordmarkDpr;
+      wordmarkCanvas.height = wordmarkHeight * wordmarkDpr;
+      wordmarkCtx.setTransform(wordmarkDpr, 0, 0, wordmarkDpr, 0, 0);
+      return true;
+    }
+
+    function createWordmarkParticles() {
+      const sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = wordmarkWidth;
+      sampleCanvas.height = wordmarkHeight;
+      const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+      if (!sampleCtx) return;
+
+      sampleCtx.font = '900 118px Outfit, Arial, sans-serif';
+      sampleCtx.textAlign = 'center';
+      sampleCtx.textBaseline = 'middle';
+      sampleCtx.fillStyle = '#ffffff';
+      sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth - 72);
+
+      const pixels = sampleCtx.getImageData(0, 0, wordmarkWidth, wordmarkHeight).data;
+      const sampleStep = isMobile() ? 8 : 5;
+      for (let y = 0; y < wordmarkHeight; y += sampleStep) {
+        for (let x = 0; x < wordmarkWidth; x += sampleStep) {
+          if (pixels[(y * wordmarkWidth + x) * 4 + 3] < 128) continue;
+          const bx = x - wordmarkWidth / 2;
+          const by = y - wordmarkHeight / 2;
+          const color = Math.random() < 0.48
+            ? COLORS.cyanBright
+            : (Math.random() < 0.56 ? COLORS.purpleBright : COLORS.white);
+          wordmarkParticles.push(new LogoParticle(bx, by, (Math.random() - 0.5) * 24, color, 2.1, 'wordmark'));
         }
       }
-      function drawSparks() {
-        sparks.forEach(s => {
-          const { a, b } = s.conn;
-          const sx = a.px + (b.px - a.px) * s.progress;
-          const sy = a.py + (b.py - a.py) * s.progress;
-          const scale = a.pScale + (b.pScale - a.pScale) * s.progress;
-          ctx.save();
-          ctx.fillStyle = s.color;
-          ctx.shadowColor = s.color;
-          ctx.shadowBlur = 12;
-          ctx.beginPath();
-          ctx.arc(sx, sy, 3.6 * scale, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
+    }
+
+    function renderWordmark(time, isStatic = false) {
+      if (!wordmarkCtx) return;
+      wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
+      wordmarkParticles.forEach(particle => {
+        if (!isStatic) {
+          particle.update(time, wordmarkPointerX, wordmarkPointerY, isPointerOverWordmark);
+        }
+        particle.project(0, 0, wordmarkWidth / 2, wordmarkHeight / 2);
+      });
+      wordmarkParticles.sort((a, b) => a.pz - b.pz);
+      wordmarkParticles.forEach(particle => {
+        wordmarkCtx.globalAlpha = particle.alpha;
+        wordmarkCtx.fillStyle = particle.color;
+        wordmarkCtx.beginPath();
+        wordmarkCtx.arc(particle.px, particle.py, Math.max(0.8, particle.baseSize * particle.pScale), 0, Math.PI * 2);
+        wordmarkCtx.fill();
+      });
+      wordmarkCtx.globalAlpha = 1;
+      if (!isStatic) wordmarkRafId = requestAnimationFrame(renderWordmark);
+    }
+
+    function startWordmark() {
+      if (isMobile()) {
+        stopWordmark();
+        return;
+      }
+      if (prefersReducedMotion()) {
+        stopWordmark();
+        renderWordmark(0, true);
+      } else if (!wordmarkRafId) {
+        wordmarkRafId = requestAnimationFrame(renderWordmark);
+      }
+    }
+
+    function stopWordmark() {
+      if (wordmarkRafId) {
+        cancelAnimationFrame(wordmarkRafId);
+        wordmarkRafId = null;
+      }
+    }
+
+    if (initWordmarkCanvas()) {
+      createWordmarkParticles();
+      wordmarkCanvas.addEventListener('pointermove', event => {
+        const rect = wordmarkCanvas.getBoundingClientRect();
+        wordmarkPointerX = (event.clientX - rect.left) * (wordmarkWidth / rect.width);
+        wordmarkPointerY = (event.clientY - rect.top) * (wordmarkHeight / rect.height);
+        isPointerOverWordmark = true;
+      });
+      wordmarkCanvas.addEventListener('pointerleave', () => {
+        isPointerOverWordmark = false;
+        wordmarkPointerX = wordmarkPointerY = -9999;
+      });
+
+      if (prefersReducedMotion()) {
+        wordmarkParticles.forEach(particle => {
+          particle.x = particle.bx;
+          particle.y = particle.by;
+          particle.z = particle.bz;
         });
       }
 
-      function renderLogo(time) {
-        if (!ctx || !canvas) {
-          rafId = null;
+      if (wordmarkSection && 'IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              startWordmark();
+            } else {
+              stopWordmark();
+            }
+          });
+        }, { threshold: 0.05 }).observe(wordmarkSection);
+      } else {
+        startWordmark();
+      }
+
+      window.addEventListener('resize', () => {
+        if (isMobile()) {
+          stopWordmark();
           return;
         }
-        ctx.clearRect(0, 0, LOGICAL_SIZE, LOGICAL_SIZE);
-        const center = LOGICAL_SIZE / 2;
-        // Keep the logo facing forward; particles still shimmer and breathe.
-        rotX = 0;
-        rotY = 0;
-        particles.forEach(p => {
-          p.update(time, mouseCanvasX, mouseCanvasY, isMouseOverCanvas);
-          p.project(rotX, rotY, center, center);
-        });
-        particles.sort((a, b) => a.pz - b.pz);
-        particles.forEach(p => {
-          ctx.globalAlpha = p.alpha;
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.px, p.py, Math.max(0.75, p.baseSize * p.pScale), 0, Math.PI * 2);
-          ctx.fill();
-        });
-        ctx.globalAlpha = 1;
-        drawSparks();
-        rafId = requestAnimationFrame(renderLogo);
+        initWordmarkCanvas();
+        if (prefersReducedMotion()) {
+          renderWordmark(0, true);
+        } else if (!wordmarkSection || wordmarkSection.getBoundingClientRect().top < window.innerHeight) {
+          startWordmark();
+        }
+      });
+    }
+  }
+
+})();
+
+/* ==================== VIBEBOT MASCOT CONTROLLER ==================== */
+
+(function initVibeBot() {
+  'use strict';
+
+  function setup() {
+    const botRoot = document.getElementById('vibebot-container');
+    const actorGroup = document.getElementById('vb-actor-group');
+    const bubble = document.getElementById('vibebot-bubble');
+    const messageSpan = document.getElementById('vibebot-message');
+    const menu = document.getElementById('vibebot-menu');
+    const particlesContainer = document.getElementById('vibebot-particles');
+
+    const pupilL = document.getElementById('vb-pupil-left');
+    const pupilR = document.getElementById('vb-pupil-right');
+
+    const btnNext = document.getElementById('vb-btn-next');
+    const btnRegister = document.getElementById('vb-btn-register');
+    const btnTip = document.getElementById('vb-btn-tip');
+    const btnDance = document.getElementById('vb-btn-dance');
+
+    if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
+
+    // Config & Section Mappings
+    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'why', 'register', 'contributors'];
+    const SECTION_MESSAGES = {
+      top: "Welcome to AI VibeX 1.0! Let's vibe!",
+      about: "6 intense hours of pure AI innovation!",
+      timeline: "Follow the schedule to stay on track!",
+      flow: "Understand the hackathon flow: Build & win!",
+      why: "Discover why AI VibeX is your launchpad!",
+      register: "Register your team! Spots fill fast!",
+      contributors: "Meet the visionary team behind the event!"
+    };
+
+    const TIPS = [
+      "Keep your MVP small and polish the demo!",
+      "Test your AI API keys and rate limits early!",
+      "A working 2-minute live demo beats 20 slides!",
+      "Design for real-world impact and clear problem solving!",
+      "Stay hydrated and tap your mentors for rapid unblocking!"
+    ];
+
+    // State Variables
+    let botX = window.innerWidth + 200; // Flies in from off-screen right
+    let botY = 160;
+    let targetX = window.innerWidth - 180;
+    let targetY = 160;
+    let prevBotX = botX;
+    let prevBotY = botY;
+    let tiltAngle = 0;
+    let floatTime = 0;
+    let floatOffset = 0;
+
+    let isPointerDown = false;
+    let isDragging = false;
+    let dragOffset = { x: 0, y: 0 };
+    let dragStartPos = { x: 0, y: 0 };
+    let hasDragged = false;
+    let isCustomPlaced = false;
+
+    let currentSectionIdx = 0;
+    let currentMood = 'happy';
+    let isMenuOpen = false;
+    let speechTimeout = null;
+    let surpriseTimeout = null;
+    let lastActivityTime = performance.now();
+    let isAsleep = false;
+
+    // Pointer coordinates for pupil tracking
+    let mouseScreenX = window.innerWidth / 2;
+    let mouseScreenY = window.innerHeight / 2;
+
+    const leftEyeCenter = { x: 53, y: 48 };
+    const rightEyeCenter = { x: 87, y: 48 };
+    const maxPupilOffset = 3.6;
+
+    function getSectionElements() {
+      return SECTION_IDS.map(id => {
+        let el = document.getElementById(id);
+        if (!el && id === 'top') {
+          el = document.getElementById('hero') || document.querySelector('header') || document.body;
+        }
+        return { id, element: el };
+      }).filter(item => item.element !== null);
+    }
+
+    function resolveActiveSectionIndex() {
+      const sections = getSectionElements();
+      const scrollPos = window.scrollY + window.innerHeight * 0.35;
+      let activeIdx = 0;
+
+      sections.forEach((item, idx) => {
+        const top = item.element.offsetTop;
+        if (scrollPos >= top) {
+          activeIdx = idx;
+        }
+      });
+
+      return activeIdx;
+    }
+
+    function calculateTargetPosition() {
+      if (isCustomPlaced || window.innerWidth <= 768) return;
+
+      const isSmallScreen = window.innerWidth < 1300;
+      const botWidth = isSmallScreen ? 84 : 140;
+      const botHeight = isSmallScreen ? 114 : 190;
+
+      if (isSmallScreen) {
+        targetX = window.innerWidth - botWidth - 18;
+        targetY = window.innerHeight - botHeight - 20;
+        return;
       }
 
-      function startLogo() {
-        if (!canvas || prefersReducedMotion()) return;
-        if (!rafId) rafId = requestAnimationFrame(renderLogo);
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+      // Vertical drift downwards
+      const verticalRange = window.innerHeight * 0.45;
+      targetY = window.innerHeight * 0.20 + (scrollRatio * verticalRange);
+
+      // Alternating edges: even -> right, odd -> left
+      const isEvenSection = currentSectionIdx % 2 === 0;
+      if (isEvenSection) {
+        targetX = window.innerWidth - botWidth - 36;
+      } else {
+        targetX = 36;
+      }
+    }
+
+    function showMessage(text, durationMs = 3200) {
+      if (isMenuOpen) closeMenu();
+      messageSpan.textContent = text;
+      bubble.classList.add('is-visible');
+
+      if (speechTimeout) clearTimeout(speechTimeout);
+      if (durationMs > 0) {
+        speechTimeout = setTimeout(() => {
+          bubble.classList.remove('is-visible');
+        }, durationMs);
+      }
+    }
+
+    function setMood(mood) {
+      currentMood = mood;
+      botRoot.setAttribute('data-mood', mood);
+    }
+
+    function triggerSurprise(tempMessage = null) {
+      if (isAsleep) return;
+      setMood('wow');
+      if (tempMessage) showMessage(tempMessage, 1500);
+
+      if (surpriseTimeout) clearTimeout(surpriseTimeout);
+      surpriseTimeout = setTimeout(() => {
+        if (!isAsleep) setMood('happy');
+      }, 1400);
+    }
+
+    function spawnParticle(content, color = '#ff6bd6') {
+      const particle = document.createElement('span');
+      particle.className = 'vb-particle';
+      particle.textContent = content;
+      particle.style.color = color;
+
+      const tx = (Math.random() - 0.5) * 60;
+      const ty = -40 - Math.random() * 50;
+      particle.style.setProperty('--tx', `${tx}px`);
+      particle.style.setProperty('--ty', `${ty}px`);
+      particle.style.left = `${60 + (Math.random() - 0.5) * 20}px`;
+      particle.style.top = `${20 + (Math.random() - 0.5) * 20}px`;
+
+      particlesContainer.appendChild(particle);
+      setTimeout(() => particle.remove(), 2400);
+    }
+
+    // Throw Cute Heart Emojis Within Little Range on Click
+    function spawnClickHearts() {
+      const hearts = ['💖', '💕', '❤️', '✨'];
+      const count = 3;
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = hearts[Math.floor(Math.random() * hearts.length)];
+          const particle = document.createElement('span');
+          particle.className = 'vb-particle vb-click-heart';
+          particle.textContent = heart;
+
+          // Little tight range: +/-18px horizontal, -16px to -36px vertical
+          const tx = (Math.random() - 0.5) * 36;
+          const ty = -16 - Math.random() * 20;
+          particle.style.setProperty('--tx', `${tx}px`);
+          particle.style.setProperty('--ty', `${ty}px`);
+          particle.style.left = `${58 + (Math.random() - 0.5) * 16}px`;
+          particle.style.top = `${36 + (Math.random() - 0.5) * 14}px`;
+
+          particlesContainer.appendChild(particle);
+          setTimeout(() => particle.remove(), 1400);
+        }, i * 75);
+      }
+    }
+
+    function openMenu() {
+      isMenuOpen = true;
+      menu.classList.add('is-open');
+      menu.setAttribute('aria-hidden', 'false');
+      bubble.classList.remove('is-visible');
+    }
+
+    function closeMenu() {
+      isMenuOpen = false;
+      menu.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true');
+    }
+
+    function scrollToSection(index) {
+      const sections = getSectionElements();
+      if (index >= 0 && index < sections.length) {
+        sections[index].element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function triggerDance() {
+      closeMenu();
+      actorGroup.classList.add('vb-dancing');
+      showMessage("Let's party! ✨", 3000);
+
+      const heartInterval = setInterval(() => {
+        spawnParticle('💖', '#ff6bd6');
+      }, 280);
+
+      setTimeout(() => {
+        clearInterval(heartInterval);
+        actorGroup.classList.remove('vb-dancing');
+      }, 3000);
+    }
+
+    function triggerBackflip() {
+      actorGroup.classList.remove('vb-flip');
+      void actorGroup.offsetWidth;
+      actorGroup.classList.add('vb-flip');
+      showMessage("Wheee! 360° flip!", 2000);
+
+      setTimeout(() => {
+        actorGroup.classList.remove('vb-flip');
+      }, 850);
+    }
+
+    function recordUserActivity() {
+      lastActivityTime = performance.now();
+      if (isAsleep) {
+        isAsleep = false;
+        setMood('happy');
+        showMessage("Oh! You're back! ⚡", 3000);
+      }
+    }
+
+    // Single requestAnimationFrame Loop
+    function tick() {
+      if (window.innerWidth <= 768) {
+        requestAnimationFrame(tick);
+        return;
       }
 
-      if (canvas) {
-        initCanvas();
-        // Render immediately so the animation is visible even while the image is loading.
-        createFallbackParticles();
-        sampleLogoImage();
-        canvas.addEventListener('mousemove', e => {
-          const rect = canvas.getBoundingClientRect();
-          mouseCanvasX = (e.clientX - rect.left) * (LOGICAL_SIZE / rect.width);
-          mouseCanvasY = (e.clientY - rect.top) * (LOGICAL_SIZE / rect.height);
-          isMouseOverCanvas = true;
-          targetRotX = 0;
-          targetRotY = 0;
-        });
-        canvas.addEventListener('mouseleave', () => {
-          isMouseOverCanvas = false;
-          mouseCanvasX = mouseCanvasY = -9999;
-          targetRotX = targetRotY = 0;
-        });
-        canvas.addEventListener('touchstart', e => {
-          if (e.touches && e.touches[0]) {
-            const rect = canvas.getBoundingClientRect();
-            mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
-            mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
-            isMouseOverCanvas = true;
-          }
-        }, { passive: true });
-        canvas.addEventListener('touchmove', e => {
-          if (e.touches && e.touches[0]) {
-            const rect = canvas.getBoundingClientRect();
-            mouseCanvasX = (e.touches[0].clientX - rect.left) * (LOGICAL_SIZE / rect.width);
-            mouseCanvasY = (e.touches[0].clientY - rect.top) * (LOGICAL_SIZE / rect.height);
-            isMouseOverCanvas = true;
-          }
-        }, { passive: true });
-        canvas.addEventListener('touchend', () => {
-          isMouseOverCanvas = false;
-          mouseCanvasX = mouseCanvasY = -9999;
-        });
-        window.addEventListener('resize', () => {
-          initCanvas();
-          startLogo();
-        });
+      floatTime += 0.04;
 
-        // Pause animation when scrolled out of view, resume when in view
-        const showcaseSection = document.getElementById('particle-showcase');
-        if (showcaseSection && 'IntersectionObserver' in window) {
-          const obs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                startLogo();
-              } else if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-              }
-            });
-          }, { threshold: 0.05 });
-          obs.observe(showcaseSection);
+      // 1. Idle Sleep Management (after 9s)
+      if (!isAsleep && performance.now() - lastActivityTime > 9000) {
+        isAsleep = true;
+        setMood('sleep');
+        showMessage("Zzz...", 0);
+      }
+
+      if (isAsleep && Math.random() < 0.02) {
+        spawnParticle('z', '#00e5ff');
+      }
+
+      // 2. Position Lerp
+      if (!isDragging) {
+        const lerpFactor = 0.065;
+        botX += (targetX - botX) * lerpFactor;
+        botY += (targetY - botY) * lerpFactor;
+      }
+
+      // 3. Sine Wave Float (only frozen when asleep or actively moving/dragging)
+      floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
+
+      // 4. Movement Tilt
+      const velocityX = botX - prevBotX;
+      prevBotX = botX;
+      prevBotY = botY;
+
+      const targetTilt = Math.min(18, Math.max(-18, velocityX * 1.6));
+      tiltAngle += (targetTilt - tiltAngle) * 0.1;
+
+      botRoot.style.transform = `translate3d(${botX}px, ${botY + floatOffset}px, 0px) rotate(${tiltAngle}deg)`;
+
+      // 5. Eye Pupil Tracking
+      if (!isAsleep && currentMood !== 'sleep') {
+        const botRect = botRoot.getBoundingClientRect();
+        const scale = botRect.width / 140;
+
+        const eyeL_ClientX = botRect.left + leftEyeCenter.x * scale;
+        const eyeL_ClientY = botRect.top + leftEyeCenter.y * scale;
+        const eyeR_ClientX = botRect.left + rightEyeCenter.x * scale;
+        const eyeR_ClientY = botRect.top + rightEyeCenter.y * scale;
+
+        const dxL = mouseScreenX - eyeL_ClientX;
+        const dyL = mouseScreenY - eyeL_ClientY;
+        const distL = Math.hypot(dxL, dyL) || 1;
+        const offsetL = Math.min(maxPupilOffset, distL * 0.035);
+
+        const dxR = mouseScreenX - eyeR_ClientX;
+        const dyR = mouseScreenY - eyeR_ClientY;
+        const distR = Math.hypot(dxR, dyR) || 1;
+        const offsetR = Math.min(maxPupilOffset, distR * 0.035);
+
+        pupilL.setAttribute('cx', (leftEyeCenter.x + (dxL / distL) * offsetL).toFixed(2));
+        pupilL.setAttribute('cy', (leftEyeCenter.y + (dyL / distL) * offsetL).toFixed(2));
+
+        pupilR.setAttribute('cx', (rightEyeCenter.x + (dxR / distR) * offsetR).toFixed(2));
+        pupilR.setAttribute('cy', (rightEyeCenter.y + (dyR / distR) * offsetR).toFixed(2));
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    // Natural Blink Interval
+    function scheduleBlink() {
+      const nextBlinkMs = 2800 + Math.random() * 3200;
+      setTimeout(() => {
+        if (!isAsleep && currentMood !== 'sleep') {
+          botRoot.classList.add('is-blinking');
+          setTimeout(() => {
+            botRoot.classList.remove('is-blinking');
+            scheduleBlink();
+          }, 140);
         } else {
-          startLogo();
+          scheduleBlink();
         }
-      }
+      }, nextBlinkMs);
+    }
 
-      if (glassBadge) {
-        glassBadge.addEventListener('pointermove', e => {
-          const rect = glassBadge.getBoundingClientRect();
-          glassBadge.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-          glassBadge.style.setProperty('--my', `${e.clientY - rect.top}px`);
-        });
-      }
+    // Pointer Dragging & Touch Handling
+    botRoot.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.vibebot-menu')) return;
 
-      if (wordmarkCanvas) {
-        const wordmarkSection = document.getElementById('vibex-wordmark');
-        const wordmarkWidth = 800;
-        const wordmarkHeight = 260;
-        const wordmarkParticles = [];
-        let wordmarkCtx = null;
-        let wordmarkRafId = null;
-        let wordmarkPointerX = -9999;
-        let wordmarkPointerY = -9999;
-        let isPointerOverWordmark = false;
+      recordUserActivity();
+      isPointerDown = true;
+      isDragging = false;
+      hasDragged = false;
+      dragStartPos = { x: e.clientX, y: e.clientY };
+      // Include current floatOffset so position remains 100% intact if dragged
+      dragOffset = {
+        x: e.clientX - botX,
+        y: e.clientY - (botY + floatOffset)
+      };
 
-        function initWordmarkCanvas() {
-          wordmarkCtx = wordmarkCanvas.getContext('2d');
-          if (!wordmarkCtx) return false;
-          const wordmarkDpr = Math.min(window.devicePixelRatio || 1, 2);
-          wordmarkCanvas.width = wordmarkWidth * wordmarkDpr;
-          wordmarkCanvas.height = wordmarkHeight * wordmarkDpr;
-          wordmarkCtx.setTransform(wordmarkDpr, 0, 0, wordmarkDpr, 0, 0);
-          return true;
-        }
+      botRoot.setPointerCapture(e.pointerId);
+    });
 
-        function createWordmarkParticles() {
-          const sampleCanvas = document.createElement('canvas');
-          sampleCanvas.width = wordmarkWidth;
-          sampleCanvas.height = wordmarkHeight;
-          const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
-          if (!sampleCtx) return;
+    window.addEventListener('pointermove', (e) => {
+      mouseScreenX = e.clientX;
+      mouseScreenY = e.clientY;
+      recordUserActivity();
 
-          sampleCtx.font = '900 118px Outfit, Arial, sans-serif';
-          sampleCtx.textAlign = 'center';
-          sampleCtx.textBaseline = 'middle';
-          sampleCtx.fillStyle = '#ffffff';
-          sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth - 72);
-
-          const pixels = sampleCtx.getImageData(0, 0, wordmarkWidth, wordmarkHeight).data;
-          const sampleStep = isMobile() ? 8 : 5;
-          for (let y = 0; y < wordmarkHeight; y += sampleStep) {
-            for (let x = 0; x < wordmarkWidth; x += sampleStep) {
-              if (pixels[(y * wordmarkWidth + x) * 4 + 3] < 128) continue;
-              const bx = x - wordmarkWidth / 2;
-              const by = y - wordmarkHeight / 2;
-              const color = Math.random() < 0.48
-                ? COLORS.cyanBright
-                : (Math.random() < 0.56 ? COLORS.purpleBright : COLORS.white);
-              wordmarkParticles.push(new LogoParticle(bx, by, (Math.random() - 0.5) * 24, color, 2.1, 'wordmark'));
-            }
-          }
-        }
-
-        function renderWordmark(time, isStatic = false) {
-          if (!wordmarkCtx) return;
-          wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
-          wordmarkParticles.forEach(particle => {
-            if (!isStatic) {
-              particle.update(time, wordmarkPointerX, wordmarkPointerY, isPointerOverWordmark);
-            }
-            particle.project(0, 0, wordmarkWidth / 2, wordmarkHeight / 2);
-          });
-          wordmarkParticles.sort((a, b) => a.pz - b.pz);
-          wordmarkParticles.forEach(particle => {
-            wordmarkCtx.globalAlpha = particle.alpha;
-            wordmarkCtx.fillStyle = particle.color;
-            wordmarkCtx.beginPath();
-            wordmarkCtx.arc(particle.px, particle.py, Math.max(0.8, particle.baseSize * particle.pScale), 0, Math.PI * 2);
-            wordmarkCtx.fill();
-          });
-          wordmarkCtx.globalAlpha = 1;
-          if (!isStatic) wordmarkRafId = requestAnimationFrame(renderWordmark);
-        }
-
-        function startWordmark() {
-          if (isMobile()) {
-            stopWordmark();
-            return;
-          }
-          if (prefersReducedMotion()) {
-            stopWordmark();
-            renderWordmark(0, true);
-          } else if (!wordmarkRafId) {
-            wordmarkRafId = requestAnimationFrame(renderWordmark);
-          }
-        }
-
-        function stopWordmark() {
-          if (wordmarkRafId) {
-            cancelAnimationFrame(wordmarkRafId);
-            wordmarkRafId = null;
-          }
-        }
-
-        if (initWordmarkCanvas()) {
-          createWordmarkParticles();
-          wordmarkCanvas.addEventListener('pointermove', event => {
-            const rect = wordmarkCanvas.getBoundingClientRect();
-            wordmarkPointerX = (event.clientX - rect.left) * (wordmarkWidth / rect.width);
-            wordmarkPointerY = (event.clientY - rect.top) * (wordmarkHeight / rect.height);
-            isPointerOverWordmark = true;
-          });
-          wordmarkCanvas.addEventListener('pointerleave', () => {
-            isPointerOverWordmark = false;
-            wordmarkPointerX = wordmarkPointerY = -9999;
-          });
-
-          if (prefersReducedMotion()) {
-            wordmarkParticles.forEach(particle => {
-              particle.x = particle.bx;
-              particle.y = particle.by;
-              particle.z = particle.bz;
-            });
-          }
-
-          if (wordmarkSection && 'IntersectionObserver' in window) {
-            new IntersectionObserver(entries => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                  startWordmark();
-                } else {
-                  stopWordmark();
-                }
-              });
-            }, { threshold: 0.05 }).observe(wordmarkSection);
-          } else {
-            startWordmark();
-          }
-
-          window.addEventListener('resize', () => {
-            if (isMobile()) {
-              stopWordmark();
-              return;
-            }
-            initWordmarkCanvas();
-            if (prefersReducedMotion()) {
-              renderWordmark(0, true);
-            } else if (!wordmarkSection || wordmarkSection.getBoundingClientRect().top < window.innerHeight) {
-              startWordmark();
-            }
-          });
-        }
-      }
-
-    })();
-
-      /* ==================== VIBEBOT MASCOT CONTROLLER ==================== */
-
-      (function initVibeBot() {
-        'use strict';
-
-        function setup() {
-          const botRoot = document.getElementById('vibebot-container');
-          const actorGroup = document.getElementById('vb-actor-group');
-          const bubble = document.getElementById('vibebot-bubble');
-          const messageSpan = document.getElementById('vibebot-message');
-          const menu = document.getElementById('vibebot-menu');
-          const particlesContainer = document.getElementById('vibebot-particles');
-
-          const pupilL = document.getElementById('vb-pupil-left');
-          const pupilR = document.getElementById('vb-pupil-right');
-
-          const btnNext = document.getElementById('vb-btn-next');
-          const btnRegister = document.getElementById('vb-btn-register');
-          const btnTip = document.getElementById('vb-btn-tip');
-          const btnDance = document.getElementById('vb-btn-dance');
-
-          if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
-
-          // Config & Section Mappings
-          const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'why', 'register', 'contributors'];
-          const SECTION_MESSAGES = {
-            top: "Welcome to AI VibeX 1.0! Let's vibe!",
-            about: "6 intense hours of pure AI innovation!",
-            timeline: "Follow the schedule to stay on track!",
-            flow: "Understand the hackathon flow: Build & win!",
-            why: "Discover why AI VibeX is your launchpad!",
-            register: "Register your team! Spots fill fast!",
-            contributors: "Meet the visionary team behind the event!"
-          };
-
-          const TIPS = [
-            "Keep your MVP small and polish the demo!",
-            "Test your AI API keys and rate limits early!",
-            "A working 2-minute live demo beats 20 slides!",
-            "Design for real-world impact and clear problem solving!",
-            "Stay hydrated and tap your mentors for rapid unblocking!"
-          ];
-
-          // State Variables
-          let botX = window.innerWidth + 200; // Flies in from off-screen right
-          let botY = 160;
-          let targetX = window.innerWidth - 180;
-          let targetY = 160;
-          let prevBotX = botX;
-          let prevBotY = botY;
-          let tiltAngle = 0;
-          let floatTime = 0;
-          let floatOffset = 0;
-
-          let isPointerDown = false;
-          let isDragging = false;
-          let dragOffset = { x: 0, y: 0 };
-          let dragStartPos = { x: 0, y: 0 };
-          let hasDragged = false;
-          let isCustomPlaced = false;
-
-          let currentSectionIdx = 0;
-          let currentMood = 'happy';
-          let isMenuOpen = false;
-          let speechTimeout = null;
-          let surpriseTimeout = null;
-          let lastActivityTime = performance.now();
-          let isAsleep = false;
-
-          // Pointer coordinates for pupil tracking
-          let mouseScreenX = window.innerWidth / 2;
-          let mouseScreenY = window.innerHeight / 2;
-
-          const leftEyeCenter = { x: 53, y: 48 };
-          const rightEyeCenter = { x: 87, y: 48 };
-          const maxPupilOffset = 3.6;
-
-          function getSectionElements() {
-            return SECTION_IDS.map(id => {
-              let el = document.getElementById(id);
-              if (!el && id === 'top') {
-                el = document.getElementById('hero') || document.querySelector('header') || document.body;
-              }
-              return { id, element: el };
-            }).filter(item => item.element !== null);
-          }
-
-          function resolveActiveSectionIndex() {
-            const sections = getSectionElements();
-            const scrollPos = window.scrollY + window.innerHeight * 0.35;
-            let activeIdx = 0;
-
-            sections.forEach((item, idx) => {
-              const top = item.element.offsetTop;
-              if (scrollPos >= top) {
-                activeIdx = idx;
-              }
-            });
-
-            return activeIdx;
-          }
-
-          function calculateTargetPosition() {
-            if (isCustomPlaced || window.innerWidth <= 768) return;
-
-            const isSmallScreen = window.innerWidth < 1300;
-            const botWidth = isSmallScreen ? 84 : 140;
-            const botHeight = isSmallScreen ? 114 : 190;
-
-            if (isSmallScreen) {
-              targetX = window.innerWidth - botWidth - 18;
-              targetY = window.innerHeight - botHeight - 20;
-              return;
-            }
-
-            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-            const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-
-            // Vertical drift downwards
-            const verticalRange = window.innerHeight * 0.45;
-            targetY = window.innerHeight * 0.20 + (scrollRatio * verticalRange);
-
-            // Alternating edges: even -> right, odd -> left
-            const isEvenSection = currentSectionIdx % 2 === 0;
-            if (isEvenSection) {
-              targetX = window.innerWidth - botWidth - 36;
-            } else {
-              targetX = 36;
-            }
-          }
-
-          function showMessage(text, durationMs = 3200) {
-            if (isMenuOpen) closeMenu();
-            messageSpan.textContent = text;
-            bubble.classList.add('is-visible');
-
-            if (speechTimeout) clearTimeout(speechTimeout);
-            if (durationMs > 0) {
-              speechTimeout = setTimeout(() => {
-                bubble.classList.remove('is-visible');
-              }, durationMs);
-            }
-          }
-
-          function setMood(mood) {
-            currentMood = mood;
-            botRoot.setAttribute('data-mood', mood);
-          }
-
-          function triggerSurprise(tempMessage = null) {
-            if (isAsleep) return;
+      if (isPointerDown) {
+        const movedDist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
+        if (movedDist > 6) {
+          if (!hasDragged) {
+            hasDragged = true;
+            isDragging = true;
+            // Mouth looks like saying "Ohhh" :O while moving!
             setMood('wow');
-            if (tempMessage) showMessage(tempMessage, 1500);
-
-            if (surpriseTimeout) clearTimeout(surpriseTimeout);
-            surpriseTimeout = setTimeout(() => {
-              if (!isAsleep) setMood('happy');
-            }, 1400);
+            showMessage("Ohhh! 😮", 0);
           }
+          botX = e.clientX - dragOffset.x;
+          botY = e.clientY - dragOffset.y;
+          targetX = botX;
+          targetY = botY;
+        }
+      }
+    });
 
-          function spawnParticle(content, color = '#ff6bd6') {
-            const particle = document.createElement('span');
-            particle.className = 'vb-particle';
-            particle.textContent = content;
-            particle.style.color = color;
+    let lastTapTime = 0;
+    let singleTapTimeout = null;
 
-            const tx = (Math.random() - 0.5) * 60;
-            const ty = -40 - Math.random() * 50;
-            particle.style.setProperty('--tx', `${tx}px`);
-            particle.style.setProperty('--ty', `${ty}px`);
-            particle.style.left = `${60 + (Math.random() - 0.5) * 20}px`;
-            particle.style.top = `${20 + (Math.random() - 0.5) * 20}px`;
+    botRoot.addEventListener('pointerup', (e) => {
+      if (!isPointerDown) return;
+      isPointerDown = false;
 
-            particlesContainer.appendChild(particle);
-            setTimeout(() => particle.remove(), 2400);
+      try {
+        botRoot.releasePointerCapture(e.pointerId);
+      } catch (_) { }
+
+      if (hasDragged) {
+        isDragging = false;
+        isCustomPlaced = true;
+        showMessage("Wheee! 🚀", 2000);
+        setTimeout(() => {
+          if (!isAsleep && currentMood === 'wow') {
+            setMood('happy');
           }
+        }, 1500);
+      } else {
+        // Intact Click/Tap: throw heart emojis in a little range
+        spawnClickHearts();
 
-          // Throw Cute Heart Emojis Within Little Range on Click
-          function spawnClickHearts() {
-            const hearts = ['💖', '💕', '❤️', '✨'];
-            const count = 3;
-            for (let i = 0; i < count; i++) {
-              setTimeout(() => {
-                const heart = hearts[Math.floor(Math.random() * hearts.length)];
-                const particle = document.createElement('span');
-                particle.className = 'vb-particle vb-click-heart';
-                particle.textContent = heart;
+        if (!e.target.closest('.vibebot-menu')) {
+          const now = performance.now();
+          const tapInterval = now - lastTapTime;
 
-                // Little tight range: +/-18px horizontal, -16px to -36px vertical
-                const tx = (Math.random() - 0.5) * 36;
-                const ty = -16 - Math.random() * 20;
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-                particle.style.left = `${58 + (Math.random() - 0.5) * 16}px`;
-                particle.style.top = `${36 + (Math.random() - 0.5) * 14}px`;
-
-                particlesContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 1400);
-              }, i * 75);
-            }
-          }
-
-          function openMenu() {
-            isMenuOpen = true;
-            menu.classList.add('is-open');
-            menu.setAttribute('aria-hidden', 'false');
-            bubble.classList.remove('is-visible');
-          }
-
-          function closeMenu() {
-            isMenuOpen = false;
-            menu.classList.remove('is-open');
-            menu.setAttribute('aria-hidden', 'true');
-          }
-
-          function scrollToSection(index) {
-            const sections = getSectionElements();
-            if (index >= 0 && index < sections.length) {
-              sections[index].element.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-
-          function triggerDance() {
-            closeMenu();
-            actorGroup.classList.add('vb-dancing');
-            showMessage("Let's party! ✨", 3000);
-
-            const heartInterval = setInterval(() => {
-              spawnParticle('💖', '#ff6bd6');
-            }, 280);
-
-            setTimeout(() => {
-              clearInterval(heartInterval);
-              actorGroup.classList.remove('vb-dancing');
-            }, 3000);
-          }
-
-          function triggerBackflip() {
-            actorGroup.classList.remove('vb-flip');
-            void actorGroup.offsetWidth;
-            actorGroup.classList.add('vb-flip');
-            showMessage("Wheee! 360° flip!", 2000);
-
-            setTimeout(() => {
-              actorGroup.classList.remove('vb-flip');
-            }, 850);
-          }
-
-          function recordUserActivity() {
-            lastActivityTime = performance.now();
-            if (isAsleep) {
-              isAsleep = false;
-              setMood('happy');
-              showMessage("Oh! You're back! ⚡", 3000);
-            }
-          }
-
-          // Single requestAnimationFrame Loop
-          function tick() {
-            if (window.innerWidth <= 768) {
-              requestAnimationFrame(tick);
-              return;
-            }
-
-            floatTime += 0.04;
-
-            // 1. Idle Sleep Management (after 9s)
-            if (!isAsleep && performance.now() - lastActivityTime > 9000) {
-              isAsleep = true;
-              setMood('sleep');
-              showMessage("Zzz...", 0);
-            }
-
-            if (isAsleep && Math.random() < 0.02) {
-              spawnParticle('z', '#00e5ff');
-            }
-
-            // 2. Position Lerp
-            if (!isDragging) {
-              const lerpFactor = 0.065;
-              botX += (targetX - botX) * lerpFactor;
-              botY += (targetY - botY) * lerpFactor;
-            }
-
-            // 3. Sine Wave Float (only frozen when asleep or actively moving/dragging)
-            floatOffset = isAsleep || isDragging ? 0 : Math.sin(floatTime) * 9;
-
-            // 4. Movement Tilt
-            const velocityX = botX - prevBotX;
-            prevBotX = botX;
-            prevBotY = botY;
-
-            const targetTilt = Math.min(18, Math.max(-18, velocityX * 1.6));
-            tiltAngle += (targetTilt - tiltAngle) * 0.1;
-
-            botRoot.style.transform = `translate3d(${botX}px, ${botY + floatOffset}px, 0px) rotate(${tiltAngle}deg)`;
-
-            // 5. Eye Pupil Tracking
-            if (!isAsleep && currentMood !== 'sleep') {
-              const botRect = botRoot.getBoundingClientRect();
-              const scale = botRect.width / 140;
-
-              const eyeL_ClientX = botRect.left + leftEyeCenter.x * scale;
-              const eyeL_ClientY = botRect.top + leftEyeCenter.y * scale;
-              const eyeR_ClientX = botRect.left + rightEyeCenter.x * scale;
-              const eyeR_ClientY = botRect.top + rightEyeCenter.y * scale;
-
-              const dxL = mouseScreenX - eyeL_ClientX;
-              const dyL = mouseScreenY - eyeL_ClientY;
-              const distL = Math.hypot(dxL, dyL) || 1;
-              const offsetL = Math.min(maxPupilOffset, distL * 0.035);
-
-              const dxR = mouseScreenX - eyeR_ClientX;
-              const dyR = mouseScreenY - eyeR_ClientY;
-              const distR = Math.hypot(dxR, dyR) || 1;
-              const offsetR = Math.min(maxPupilOffset, distR * 0.035);
-
-              pupilL.setAttribute('cx', (leftEyeCenter.x + (dxL / distL) * offsetL).toFixed(2));
-              pupilL.setAttribute('cy', (leftEyeCenter.y + (dyL / distL) * offsetL).toFixed(2));
-
-              pupilR.setAttribute('cx', (rightEyeCenter.x + (dxR / distR) * offsetR).toFixed(2));
-              pupilR.setAttribute('cy', (rightEyeCenter.y + (dyR / distR) * offsetR).toFixed(2));
-            }
-
-            requestAnimationFrame(tick);
-          }
-
-          // Natural Blink Interval
-          function scheduleBlink() {
-            const nextBlinkMs = 2800 + Math.random() * 3200;
-            setTimeout(() => {
-              if (!isAsleep && currentMood !== 'sleep') {
-                botRoot.classList.add('is-blinking');
-                setTimeout(() => {
-                  botRoot.classList.remove('is-blinking');
-                  scheduleBlink();
-                }, 140);
-              } else {
-                scheduleBlink();
-              }
-            }, nextBlinkMs);
-          }
-
-          // Pointer Dragging & Touch Handling
-          botRoot.addEventListener('pointerdown', (e) => {
-            if (e.target.closest('.vibebot-menu')) return;
-
-            recordUserActivity();
-            isPointerDown = true;
-            isDragging = false;
-            hasDragged = false;
-            dragStartPos = { x: e.clientX, y: e.clientY };
-            // Include current floatOffset so position remains 100% intact if dragged
-            dragOffset = {
-              x: e.clientX - botX,
-              y: e.clientY - (botY + floatOffset)
-            };
-
-            botRoot.setPointerCapture(e.pointerId);
-          });
-
-          window.addEventListener('pointermove', (e) => {
-            mouseScreenX = e.clientX;
-            mouseScreenY = e.clientY;
-            recordUserActivity();
-
-            if (isPointerDown) {
-              const movedDist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
-              if (movedDist > 6) {
-                if (!hasDragged) {
-                  hasDragged = true;
-                  isDragging = true;
-                  // Mouth looks like saying "Ohhh" :O while moving!
-                  setMood('wow');
-                  showMessage("Ohhh! 😮", 0);
-                }
-                botX = e.clientX - dragOffset.x;
-                botY = e.clientY - dragOffset.y;
-                targetX = botX;
-                targetY = botY;
-              }
-            }
-          });
-
-          let lastTapTime = 0;
-          let singleTapTimeout = null;
-
-          botRoot.addEventListener('pointerup', (e) => {
-            if (!isPointerDown) return;
-            isPointerDown = false;
-
-            try {
-              botRoot.releasePointerCapture(e.pointerId);
-            } catch (_) { }
-
-            if (hasDragged) {
-              isDragging = false;
-              isCustomPlaced = true;
-              showMessage("Wheee! 🚀", 2000);
-              setTimeout(() => {
-                if (!isAsleep && currentMood === 'wow') {
-                  setMood('happy');
-                }
-              }, 1500);
-            } else {
-              // Intact Click/Tap: throw heart emojis in a little range
-              spawnClickHearts();
-
-              if (!e.target.closest('.vibebot-menu')) {
-                const now = performance.now();
-                const tapInterval = now - lastTapTime;
-
-                if (tapInterval < 320 && tapInterval > 30) {
-                  // Double-tap detected
-                  lastTapTime = 0;
-                  if (singleTapTimeout) {
-                    clearTimeout(singleTapTimeout);
-                    singleTapTimeout = null;
-                  }
-                  closeMenu();
-                  recordUserActivity();
-                  triggerBackflip();
-                } else {
-                  lastTapTime = now;
-                  if (singleTapTimeout) clearTimeout(singleTapTimeout);
-                  singleTapTimeout = setTimeout(() => {
-                    if (!hasDragged) {
-                      if (isMenuOpen) {
-                        closeMenu();
-                      } else {
-                        openMenu();
-                      }
-                    }
-                  }, 250);
-                }
-              }
-            }
-          });
-
-          botRoot.addEventListener('dblclick', (e) => {
-            e.stopPropagation();
+          if (tapInterval < 320 && tapInterval > 30) {
+            // Double-tap detected
+            lastTapTime = 0;
             if (singleTapTimeout) {
               clearTimeout(singleTapTimeout);
               singleTapTimeout = null;
@@ -2597,123 +2571,149 @@
             closeMenu();
             recordUserActivity();
             triggerBackflip();
-          });
-
-          document.addEventListener('click', (e) => {
-            if (isMenuOpen && !e.target.closest('#vibebot-container')) {
-              closeMenu();
-            }
-          });
-
-          // Menu Actions
-          if (btnNext) {
-            btnNext.addEventListener('click', (e) => {
-              e.stopPropagation();
-              closeMenu();
-              const sections = getSectionElements();
-              const nextIdx = (currentSectionIdx + 1) % sections.length;
-              scrollToSection(nextIdx);
-            });
-          }
-
-          if (btnRegister) {
-            btnRegister.addEventListener('click', (e) => {
-              e.stopPropagation();
-              closeMenu();
-              const regSection = document.getElementById('register');
-              if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
-            });
-          }
-
-          if (btnTip) {
-            btnTip.addEventListener('click', (e) => {
-              e.stopPropagation();
-              closeMenu();
-              const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
-              showMessage(`💡 ${randomTip}`, 4200);
-              triggerSurprise();
-            });
-          }
-
-          if (btnDance) {
-            btnDance.addEventListener('click', (e) => {
-              e.stopPropagation();
-              triggerDance();
-            });
-          }
-
-          // Scroll & Section Tracking
-          window.addEventListener('scroll', () => {
-            recordUserActivity();
-            const newIdx = resolveActiveSectionIndex();
-
-            if (newIdx !== currentSectionIdx) {
-              currentSectionIdx = newIdx;
-              isCustomPlaced = false;
-
-              const sections = getSectionElements();
-              const activeSection = sections[currentSectionIdx];
-              if (activeSection && SECTION_MESSAGES[activeSection.id]) {
-                showMessage(SECTION_MESSAGES[activeSection.id], 3000);
+          } else {
+            lastTapTime = now;
+            if (singleTapTimeout) clearTimeout(singleTapTimeout);
+            singleTapTimeout = setTimeout(() => {
+              if (!hasDragged) {
+                if (isMenuOpen) {
+                  closeMenu();
+                } else {
+                  openMenu();
+                }
               }
-            }
+            }, 250);
+          }
+        }
+      }
+    });
 
-            calculateTargetPosition();
-          }, { passive: true });
+    botRoot.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      if (singleTapTimeout) {
+        clearTimeout(singleTapTimeout);
+        singleTapTimeout = null;
+      }
+      closeMenu();
+      recordUserActivity();
+      triggerBackflip();
+    });
 
-          window.addEventListener('resize', calculateTargetPosition, { passive: true });
+    document.addEventListener('click', (e) => {
+      if (isMenuOpen && !e.target.closest('#vibebot-container')) {
+        closeMenu();
+      }
+    });
 
-          // Hover Reactions on External Elements
-          const interactiveButtons = document.querySelectorAll('button:not(.vibebot-btn), a.btn, a.btn-primary, a.btn-secondary, a.nav-cta, .carousel-btn');
-          interactiveButtons.forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-              triggerSurprise();
-            });
-          });
+    // Menu Actions
+    if (btnNext) {
+      btnNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        const sections = getSectionElements();
+        const nextIdx = (currentSectionIdx + 1) % sections.length;
+        scrollToSection(nextIdx);
+      });
+    }
 
-          const teamCards = document.querySelectorAll('.leadership-card, .contributor-card:not(.coordinator-card)');
-          teamCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-              if (isAsleep) return;
-              const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
-              const name = nameEl ? nameEl.textContent.trim() : 'our team';
-              setMood('love');
-              showMessage(`Say hi to ${name}! 💖`, 2600);
-              spawnParticle('💖', '#ff6bd6');
-            });
+    if (btnRegister) {
+      btnRegister.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        const regSection = document.getElementById('register');
+        if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
 
-            card.addEventListener('mouseleave', () => {
-              if (!isAsleep) {
-                setTimeout(() => {
-                  if (!isAsleep && currentMood === 'love') setMood('happy');
-                }, 1200);
-              }
-            });
-          });
+    if (btnTip) {
+      btnTip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        const randomTip = TIPS[Math.floor(Math.random() * TIPS.length)];
+        showMessage(`💡 ${randomTip}`, 4200);
+        triggerSurprise();
+      });
+    }
 
-          // Initial positioning and greet
-          currentSectionIdx = resolveActiveSectionIndex();
-          calculateTargetPosition();
+    if (btnDance) {
+      btnDance.addEventListener('click', (e) => {
+        e.stopPropagation();
+        triggerDance();
+      });
+    }
 
+    // Scroll & Section Tracking
+    window.addEventListener('scroll', () => {
+      recordUserActivity();
+      const newIdx = resolveActiveSectionIndex();
+
+      if (newIdx !== currentSectionIdx) {
+        currentSectionIdx = newIdx;
+        isCustomPlaced = false;
+
+        const sections = getSectionElements();
+        const activeSection = sections[currentSectionIdx];
+        if (activeSection && SECTION_MESSAGES[activeSection.id]) {
+          showMessage(SECTION_MESSAGES[activeSection.id], 3000);
+        }
+      }
+
+      calculateTargetPosition();
+    }, { passive: true });
+
+    window.addEventListener('resize', calculateTargetPosition, { passive: true });
+
+    // Hover Reactions on External Elements
+    const interactiveButtons = document.querySelectorAll('button:not(.vibebot-btn), a.btn, a.btn-primary, a.btn-secondary, a.nav-cta, .carousel-btn');
+    interactiveButtons.forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        triggerSurprise();
+      });
+    });
+
+    const teamCards = document.querySelectorAll('.leadership-card, .contributor-card:not(.coordinator-card)');
+    teamCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        if (isAsleep) return;
+        const nameEl = card.querySelector('.contributor-name') || card.querySelector('h3');
+        const name = nameEl ? nameEl.textContent.trim() : 'our team';
+        setMood('love');
+        showMessage(`Say hi to ${name}! 💖`, 2600);
+        spawnParticle('💖', '#ff6bd6');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        if (!isAsleep) {
           setTimeout(() => {
-            const sections = getSectionElements();
-            const activeSection = sections[currentSectionIdx];
-            const initialMsg = activeSection && SECTION_MESSAGES[activeSection.id]
-              ? SECTION_MESSAGES[activeSection.id]
-              : "Welcome to AI VibeX 1.0! Let's vibe!";
-            showMessage(initialMsg, 3500);
-          }, 900);
-
-          scheduleBlink();
-          requestAnimationFrame(tick);
+            if (!isAsleep && currentMood === 'love') setMood('happy');
+          }, 1200);
         }
+      });
+    });
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setup);
-        } else {
-          setup();
-        }
-      })();
+    // Initial positioning and greet
+    currentSectionIdx = resolveActiveSectionIndex();
+    calculateTargetPosition();
+
+    setTimeout(() => {
+      const sections = getSectionElements();
+      const activeSection = sections[currentSectionIdx];
+      const initialMsg = activeSection && SECTION_MESSAGES[activeSection.id]
+        ? SECTION_MESSAGES[activeSection.id]
+        : "Welcome to AI VibeX 1.0! Let's vibe!";
+      showMessage(initialMsg, 3500);
+    }, 900);
+
+    scheduleBlink();
+    requestAnimationFrame(tick);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+})();
 
 /* ==================== HERO PARTICLE COUNTDOWN (H : M : S) ==================== */
 (function initHeroParticleCountdown() {

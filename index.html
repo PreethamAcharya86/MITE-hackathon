@@ -216,16 +216,10 @@
     </div>
   </section>
 
-  <!-- DEDICATED 3D PARTICLE SHOWCASE SECTION -->
-  <section class="particle-showcase-section" id="particle-showcase" aria-label="Interactive 3D Particle Showcase">
-    <div class="container particle-showcase-container" data-aos="zoom-in" data-aos-duration="1000">
-      <!-- Interactive 3D Volumetric Particle Logo -->
-      <div class="artifera-particle-wrapper" id="artifera-particle-wrapper">
-        <canvas id="artifera-particle-canvas" class="artifera-particle-canvas" width="500" height="500"
-          aria-label="Interactive 3D Particle ARTIFERA Logo"></canvas>
-        <div class="artifera-particle-glow" aria-hidden="true"></div>
-      </div>
-    </div>
+  <!-- ARTIFERA SCROLL-ASSEMBLE SECTION (particles form the logo while scrolling) -->
+  <section class="afs" id="artifera-scroll" aria-label="Artifera logo assembling from particles as you scroll">
+    <h2 class="afs-sr">Artifera</h2>
+    <div class="afs-stage"><canvas class="afs-canvas" aria-hidden="true"></canvas></div>
   </section>
 
   <!-- TIMELINE SECTION -->
@@ -1095,6 +1089,7 @@
   </div>
 
   <script src="script.js"></script>
+  <script src="artifera-scroll.js"></script>
 </body>
 
 </html>
