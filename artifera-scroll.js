@@ -53,6 +53,45 @@
   let shape = [], dust = [], source = null;
   let ac = 0, smoothed = 0, lastRaw = 0, velS = 0, lastTs = 0, rafId = 0;
   let running = false, inView = true, sampleTimer = 0, resizePending = false;
+  let pointerX = -1e9, pointerY = -1e9, pointerTargetX = -1e9, pointerTargetY = -1e9;
+  let pointerActive = false, pointerSmoothAt = 0;
+  let hoverFrom = 0, hoverTo = 0, hoverStartedAt = 0, hoverDuration = 1000;
+
+  function hoverAmountAt(now) {
+    if (hoverFrom === hoverTo) return hoverTo;
+    const progress = clamp((now - hoverStartedAt) / hoverDuration);
+    if (progress >= 1) {
+      hoverFrom = hoverTo;
+      return hoverTo;
+    }
+    return hoverFrom + (hoverTo - hoverFrom) * ease(progress);
+  }
+  function setHover(active) {
+    const now = performance.now();
+    hoverFrom = hoverAmountAt(now);
+    hoverTo = active ? 1 : 0;
+    hoverStartedAt = now;
+    hoverDuration = active ? 180 : 1000;
+  }
+  function onPointerMove(event) {
+    const rect = stage.getBoundingClientRect();
+    pointerTargetX = event.clientX - rect.left;
+    pointerTargetY = event.clientY - rect.top;
+    if (!pointerActive) {
+      pointerActive = true;
+      pointerX = pointerTargetX;
+      pointerY = pointerTargetY;
+      setHover(true);
+    }
+  }
+  function onPointerLeave() {
+    if (!pointerActive) return;
+    pointerActive = false;
+    setHover(false);
+  }
+  stage.addEventListener('pointermove', onPointerMove);
+  stage.addEventListener('pointerleave', onPointerLeave);
+  window.addEventListener('blur', onPointerLeave);
 
   /* ---------- captions ---------- */
   const caps = C.captions.map(c => {
@@ -225,7 +264,14 @@
     out.y = p.by + p.ay * Math.sin(ac * p.fy + p.py);
   }
   const A = { x: 0, y: 0 };
-  function draw(T) {
+  function draw(T, now = performance.now()) {
+    if (pointerActive) {
+      const pointerDt = pointerSmoothAt ? Math.max(0, now - pointerSmoothAt) : 0;
+      const pointerEase = 1 - Math.exp(-pointerDt / 55);
+      pointerX += (pointerTargetX - pointerX) * pointerEase;
+      pointerY += (pointerTargetY - pointerY) * pointerEase;
+    }
+    pointerSmoothAt = now;
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = C.colors.dust;
     for (const d of dust) {
@@ -237,6 +283,7 @@
     const rProg = clamp((T - P.moveEnd) / (1 - P.moveEnd));
     const cyNow = cy0 + (cyTop - cy0) * mProg;
     const stA = C.assemble.stagger, stR = C.release.stagger, sw = C.release.swirl, grow = C.particles.formedGrow, fa = C.particles.formedAlpha;
+    const hover = hoverAmountAt(now);
     let lastCi = -1;
     for (const p of shape) {
       const ea = aProg >= 1 ? 1 : ease(clamp((aProg - p.d1 * stA) / (1 - stA)));
@@ -248,13 +295,23 @@
         const dx = A.x - fx, dy = A.y - fy, dist = Math.hypot(dx, dy) || 1, s = Math.sin(Math.PI * es), q = p.sw * sw * dist * s;
         x += (-dy / dist) * q + p.ux * p.burst * s; y += (dx / dist) * q + p.uy * p.burst * s;
       }
+      if (hover > 0 && k > 0.8) {
+        const dx = pointerX - fx, dy = pointerY - fy, dist = Math.hypot(dx, dy);
+        const radius = 145;
+        const influence = Math.exp(-2.2 * (dist / radius) ** 2) * hover * ease(clamp((k - 0.8) / 0.2));
+        const pull = 22 * influence * clamp(dist / 24);
+        if (dist > 0.01) {
+          x += (dx / dist) * pull;
+          y += (dy / dist) * pull;
+        }
+      }
       if (p.ci !== lastCi) { ctx.fillStyle = PAL[p.ci]; lastCi = p.ci; }
       ctx.globalAlpha = p.a0 + (fa - p.a0) * k;
       ctx.beginPath(); ctx.arc(x, y, p.r * (1 + grow * k), 0, TAU); ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
-  function renderStatic() { draw(smoothed); updateCaptions(smoothed); }
+  function renderStatic() { draw(smoothed, performance.now()); updateCaptions(smoothed); }
 
   function frame(ts) {
     rafId = 0; if (!running) return;
@@ -271,7 +328,7 @@
       d.y -= d.v * mul * dt;
       if (d.y < -6) { d.y = H + 6; d.x = Math.random() * W; }
     }
-    draw(smoothed); updateCaptions(smoothed);
+    draw(smoothed, ts); updateCaptions(smoothed);
     rafId = requestAnimationFrame(frame);
   }
   function syncLoop() {
