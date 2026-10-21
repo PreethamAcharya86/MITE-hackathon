@@ -2047,7 +2047,7 @@
       sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth * 0.92);
 
       const pixels = sampleCtx.getImageData(0, 0, wordmarkWidth, wordmarkHeight).data;
-      const sampleStep = isMobile() ? 8 : 5;
+      const sampleStep = isMobile() ? 4 : 5;
       for (let y = 0; y < wordmarkHeight; y += sampleStep) {
         for (let x = 0; x < wordmarkWidth; x += sampleStep) {
           if (pixels[(y * wordmarkWidth + x) * 4 + 3] < 128) continue;
@@ -2062,6 +2062,10 @@
           particle.scrollDelay = Math.random();
           particle.scrollReleaseDelay = Math.random();
           particle.scrollReleaseDrop = Math.random() * 80;
+          particle.hoverX = 0;
+          particle.hoverY = 0;
+          particle.hoverVx = 0;
+          particle.hoverVy = 0;
           wordmarkParticles.push(particle);
         }
       }
@@ -2090,16 +2094,27 @@
           particleProgress * (1 - releaseProgress);
         particle.project(0, 0, wordmarkWidth / 2, wordmarkHeight / 2);
 
-        if (isPointerOverWordmark && particleProgress > 0.8) {
-          const dx = particle.px - wordmarkPointerX;
-          const dy = particle.py - wordmarkPointerY;
+        if (particleProgress > 0.8 && releaseProgress < 1) {
+          const dx = particle.px + particle.hoverX - wordmarkPointerX;
+          const dy = particle.py + particle.hoverY - wordmarkPointerY;
           const distance = Math.hypot(dx, dy);
-          const radius = 85;
-          if (distance < radius && distance > 0.1) {
-            const force = (1 - distance / radius) * 8.5;
-            particle.px += (dx / distance) * force;
-            particle.py += (dy / distance) * force;
+          if (isPointerOverWordmark && distance < 85 && distance > 0.1) {
+            const force = (1 - distance / 85) * 8.5;
+            const angle = Math.atan2(dy, dx);
+            particle.hoverVx += Math.cos(angle) * force;
+            particle.hoverVy += Math.sin(angle) * force;
           }
+          particle.hoverVx += -particle.hoverX * 0.085;
+          particle.hoverVy += -particle.hoverY * 0.085;
+          particle.hoverVx *= 0.82;
+          particle.hoverVy *= 0.82;
+          particle.hoverX += particle.hoverVx;
+          particle.hoverY += particle.hoverVy;
+          particle.px += particle.hoverX;
+          particle.py += particle.hoverY;
+        } else {
+          particle.hoverX = particle.hoverY = 0;
+          particle.hoverVx = particle.hoverVy = 0;
         }
       });
       wordmarkParticles.sort((a, b) => a.pz - b.pz);
