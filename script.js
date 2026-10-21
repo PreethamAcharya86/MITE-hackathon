@@ -2009,11 +2009,12 @@
 
   if (wordmarkCanvas) {
     const wordmarkSection = document.getElementById('vibex-wordmark');
-    const wordmarkWidth = 800;
-    const wordmarkHeight = 260;
+    let wordmarkWidth = 800;
+    let wordmarkHeight = 260;
     const wordmarkParticles = [];
     let wordmarkCtx = null;
     let wordmarkRafId = null;
+    let wordmarkProgress = 0;
     let wordmarkPointerX = -9999;
     let wordmarkPointerY = -9999;
     let isPointerOverWordmark = false;
@@ -2021,9 +2022,12 @@
     function initWordmarkCanvas() {
       wordmarkCtx = wordmarkCanvas.getContext('2d');
       if (!wordmarkCtx) return false;
+      const stage = wordmarkSection && wordmarkSection.querySelector('.vibex-wordmark-stage');
+      wordmarkWidth = Math.max(1, stage ? stage.clientWidth : window.innerWidth);
+      wordmarkHeight = Math.max(1, stage ? stage.clientHeight : window.innerHeight);
       const wordmarkDpr = Math.min(window.devicePixelRatio || 1, 2);
-      wordmarkCanvas.width = wordmarkWidth * wordmarkDpr;
-      wordmarkCanvas.height = wordmarkHeight * wordmarkDpr;
+      wordmarkCanvas.width = Math.round(wordmarkWidth * wordmarkDpr);
+      wordmarkCanvas.height = Math.round(wordmarkHeight * wordmarkDpr);
       wordmarkCtx.setTransform(wordmarkDpr, 0, 0, wordmarkDpr, 0, 0);
       return true;
     }
@@ -2035,11 +2039,12 @@
       const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
       if (!sampleCtx) return;
 
-      sampleCtx.font = '900 118px Outfit, Arial, sans-serif';
+      const fontSize = Math.min(wordmarkHeight * 0.32, wordmarkWidth * 0.12);
+      sampleCtx.font = `900 ${fontSize}px Outfit, Arial, sans-serif`;
       sampleCtx.textAlign = 'center';
       sampleCtx.textBaseline = 'middle';
       sampleCtx.fillStyle = '#ffffff';
-      sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth - 72);
+      sampleCtx.fillText('AI VIBEX', wordmarkWidth / 2, wordmarkHeight / 2, wordmarkWidth * 0.92);
 
       const pixels = sampleCtx.getImageData(0, 0, wordmarkWidth, wordmarkHeight).data;
       const sampleStep = isMobile() ? 8 : 5;
@@ -2051,19 +2056,51 @@
           const color = Math.random() < 0.48
             ? COLORS.cyanBright
             : (Math.random() < 0.56 ? COLORS.purpleBright : COLORS.white);
-          wordmarkParticles.push(new LogoParticle(bx, by, (Math.random() - 0.5) * 24, color, 2.1, 'wordmark'));
+          const particle = new LogoParticle(bx, by, (Math.random() - 0.5) * 24, color, 2.1, 'wordmark');
+          particle.scrollStartX = bx;
+          particle.scrollStartY = -wordmarkHeight / 2 - Math.random() * wordmarkHeight * 0.4;
+          particle.scrollDelay = Math.random();
+          particle.scrollReleaseDelay = Math.random();
+          particle.scrollReleaseDrop = Math.random() * 80;
+          wordmarkParticles.push(particle);
         }
       }
+    }
+
+    function easeWordmarkProgress(progress) {
+      const value = Math.max(0, Math.min(1, progress));
+      return value * value * value * (value * (value * 6 - 15) + 10);
     }
 
     function renderWordmark(time, isStatic = false) {
       if (!wordmarkCtx) return;
       wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
+      const assembleProgress = Math.max(0, Math.min(1, wordmarkProgress / 0.34));
+      const releaseTimeline = Math.max(0, Math.min(1, (wordmarkProgress - 0.68) / 0.32));
       wordmarkParticles.forEach(particle => {
-        if (!isStatic) {
-          particle.update(time, wordmarkPointerX, wordmarkPointerY, isPointerOverWordmark);
-        }
+        const particleProgress = easeWordmarkProgress((assembleProgress - particle.scrollDelay * 0.5) / 0.5);
+        const releaseProgress = easeWordmarkProgress(
+          (releaseTimeline - particle.scrollReleaseDelay * 0.3) / 0.7
+        );
+        particle.x = particle.bx;
+        particle.y = particle.scrollStartY + (particle.by - particle.scrollStartY) * particleProgress +
+          (wordmarkHeight / 2 + 50 + particle.scrollReleaseDrop - particle.by) * releaseProgress;
+        particle.z = particle.bz;
+        particle.alpha = (0.72 + 0.28 * Math.sin(particle.phase + time * particle.shimmerSpeed)) *
+          particleProgress * (1 - releaseProgress);
         particle.project(0, 0, wordmarkWidth / 2, wordmarkHeight / 2);
+
+        if (isPointerOverWordmark && particleProgress > 0.8) {
+          const dx = particle.px - wordmarkPointerX;
+          const dy = particle.py - wordmarkPointerY;
+          const distance = Math.hypot(dx, dy);
+          const radius = 85;
+          if (distance < radius && distance > 0.1) {
+            const force = (1 - distance / radius) * 8.5;
+            particle.px += (dx / distance) * force;
+            particle.py += (dy / distance) * force;
+          }
+        }
       });
       wordmarkParticles.sort((a, b) => a.pz - b.pz);
       wordmarkParticles.forEach(particle => {
@@ -2078,12 +2115,9 @@
     }
 
     function startWordmark() {
-      if (isMobile()) {
-        stopWordmark();
-        return;
-      }
       if (prefersReducedMotion()) {
         stopWordmark();
+        wordmarkProgress = 0.34;
         renderWordmark(0, true);
       } else if (!wordmarkRafId) {
         wordmarkRafId = requestAnimationFrame(renderWordmark);
@@ -2099,15 +2133,30 @@
 
     if (initWordmarkCanvas()) {
       createWordmarkParticles();
-      wordmarkCanvas.addEventListener('pointermove', event => {
-        const rect = wordmarkCanvas.getBoundingClientRect();
+      if (wordmarkSection) {
+        wordmarkSection.addEventListener('vibex:scrollprogress', event => {
+          wordmarkProgress = event.detail.progress;
+        });
+      }
+      window.addEventListener('pointermove', event => {
+        const stage = wordmarkSection && wordmarkSection.querySelector('.vibex-wordmark-stage');
+        const rect = stage && stage.getBoundingClientRect();
+        if (!rect || event.clientX < rect.left || event.clientX > rect.right ||
+            event.clientY < rect.top || event.clientY > rect.bottom) {
+          isPointerOverWordmark = false;
+          wordmarkPointerX = wordmarkPointerY = -9999;
+          if (wordmarkSection) wordmarkSection.classList.remove('is-wordmark-hovered');
+          return;
+        }
         wordmarkPointerX = (event.clientX - rect.left) * (wordmarkWidth / rect.width);
         wordmarkPointerY = (event.clientY - rect.top) * (wordmarkHeight / rect.height);
         isPointerOverWordmark = true;
-      });
-      wordmarkCanvas.addEventListener('pointerleave', () => {
+        if (wordmarkSection) wordmarkSection.classList.add('is-wordmark-hovered');
+      }, { passive: true });
+      window.addEventListener('blur', () => {
         isPointerOverWordmark = false;
         wordmarkPointerX = wordmarkPointerY = -9999;
+        if (wordmarkSection) wordmarkSection.classList.remove('is-wordmark-hovered');
       });
 
       if (prefersReducedMotion()) {
@@ -2133,11 +2182,9 @@
       }
 
       window.addEventListener('resize', () => {
-        if (isMobile()) {
-          stopWordmark();
-          return;
-        }
-        initWordmarkCanvas();
+        if (!initWordmarkCanvas()) return;
+        wordmarkParticles.length = 0;
+        createWordmarkParticles();
         if (prefersReducedMotion()) {
           renderWordmark(0, true);
         } else if (!wordmarkSection || wordmarkSection.getBoundingClientRect().top < window.innerHeight) {

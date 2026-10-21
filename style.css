@@ -908,32 +908,48 @@ body.cursor-click .cursor-ring {
 /* --- Centered AI VibeX Particle Wordmark --- */
 .vibex-wordmark-section {
   position: relative;
-  z-index: 2;
+  z-index: 20;
+  display: block;
+  height: 500vh;
+  overflow: visible;
+  padding: 0;
+  pointer-events: none;
+}
+
+.vibex-wordmark-stage {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 24px 48px;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .vibex-wordmark-wrap {
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(840px, 92vw);
-  aspect-ratio: 800 / 260;
-  transition: transform 350ms ease;
+  width: 100%;
+  height: 100%;
 }
 
 .vibex-wordmark-canvas {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 21;
   display: block;
   width: 100%;
   height: 100%;
   filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.42)) drop-shadow(0 0 52px rgba(139, 92, 246, 0.32));
   transition: filter 350ms ease;
+  pointer-events: none;
 }
 
 .vibex-wordmark-glow {
@@ -948,15 +964,11 @@ body.cursor-click .cursor-ring {
   transition: filter 350ms ease, opacity 350ms ease;
 }
 
-.vibex-wordmark-wrap:hover {
-  transform: translateY(-6px) scale(1.025);
-}
-
-.vibex-wordmark-wrap:hover .vibex-wordmark-canvas {
+#vibex-wordmark.is-wordmark-hovered .vibex-wordmark-canvas {
   filter: drop-shadow(0 0 34px rgba(34, 211, 238, 0.68)) drop-shadow(0 0 68px rgba(139, 92, 246, 0.5));
 }
 
-.vibex-wordmark-wrap:hover .vibex-wordmark-glow {
+#vibex-wordmark.is-wordmark-hovered .vibex-wordmark-glow {
   filter: blur(30px) saturate(1.35);
   opacity: 1;
 }
@@ -1102,10 +1114,6 @@ body.cursor-click .cursor-ring {
     max-height: 86vw !important;
   }
 
-  .vibex-wordmark-section {
-    display: none;
-  }
-
   .artifera-glass-badge {
     display: none !important;
   }
@@ -1114,10 +1122,6 @@ body.cursor-click .cursor-ring {
 @media (min-width: 769px) {
   .particle-showcase-section {
     display: flex !important;
-  }
-
-  .vibex-wordmark-section {
-    display: flex;
   }
 
   .artifera-particle-wrapper {
@@ -1145,8 +1149,13 @@ body.cursor-click .cursor-ring {
     transition: none !important;
   }
 
-  .vibex-wordmark-wrap:hover {
-    transform: none;
+  #vibex-wordmark.is-wordmark-hovered .vibex-wordmark-canvas {
+    filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.42)) drop-shadow(0 0 52px rgba(139, 92, 246, 0.32));
+  }
+
+  #vibex-wordmark.is-wordmark-hovered .vibex-wordmark-glow {
+    filter: blur(36px);
+    opacity: 0.75;
   }
 }
 
