@@ -1610,7 +1610,7 @@ body.cursor-click .cursor-ring {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(34, 211, 238, 0.03) 100%);
   border-top: 1px solid var(--clr-border);
   border-bottom: 1px solid var(--clr-border);
-  padding: 64px 0;
+  padding: 88px 0;
 }
 
 .strip-grid {
