@@ -1603,107 +1603,217 @@ body.cursor-click .cursor-ring {
   }
 }
 
-/* ─── ABOUT STRIP ────────────────────────────────────────── */
-.about-strip {
+/* ─── PRIZE POOL ─────────────────────────────────────────── */
+.prize-pool {
   position: relative;
   z-index: 2;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(34, 211, 238, 0.03) 100%);
+  overflow: hidden;
+  background: transparent;
   border-top: 1px solid var(--clr-border);
   border-bottom: 1px solid var(--clr-border);
   padding: 88px 0;
 }
 
-.strip-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.strip-card {
+.prize-pool-header {
   text-align: center;
-  padding: 32px 24px;
-  border-radius: var(--radius-lg);
-  background: var(--clr-surface);
-  border: 1px solid var(--clr-border);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
-  position: relative;
-  overflow: hidden;
-  transform-style: preserve-3d;
+  margin-bottom: 44px;
 }
 
-.strip-card::before {
+.prize-pool-header .section-title {
+  margin: 12px 0;
+}
+
+.prize-pool-header .section-subtitle {
+  margin: 0 auto 22px;
+}
+
+.prize-pool-total {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 18px;
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  border-radius: 999px;
+  background: rgba(9, 14, 28, 0.7);
+  color: #aab8ca;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prize-pool-total strong {
+  color: var(--clr-cyan);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+}
+
+.prize-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.prize-card {
+  --prize-accent: #fbbf24;
+  --prize-glow: rgba(251, 191, 36, 0.24);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 340px;
+  padding: 36px 30px 32px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--prize-accent) 38%, transparent);
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--prize-glow), transparent 65%),
+    linear-gradient(155deg, rgba(21, 28, 48, 0.96), rgba(9, 14, 28, 0.98));
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  animation: prizeFloat 5s ease-in-out infinite;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.prize-card-second {
+  --prize-accent: #cbd5e1;
+  --prize-glow: rgba(148, 163, 184, 0.2);
+  animation-delay: -2.5s;
+}
+
+.prize-card::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1px;
+  z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.18), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: radial-gradient(340px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), var(--prize-glow), transparent 70%);
+  opacity: 0.65;
   pointer-events: none;
-  z-index: 1;
 }
 
-.strip-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(139, 92, 246, 0.6);
-  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.25), 0 0 25px rgba(34, 211, 238, 0.15);
+.prize-card:hover {
+  transform: translateY(-12px) scale(1.025);
+  border-color: var(--prize-accent);
+  box-shadow: 0 28px 70px var(--prize-glow), 0 0 30px var(--prize-glow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.strip-card:hover::before {
-  opacity: 1;
+.prize-card-spark {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--prize-accent);
+  box-shadow: 0 0 12px var(--prize-accent), 0 0 28px var(--prize-accent);
+  animation: prizeSpark 2.2s ease-in-out infinite;
 }
 
-.strip-card>* {
-  position: relative;
-  z-index: 2;
-}
-
-.strip-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-md);
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+.prize-medal {
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid color-mix(in srgb, var(--prize-accent) 50%, transparent);
+  border-radius: 50%;
+  color: var(--prize-accent);
+  background: color-mix(in srgb, var(--prize-accent) 10%, transparent);
+  box-shadow: 0 0 30px var(--prize-glow), inset 0 0 16px var(--prize-glow);
+  animation: medalPulse 3s ease-in-out infinite;
 }
 
-.strip-card:hover .strip-icon {
-  background: rgba(139, 92, 246, 0.25);
-  border-color: var(--clr-cyan);
-  transform: translateY(-4px) scale(1.12);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
+.prize-medal svg {
+  width: 42px;
+  height: 42px;
 }
 
-.strip-icon svg {
-  width: 24px;
-  height: 24px;
-  color: var(--clr-cyan);
-  transition: transform 0.3s ease;
-}
-
-.strip-card:hover .strip-icon svg {
-  transform: rotate(8deg);
-}
-
-.strip-card h3 {
-  font-size: 1.25rem;
+.prize-place {
+  color: var(--prize-accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  letter-spacing: 0.18em;
 }
 
-.strip-card p {
+.prize-place span {
+  opacity: 0.55;
+}
+
+.prize-card h3 {
+  margin: 12px 0 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.prize-card p {
+  max-width: 330px;
+  min-height: 48px;
+  margin: 0 auto 18px;
   font-size: 0.9rem;
   color: #94a3b8;
   line-height: 1.6;
 }
 
+.prize-amount {
+  color: var(--prize-accent);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 28px var(--prize-glow);
+}
+
+.prize-shine {
+  position: absolute;
+  top: -35%;
+  left: -60%;
+  width: 38%;
+  height: 170%;
+  transform: rotate(24deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  pointer-events: none;
+  animation: prizeShine 6s ease-in-out infinite;
+}
+
+@keyframes prizeFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+
+@keyframes prizeSpark {
+  0%, 100% { opacity: 0.55; scale: 0.8; }
+  50% { opacity: 1; scale: 1.35; }
+}
+
+@keyframes medalPulse {
+  0%, 100% { box-shadow: 0 0 24px var(--prize-glow), inset 0 0 12px var(--prize-glow); }
+  50% { box-shadow: 0 0 38px var(--prize-glow), inset 0 0 20px var(--prize-glow); }
+}
+
+@keyframes prizeShine {
+  0%, 65% { left: -60%; }
+  100% { left: 130%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prize-card,
+  .prize-card-spark,
+  .prize-medal,
+  .prize-shine {
+    animation: none;
+  }
+
+  .prize-card {
+    transition: none;
+  }
+}
+
 /* ─── TIMELINE ───────────────────────────────────────────── */
 .timeline-section {
-  background: var(--clr-bg-2);
+  background: transparent;
   position: relative;
   z-index: 2;
 }
@@ -3674,7 +3784,7 @@ body.cursor-click .cursor-ring {
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .strip-grid {
+  .prize-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -3936,9 +4046,9 @@ body.cursor-click .cursor-ring {
   }
 
   /* Grids & Cards */
-  .strip-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .prize-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 
   .flow-grid {

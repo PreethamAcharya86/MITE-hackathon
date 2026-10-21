@@ -25,7 +25,7 @@
     document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
 
     // Hover states on all interactive elements
-    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .strip-card, .flow-card, .why-card';
+    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .prize-card, .flow-card, .why-card';
     document.querySelectorAll(interactables).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -321,7 +321,7 @@
 
   /* â”€â”€â”€ 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .strip-card, .tl-card, .flow-card, .register-card, .contributor-card:not(.coordinator-card)');
+    const tiltEls = document.querySelectorAll('.why-card, .prize-card, .tl-card, .flow-card, .register-card, .contributor-card:not(.coordinator-card)');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();

@@ -27,8 +27,6 @@
     colors: { white: '#ffffff', silver: '#aab8cc', cyan: '#22d3ee', purple: '#a78bfa', dust: '#ffffff' },
     captions: [   // fade: [startIn, fullIn, startOut, fullOut] on T
       { text: 'Scroll to assemble the signal',  size: 'sm', fade: [-0.1, -0.05, 0.16, 0.28] },
-      { text: 'Intelligence, assembled.',       size: 'lg', fade: [0.32, 0.40, 0.60, 0.68] },
-      { text: 'Next up: AI VibeX 1.0',          size: 'sm', fade: [0.84, 0.92, 1.2, 1.3] }
     ]
   };
   /* ------------------------------------------- */
@@ -51,43 +49,19 @@
 
   let W = 0, H = 0, dpr = 1, cx = 0, cy0 = 0, cyTop = 0, halfH = 0, topInset = 0;
   let shape = [], dust = [], source = null;
-  let ac = 0, smoothed = 0, lastRaw = 0, velS = 0, lastTs = 0, rafId = 0;
+  let ac = 0, smoothed = 0, lastRaw = 0, velS = 0, lastTs = 0, lastDrawAt = 0, rafId = 0;
   let running = false, inView = true, sampleTimer = 0, resizePending = false;
-  let pointerX = -1e9, pointerY = -1e9, pointerTargetX = -1e9, pointerTargetY = -1e9;
-  let pointerActive = false, pointerSmoothAt = 0;
-  let hoverFrom = 0, hoverTo = 0, hoverStartedAt = 0, hoverDuration = 1000;
-
-  function hoverAmountAt(now) {
-    if (hoverFrom === hoverTo) return hoverTo;
-    const progress = clamp((now - hoverStartedAt) / hoverDuration);
-    if (progress >= 1) {
-      hoverFrom = hoverTo;
-      return hoverTo;
-    }
-    return hoverFrom + (hoverTo - hoverFrom) * ease(progress);
-  }
-  function setHover(active) {
-    const now = performance.now();
-    hoverFrom = hoverAmountAt(now);
-    hoverTo = active ? 1 : 0;
-    hoverStartedAt = now;
-    hoverDuration = active ? 180 : 1000;
-  }
+  let pointerX = -1e9, pointerY = -1e9;
+  let pointerActive = false;
   function onPointerMove(event) {
     const rect = stage.getBoundingClientRect();
-    pointerTargetX = event.clientX - rect.left;
-    pointerTargetY = event.clientY - rect.top;
-    if (!pointerActive) {
-      pointerActive = true;
-      pointerX = pointerTargetX;
-      pointerY = pointerTargetY;
-      setHover(true);
-    }
+    pointerX = event.clientX - rect.left;
+    pointerY = event.clientY - rect.top;
+    pointerActive = true;
   }
   function onPointerLeave() {
-    if (!pointerActive) return;
     pointerActive = false;
-    setHover(false);
+    pointerX = pointerY = -1e9;
   }
   stage.addEventListener('pointermove', onPointerMove);
   stage.addEventListener('pointerleave', onPointerLeave);
@@ -123,7 +97,8 @@
     return { bx: Math.random() * W, by: Math.random() * H, ax: rnd(10, 30), ay: rnd(8, 36),
       fx: rnd(0.15, 0.4), fy: rnd(0.12, 0.35), px: rnd(0, TAU), py: rnd(0, TAU),
       d1: Math.random(), d2: Math.random(), r: rr(C.particles.radius), a0: rr(C.particles.ambientAlpha),
-      sw: Math.random() < 0.5 ? -1 : 1, burst: rr(C.release.burst), ox: 0, oy: 0, ux: 1, uy: 0, ci: 0 };
+      sw: Math.random() < 0.5 ? -1 : 1, burst: rr(C.release.burst), ox: 0, oy: 0, ux: 1, uy: 0, ci: 0,
+      hoverX: 0, hoverY: 0, hoverVx: 0, hoverVy: 0 };
   }
   function makeDust(anywhere) {
     return { x: Math.random() * W, y: anywhere ? Math.random() * H : H + 6, r: rr(C.dust.radius), a: rr(C.dust.alpha),
@@ -265,13 +240,8 @@
   }
   const A = { x: 0, y: 0 };
   function draw(T, now = performance.now()) {
-    if (pointerActive) {
-      const pointerDt = pointerSmoothAt ? Math.max(0, now - pointerSmoothAt) : 0;
-      const pointerEase = 1 - Math.exp(-pointerDt / 55);
-      pointerX += (pointerTargetX - pointerX) * pointerEase;
-      pointerY += (pointerTargetY - pointerY) * pointerEase;
-    }
-    pointerSmoothAt = now;
+    const frameScale = lastDrawAt ? clamp((now - lastDrawAt) / (1000 / 60), 0, 2) : 1;
+    lastDrawAt = now;
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = C.colors.dust;
     for (const d of dust) {
@@ -283,27 +253,38 @@
     const rProg = clamp((T - P.moveEnd) / (1 - P.moveEnd));
     const cyNow = cy0 + (cyTop - cy0) * mProg;
     const stA = C.assemble.stagger, stR = C.release.stagger, sw = C.release.swirl, grow = C.particles.formedGrow, fa = C.particles.formedAlpha;
-    const hover = hoverAmountAt(now);
     let lastCi = -1;
     for (const p of shape) {
       const ea = aProg >= 1 ? 1 : ease(clamp((aProg - p.d1 * stA) / (1 - stA)));
       const es = rProg <= 0 ? 0 : ease(clamp((rProg - p.d2 * stR) / (1 - stR)));
       ambient(p, A);
       const fx = cx + p.ox, fy = cyNow + p.oy, k = ea * (1 - es);
-      let x = A.x + (fx - A.x) * k, y = A.y + (fy - A.y) * k;
+      let x = A.x + (fx - A.x) * k + p.hoverX * k;
+      let y = A.y + (fy - A.y) * k + p.hoverY * k;
       if (es > 0 && es < 1) {
         const dx = A.x - fx, dy = A.y - fy, dist = Math.hypot(dx, dy) || 1, s = Math.sin(Math.PI * es), q = p.sw * sw * dist * s;
         x += (-dy / dist) * q + p.ux * p.burst * s; y += (dx / dist) * q + p.uy * p.burst * s;
       }
-      if (hover > 0 && k > 0.8) {
-        const dx = pointerX - fx, dy = pointerY - fy, dist = Math.hypot(dx, dy);
-        const radius = 145;
-        const influence = Math.exp(-2.2 * (dist / radius) ** 2) * hover * ease(clamp((k - 0.8) / 0.2));
-        const pull = 22 * influence * clamp(dist / 24);
-        if (dist > 0.01) {
-          x += (dx / dist) * pull;
-          y += (dy / dist) * pull;
+      if (k > 0.8) {
+        p.hoverVx += -p.hoverX * 0.08 * frameScale;
+        p.hoverVy += -p.hoverY * 0.08 * frameScale;
+        if (pointerActive) {
+          const dx = x - pointerX, dy = y - pointerY, distSq = dx * dx + dy * dy;
+          const radius = 75;
+          if (distSq < radius * radius && distSq > 0.1) {
+            const dist = Math.sqrt(distSq);
+            const force = (radius - dist) / radius * 5 * frameScale;
+            p.hoverVx += (dx / dist) * force;
+            p.hoverVy += (dy / dist) * force;
+          }
         }
+        const friction = Math.pow(0.84, frameScale);
+        p.hoverVx *= friction;
+        p.hoverVy *= friction;
+        p.hoverX += p.hoverVx * frameScale;
+        p.hoverY += p.hoverVy * frameScale;
+      } else {
+        p.hoverX = p.hoverY = p.hoverVx = p.hoverVy = 0;
       }
       if (p.ci !== lastCi) { ctx.fillStyle = PAL[p.ci]; lastCi = p.ci; }
       ctx.globalAlpha = p.a0 + (fa - p.a0) * k;
