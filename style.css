@@ -2471,6 +2471,78 @@ body.cursor-click .cursor-ring {
   line-height: 1.7;
 }
 
+
+/* â”€â”€â”€ RULES & REGULATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rules-section {
+  background: var(--clr-bg-2);
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.rule-card {
+  position: relative;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  transform-style: preserve-3d;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.rule-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(34, 211, 238, 0.6);
+  box-shadow: 0 25px 60px rgba(34, 211, 238, 0.18), 0 0 25px rgba(139, 92, 246, 0.15);
+}
+
+.rule-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-cyan, #22d3ee);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.rule-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+}
+
+.rule-card:hover .rule-icon {
+  transform: scale(1.22) translateY(-6px);
+  filter: drop-shadow(0 8px 16px rgba(34, 211, 238, 0.55));
+}
+
+.rule-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 10px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.rule-card:hover h3 {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+}
+
+.rule-card p {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
 /* ─── REGISTER SECTION ───────────────────────────────────── */
 .register-section {
   background: var(--clr-bg);
@@ -3801,7 +3873,8 @@ body.cursor-click .cursor-ring {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .why-grid {
+  .why-grid,
+  .rules-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -4065,7 +4138,8 @@ body.cursor-click .cursor-ring {
     gap: 16px;
   }
 
-  .why-grid {
+  .why-grid,
+  .rules-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
