@@ -1376,7 +1376,7 @@ body.cursor-click .cursor-ring {
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 }
 
 /* ─── HERO PARTICLE COUNTDOWN (H : M : S) ────────────────────────── */
@@ -1411,7 +1411,7 @@ body.cursor-click .cursor-ring {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 140px;
+  min-height: 0;
 }
 
 .countdown-particle-canvas {
@@ -1442,10 +1442,12 @@ body.cursor-click .cursor-ring {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 680px;
-  margin: 6px auto 0 auto;
-  padding: 0 16px;
+  max-width: 520px;
+  margin: -38px auto 0;
+  padding: 0 8px;
   gap: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .legend-unit {
@@ -1484,7 +1486,7 @@ body.cursor-click .cursor-ring {
   font-size: 1rem;
   color: #475569;
   opacity: 0.45;
-  padding: 0 8px;
+  padding: 0 4px;
 }
 
 /* Fallback countdown dots & label (preserved for backward compatibility) */
@@ -4067,7 +4069,7 @@ body.cursor-click .cursor-ring {
     justify-content: center;
     width: 100%;
     max-width: min(390px, 94vw);
-    margin: 0 auto 34px;
+    margin: 0 auto 14px;
     gap: 10px;
     padding: 0 4px;
   }
@@ -4098,16 +4100,17 @@ body.cursor-click .cursor-ring {
   }
 
   .countdown-card-inner {
-    padding: 14px 10px 12px 10px;
+    padding: 0 8px;
     border-radius: 16px;
   }
 
   .countdown-legend {
-    gap: 8px;
+    margin-top: -28px;
+    gap: 2px;
   }
 
   .legend-unit {
-    min-width: 54px;
+    min-width: 0;
   }
 
   .legend-char {
