@@ -1444,7 +1444,7 @@ body.cursor-click .cursor-ring {
   align-items: center;
   justify-content: center;
   max-width: 520px;
-  margin: -38px auto 0;
+  margin: -26px auto 0;
   padding: 0 8px;
   gap: 0;
   position: relative;
@@ -4152,7 +4152,7 @@ body.cursor-click .cursor-ring {
   }
 
   .countdown-legend {
-    margin-top: -28px;
+    margin-top: -18px;
     gap: 2px;
   }
 
