@@ -728,6 +728,7 @@ body.cursor-click .cursor-ring {
 .hero {
   position: relative;
   min-height: 100vh;
+  padding: 0 0 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1609,11 +1610,14 @@ body.cursor-click .cursor-ring {
 .prize-pool {
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
   overflow: hidden;
   background: transparent;
   border-top: 1px solid var(--clr-border);
   border-bottom: 1px solid var(--clr-border);
-  padding: 88px 0;
+  min-height: 85vh;
+  padding: clamp(40px, 7vh, 76px) 0;
 }
 
 .prize-pool-header {
@@ -1665,8 +1669,8 @@ body.cursor-click .cursor-ring {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 340px;
-  padding: 36px 30px 32px;
+  min-height: 420px;
+  padding: 44px 36px 40px;
   text-align: center;
   border-radius: var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--prize-accent) 38%, transparent);
@@ -1701,6 +1705,15 @@ body.cursor-click .cursor-ring {
   box-shadow: 0 28px 70px var(--prize-glow), 0 0 30px var(--prize-glow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
+.prize-card:hover .prize-medal {
+  transform: translateY(-8px) scale(1.16) rotate(-8deg);
+  box-shadow: 0 0 48px var(--prize-glow), inset 0 0 22px var(--prize-glow);
+}
+
+.prize-card-second:hover .prize-medal {
+  transform: translateY(-8px) scale(1.16) rotate(8deg);
+}
+
 .prize-card-spark {
   position: absolute;
   top: 20px;
@@ -1728,27 +1741,57 @@ body.cursor-click .cursor-ring {
   animation: medalPulse 3s ease-in-out infinite;
 }
 
-.prize-medal svg {
-  width: 42px;
-  height: 42px;
+.prize-trophy {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
 }
 
-.prize-place {
+.prize-trophy-silver {
+  filter: grayscale(1) brightness(1.35);
+}
+
+.prize-card:hover .prize-trophy {
+  transform: scale(1.2) rotate(8deg);
+  filter: drop-shadow(0 0 10px var(--prize-accent));
+}
+
+.prize-card-second:hover .prize-trophy-silver {
+  filter: grayscale(1) brightness(1.55) drop-shadow(0 0 10px var(--prize-accent));
+}
+
+.prize-place-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.24em;
+  margin: 12px 0 8px;
+  color: #f8fafc;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.prize-place-number {
   color: var(--prize-accent);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  text-shadow: 0 0 24px var(--prize-glow);
 }
 
-.prize-place span {
-  opacity: 0.55;
-}
-
-.prize-card h3 {
-  margin: 12px 0 8px;
-  font-size: 1.5rem;
+.prize-award-role {
+  display: inline-block;
+  margin: 0 auto 14px;
+  color: var(--prize-accent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .prize-card p {
@@ -1804,12 +1847,16 @@ body.cursor-click .cursor-ring {
   .prize-card,
   .prize-card-spark,
   .prize-medal,
+  .prize-trophy,
   .prize-shine {
     animation: none;
   }
 
-  .prize-card {
+  .prize-card,
+  .prize-card:hover .prize-medal,
+  .prize-card:hover .prize-trophy {
     transition: none;
+    transform: none;
   }
 }
 
