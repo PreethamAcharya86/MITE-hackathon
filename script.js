@@ -321,7 +321,7 @@
 
   /* â”€â”€â”€ 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .register-card, .contributor-card:not(.coordinator-card)');
+    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-item, .register-card, .contributor-card:not(.coordinator-card)');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
@@ -2415,6 +2415,7 @@
 
     function openMenu() {
       isMenuOpen = true;
+      botRoot.classList.add('is-menu-open');
       menu.classList.add('is-open');
       menu.setAttribute('aria-hidden', 'false');
       bubble.classList.remove('is-visible');
@@ -2422,6 +2423,7 @@
 
     function closeMenu() {
       isMenuOpen = false;
+      botRoot.classList.remove('is-menu-open');
       menu.classList.remove('is-open');
       menu.setAttribute('aria-hidden', 'true');
     }
