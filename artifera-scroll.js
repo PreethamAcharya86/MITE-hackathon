@@ -161,6 +161,9 @@
     const r = R.data[i], g = R.data[i + 1], b = R.data[i + 2];
     const lum = 0.299 * r + 0.587 * g + 0.114 * b, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
     const sat = mx ? (mx - mn) / mx : 0;
+    if (x / R.w >= 0.24 && x / R.w <= 0.46 && y / R.h >= 0.27 && y / R.h <= 0.62 && sat < C.shape.satMin && lum >= 70 && lum <= C.shape.fillLumMax) {
+      return (CI.silver << 2) | 2;
+    }
     if (sat > C.shape.satMin && lum < 200) return (((r > g + 8 && b > g + 8) ? CI.purple : CI.cyan) << 2) | 1;
     if (lum < C.shape.lineLumMax) return (CI.white << 2) | 1;
     if (lum <= C.shape.fillLumMax) return (CI.silver << 2) | 2;
