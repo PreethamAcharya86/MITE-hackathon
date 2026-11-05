@@ -2779,7 +2779,7 @@
   }
 })();
 
-/* ==================== HERO PARTICLE COUNTDOWN (H : M : S) ==================== */
+/* ==================== HERO PARTICLE COUNTDOWN (D : H : M : S) ==================== */
 (function initHeroParticleCountdown() {
   'use strict';
 
@@ -2789,6 +2789,9 @@
 
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+
+  const legendUnitDays = document.getElementById('legend-unit-days');
+  const legendSepDays = document.getElementById('legend-sep-days');
 
   const isReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -2811,24 +2814,32 @@
   sampleCanvas.height = LOGICAL_HEIGHT;
   const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
 
-  // Color palettes matching AI VibeX 1.0 brand colors
-  const COLORS = {
-    hours: ['#22d3ee', '#38bdf8', '#67e8f9', '#a5f3fc', '#ffffff'],
-    colon: ['#ffffff', '#c084fc', '#e0e7ff'],
-    minutes: ['#8b5cf6', '#a855f7', '#c084fc', '#d8b4fe', '#ffffff'],
-    seconds: ['#ec4899', '#f43f5e', '#fb7185', '#fda4af', '#ffffff'],
-    embers: ['#22d3ee', '#8b5cf6', '#ec4899']
-  };
+  // Pure aesthetic cyber-blue particle palettes
+  const BLUE_PALETTE = ['#38bdf8', '#60a5fa', '#3b82f6', '#2563eb', '#93c5fd', '#ffffff'];
+  const EMBER_PALETTE = ['#38bdf8', '#60a5fa', '#3b82f6', '#93c5fd'];
 
-  // Segment horizontal slot centers
-  const cy = LOGICAL_HEIGHT / 2;
+  // Slot center coordinates (tightened gap)
+  const cy = 68;
   const cx = LOGICAL_WIDTH / 2;
-  const slotX = [
-    cx - 195, // Segment 0: Hours
-    cx - 98,  // Segment 1: Colon 1
-    cx,       // Segment 2: Minutes
-    cx + 98,  // Segment 3: Colon 2
-    cx + 195  // Segment 4: Seconds
+
+  // 7-slot compact layout (Days : Hours : Minutes : Seconds)
+  const slotX7 = [
+    cx - 192, // Slot 0: Days
+    cx - 128, // Slot 1: Colon 1
+    cx - 64,  // Slot 2: Hours
+    cx,       // Slot 3: Colon 2
+    cx + 64,  // Slot 4: Minutes
+    cx + 128, // Slot 5: Colon 3
+    cx + 192  // Slot 6: Seconds
+  ];
+
+  // 5-slot compact fallback layout (Hours : Minutes : Seconds when Days === 0)
+  const slotX5 = [
+    cx - 148, // Slot 2: Hours
+    cx - 74,  // Slot 3: Colon 2
+    cx,       // Slot 4: Minutes
+    cx + 74,  // Slot 5: Colon 3
+    cx + 148  // Slot 6: Seconds
   ];
 
   class Particle {
@@ -2858,7 +2869,6 @@
       const distSq = dx * dx + dy * dy;
 
       if (!isInitial && distSq > 9) {
-        // Kick velocity on target change for smooth fluid swirl alignment
         this.vx += (Math.random() - 0.5) * 3.2;
         this.vy += (Math.random() - 0.5) * 3.2;
       }
@@ -2880,13 +2890,11 @@
     }
 
     update(ptrX, ptrY, ptrActive, time) {
-      // Spring attraction to target position
       const dx = this.tx - this.x;
       const dy = this.ty - this.y;
       this.vx += dx * this.spring;
       this.vy += dy * this.spring;
 
-      // Interactive cursor repulsion
       if (ptrActive) {
         const pdx = this.x - ptrX;
         const pdy = this.y - ptrY;
@@ -2900,7 +2908,6 @@
         }
       }
 
-      // Micro-breathing oscillation when settled
       if (this.active) {
         this.jitterPhase += this.jitterSpeed;
         this.x += Math.cos(this.jitterPhase) * 0.12;
@@ -2912,7 +2919,6 @@
       this.x += this.vx;
       this.y += this.vy;
 
-      // Smooth opacity lerp
       this.alpha += (this.targetAlpha - this.alpha) * 0.12;
     }
 
@@ -2930,46 +2936,50 @@
     }
   }
 
-  // Particle pools for each segment (Hours, Colon1, Minutes, Colon2, Seconds)
-  const SEGMENT_CAPACITIES = [220, 46, 220, 46, 220];
-  const SEGMENT_PALETTES = [COLORS.hours, COLORS.colon, COLORS.minutes, COLORS.colon, COLORS.seconds];
+  // 7 segment particle pools (Days, Colon, Hours, Colon, Minutes, Colon, Seconds)
+  const SEGMENT_CAPACITIES = [190, 36, 190, 36, 190, 36, 190];
   const segmentPools = SEGMENT_CAPACITIES.map((capacity, i) => {
     const pool = [];
+    const isColon = (i === 1 || i === 3 || i === 5);
     for (let k = 0; k < capacity; k++) {
-      pool.push(new Particle(slotX[i], cy, SEGMENT_PALETTES[i], i === 1 || i === 3 ? 1.7 : 1.45));
+      pool.push(new Particle(slotX7[i], cy, BLUE_PALETTE, isColon ? 1.6 : 1.4));
     }
     return pool;
   });
 
-  // Ambient floating background ember particles
+  // Ambient floating background ember particles (all blue)
   const emberPool = [];
   for (let k = 0; k < 35; k++) {
-    const ep = new Particle(cx, cy, COLORS.embers, 1.0);
+    const ep = new Particle(cx, cy, EMBER_PALETTE, 1.0);
     ep.setIdle(cx, cy);
     emberPool.push(ep);
   }
 
   // Cache previously rendered segment texts
-  let prevSegTexts = ['', '', '', '', ''];
+  let prevSegTexts = ['', '', '', '', '', '', ''];
+  let lastHasDays = null;
 
-  // Sample targets for a given segment text at slotX[i]
-  function sampleSegmentTargets(text, segIdx) {
-    if (!sampleCtx) return [];
+  // Sample targets for a given segment text at appropriate slotX
+  function sampleSegmentTargets(text, segIdx, hasDays) {
+    if (!sampleCtx || !text) return [];
     sampleCtx.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
 
-    // Font configuration
-    const isColon = segIdx === 1 || segIdx === 3;
-    const fontSize = isColon ? 76 : 84;
+    const isColon = (segIdx === 1 || segIdx === 3 || segIdx === 5);
+    const fontSize = hasDays ? (isColon ? 54 : 58) : (isColon ? 76 : 84);
     sampleCtx.font = `800 ${fontSize}px 'Outfit', 'Space Grotesk', -apple-system, sans-serif`;
     sampleCtx.textAlign = 'center';
     sampleCtx.textBaseline = 'middle';
     sampleCtx.fillStyle = '#ffffff';
 
-    const sx = slotX[segIdx];
+    const sx = hasDays
+      ? slotX7[segIdx]
+      : (segIdx >= 2 ? slotX5[segIdx - 2] : -999);
+    if (sx < 0) return [];
+
     sampleCtx.fillText(text, sx, cy);
 
-    const halfW = isColon ? 34 : 78;
-    const halfH = 58;
+    const halfW = hasDays ? (isColon ? 22 : 44) : (isColon ? 34 : 78);
+    const halfH = 55;
     const startX = Math.max(0, Math.floor(sx - halfW));
     const startY = Math.max(0, Math.floor(cy - halfH));
     const width = Math.min(LOGICAL_WIDTH - startX, halfW * 2);
@@ -2978,7 +2988,7 @@
     const imgData = sampleCtx.getImageData(startX, startY, width, height);
     const pixels = imgData.data;
     const targets = [];
-    const step = isColon ? 3 : 4;
+    const step = isColon ? 3 : (hasDays ? 3 : 4);
 
     for (let y = 0; y < height; y += step) {
       for (let x = 0; x < width; x += step) {
@@ -2992,11 +3002,10 @@
   }
 
   // Assign particles to new target positions smoothly
-  function updateSegmentParticles(segIdx, newTargets, isInitial = false) {
+  function updateSegmentParticles(segIdx, newTargets, isInitial = false, hasDays = true) {
     const pool = segmentPools[segIdx];
     const poolCopy = pool.slice();
 
-    // Map each target to nearest available particle in the pool
     for (let tIdx = 0; tIdx < newTargets.length; tIdx++) {
       const target = newTargets[tIdx];
       let bestDistSq = Infinity;
@@ -3019,14 +3028,15 @@
       }
     }
 
-    // Any remaining particles in the pool float as subtle surrounding particles
-    const sx = slotX[segIdx];
+    const sx = hasDays
+      ? slotX7[segIdx]
+      : (segIdx >= 2 ? slotX5[segIdx - 2] : cx);
     for (let pIdx = 0; pIdx < poolCopy.length; pIdx++) {
       poolCopy[pIdx].setIdle(sx, cy);
     }
   }
 
-  // Calculate remaining countdown time in format h : m : s
+  // Calculate remaining countdown time to 12th November 2026 9:05 AM
   function getRemainingTime() {
     const now = Date.now();
     let targetTime;
@@ -3034,33 +3044,26 @@
     const dataTarget = wrap.getAttribute('data-target');
     if (dataTarget) {
       const parsed = Date.parse(dataTarget);
-      if (!isNaN(parsed) && parsed > now) {
+      if (!isNaN(parsed)) {
         targetTime = parsed;
       }
     }
 
+    // Default target: 12th November 2026, 9:05 AM
     if (!targetTime) {
-      const STORAGE_KEY = 'vibex_countdown_target_timestamp';
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored && !isNaN(parseInt(stored, 10)) && parseInt(stored, 10) > now) {
-          targetTime = parseInt(stored, 10);
-        } else {
-          // Default: 6 hours 00 minutes 00 seconds sprint countdown
-          targetTime = now + (6 * 3600 * 1000);
-          localStorage.setItem(STORAGE_KEY, String(targetTime));
-        }
-      } catch (e) {
-        targetTime = now + (6 * 3600 * 1000);
-      }
+      targetTime = new Date(2026, 10, 12, 9, 5, 0).getTime();
     }
 
     const diffSec = Math.max(0, Math.floor((targetTime - now) / 1000));
-    const h = Math.floor(diffSec / 3600);
+    const d = Math.floor(diffSec / 86400);
+    const h = Math.floor((diffSec % 86400) / 3600);
     const m = Math.floor((diffSec % 3600) / 60);
     const s = diffSec % 60;
 
     return {
+      diffSec,
+      d,
+      dStr: String(d).padStart(2, '0'),
       hStr: String(h).padStart(2, '0'),
       mStr: String(m).padStart(2, '0'),
       sStr: String(s).padStart(2, '0')
@@ -3069,13 +3072,33 @@
 
   // Check and update countdown segments
   function updateCountdown(isInitial = false) {
-    const { hStr, mStr, sStr } = getRemainingTime();
-    const currentSegTexts = [hStr, ':', mStr, ':', sStr];
+    const { diffSec, d, dStr, hStr, mStr, sStr } = getRemainingTime();
 
-    for (let i = 0; i < 5; i++) {
+    // If countdown reached 0 (expired), hide countdown completely
+    if (diffSec <= 0) {
+      wrap.style.display = 'none';
+      stop();
+      return;
+    }
+
+    // Days are displayed when d > 0; when d === 0, Days are hidden
+    const hasDays = d > 0;
+
+    if (lastHasDays !== hasDays) {
+      if (legendUnitDays) legendUnitDays.style.display = hasDays ? 'flex' : 'none';
+      if (legendSepDays) legendSepDays.style.display = hasDays ? 'inline' : 'none';
+      lastHasDays = hasDays;
+      isInitial = true;
+    }
+
+    const currentSegTexts = hasDays
+      ? [dStr, ':', hStr, ':', mStr, ':', sStr]
+      : ['', '', hStr, ':', mStr, ':', sStr];
+
+    for (let i = 0; i < 7; i++) {
       if (isInitial || currentSegTexts[i] !== prevSegTexts[i]) {
-        const targets = sampleSegmentTargets(currentSegTexts[i], i);
-        updateSegmentParticles(i, targets, isInitial);
+        const targets = sampleSegmentTargets(currentSegTexts[i], i, hasDays);
+        updateSegmentParticles(i, targets, isInitial, hasDays);
         prevSegTexts[i] = currentSegTexts[i];
       }
     }
@@ -3126,7 +3149,8 @@
     // Render segment particles
     for (let sIdx = 0; sIdx < segmentPools.length; sIdx++) {
       const pool = segmentPools[sIdx];
-      const colonMod = (sIdx === 1 || sIdx === 3) ? colonPulse : 1;
+      const isColon = (sIdx === 1 || sIdx === 3 || sIdx === 5);
+      const colonMod = isColon ? colonPulse : 1;
       for (let pIdx = 0; pIdx < pool.length; pIdx++) {
         const p = pool[pIdx];
         p.update(pointerX, pointerY, isPointerActive, time);

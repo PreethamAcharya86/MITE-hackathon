@@ -1435,12 +1435,11 @@ body.cursor-click .cursor-ring {
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 /* ─── HERO PARTICLE COUNTDOWN (H : M : S) ────────────────────────── */
 .countdown-wrap {
-  display: none;
   position: relative;
   width: 100%;
   max-width: 720px;
@@ -1492,7 +1491,7 @@ body.cursor-click .cursor-ring {
   transform: translate(-50%, -50%);
   width: 85%;
   height: 80%;
-  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.18) 0%, rgba(34, 211, 238, 0.12) 40%, transparent 75%);
+  background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.22) 0%, rgba(37, 99, 235, 0.14) 45%, transparent 75%);
   filter: blur(36px);
   pointer-events: none;
   z-index: 0;
@@ -1502,8 +1501,8 @@ body.cursor-click .cursor-ring {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 520px;
-  margin: -26px auto 0;
+  max-width: 440px;
+  margin: -36px auto 0;
   padding: 0 8px;
   gap: 0;
   position: relative;
@@ -1523,29 +1522,24 @@ body.cursor-click .cursor-ring {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
 }
 
-.unit-hours .legend-label {
-  color: var(--clr-cyan);
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
-}
-
-.unit-minutes .legend-label {
-  color: var(--clr-purple);
-  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
-}
-
+.unit-days .legend-label,
+.unit-hours .legend-label,
+.unit-minutes .legend-label,
 .unit-seconds .legend-label {
-  color: var(--clr-pink);
-  text-shadow: 0 0 12px rgba(236, 72, 153, 0.6);
+  color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
 }
 
 .legend-sep {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 1rem;
-  color: #475569;
-  opacity: 0.45;
+  color: #38bdf8;
+  opacity: 0.55;
   padding: 0 4px;
 }
 
@@ -4120,8 +4114,14 @@ body.cursor-click .cursor-ring {
 
   /* Hero Section */
   .hero {
-    min-height: auto;
-    padding: 120px 0 60px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 0 40px;
+    box-sizing: border-box;
   }
 
   /* Glowing space background overlay on mobile: translucent so space canvas + stars shine through */
@@ -4218,7 +4218,7 @@ body.cursor-click .cursor-ring {
     justify-content: center;
     width: 100%;
     max-width: min(390px, 94vw);
-    margin: 0 auto 14px;
+    margin: 0 auto 16px;
     gap: 10px;
     padding: 0 4px;
   }
@@ -4254,7 +4254,8 @@ body.cursor-click .cursor-ring {
   }
 
   .countdown-legend {
-    margin-top: -18px;
+    margin-top: -26px;
+    max-width: min(390px, 92vw);
     gap: 2px;
   }
 
