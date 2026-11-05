@@ -2791,13 +2791,13 @@
   if (!ctx) return;
 
   const legendUnitDays = document.getElementById('legend-unit-days');
-  const legendSepDays = document.getElementById('legend-sep-days');
+  const countdownLegend = document.getElementById('countdown-legend');
 
   const isReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Logical canvas dimensions
   const LOGICAL_WIDTH = 700;
-  const LOGICAL_HEIGHT = 150;
+  const LOGICAL_HEIGHT = 100;
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
   function resizeCanvas() {
@@ -2818,8 +2818,8 @@
   const BLUE_PALETTE = ['#38bdf8', '#60a5fa', '#3b82f6', '#2563eb', '#93c5fd', '#ffffff'];
   const EMBER_PALETTE = ['#38bdf8', '#60a5fa', '#3b82f6', '#93c5fd'];
 
-  // Slot center coordinates (tightened gap)
-  const cy = 68;
+  // Slot center coordinates (tightened gap & compact height)
+  const cy = 48;
   const cx = LOGICAL_WIDTH / 2;
 
   // 7-slot compact layout (Days : Hours : Minutes : Seconds)
@@ -2979,7 +2979,7 @@
     sampleCtx.fillText(text, sx, cy);
 
     const halfW = hasDays ? (isColon ? 22 : 44) : (isColon ? 34 : 78);
-    const halfH = 55;
+    const halfH = 44;
     const startX = Math.max(0, Math.floor(sx - halfW));
     const startY = Math.max(0, Math.floor(cy - halfH));
     const width = Math.min(LOGICAL_WIDTH - startX, halfW * 2);
@@ -3085,8 +3085,8 @@
     const hasDays = d > 0;
 
     if (lastHasDays !== hasDays) {
+      if (countdownLegend) countdownLegend.classList.toggle('has-days', hasDays);
       if (legendUnitDays) legendUnitDays.style.display = hasDays ? 'flex' : 'none';
-      if (legendSepDays) legendSepDays.style.display = hasDays ? 'inline' : 'none';
       lastHasDays = hasDays;
       isInitial = true;
     }
