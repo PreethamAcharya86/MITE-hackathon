@@ -609,16 +609,16 @@ body.cursor-click .cursor-ring {
 
 .nav-logo:hover .logo-bracket:first-child {
   transform: translateX(-3px);
-  color: var(--clr-pink);
+  color: var(--clr-cyan);
 }
 
 .nav-logo:hover .logo-bracket:last-child {
   transform: translateX(3px);
-  color: var(--clr-pink);
+  color: #3b82f6;
 }
 
 .logo-text {
-  background: var(--grad-text);
+  background: linear-gradient(90deg, #a78bfa, #22d3ee, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1382,6 +1382,7 @@ body.cursor-click .cursor-ring {
 
 /* ─── HERO PARTICLE COUNTDOWN (H : M : S) ────────────────────────── */
 .countdown-wrap {
+  display: none;
   position: relative;
   width: 100%;
   max-width: 720px;
