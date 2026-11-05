@@ -1315,23 +1315,26 @@ body.cursor-click .cursor-ring {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 32px;
 }
 
 .meta-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: #cbd5e1;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--clr-border);
-  padding: 7px 14px;
-  border-radius: 99px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 10px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #f1f5f9;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.5) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px 6px 8px;
+  border-radius: 9999px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -1341,7 +1344,7 @@ body.cursor-click .cursor-ring {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
   transform: translateX(-100%);
   transition: transform 0.6s ease;
 }
@@ -1350,25 +1353,80 @@ body.cursor-click .cursor-ring {
   transform: translateX(100%);
 }
 
-.meta-chip:hover {
-  border-color: var(--clr-cyan);
-  background: rgba(34, 211, 238, 0.08);
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 10px 25px -5px rgba(34, 211, 238, 0.3);
-  color: #fff;
-}
-
-.meta-chip svg {
-  width: 16px;
-  height: 16px;
-  color: var(--clr-cyan);
+.meta-chip .chip-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.meta-chip:hover svg {
-  transform: scale(1.25) rotate(10deg);
-  color: var(--clr-pink);
+.meta-chip .chip-icon svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.meta-chip .chip-text {
+  line-height: 1;
+}
+
+/* Individual badge aesthetic themes */
+.meta-chip-time .chip-icon {
+  background: rgba(34, 211, 238, 0.12);
+  color: #22d3ee;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.18);
+}
+.meta-chip-time:hover {
+  border-color: rgba(34, 211, 238, 0.6);
+  background: rgba(15, 23, 42, 0.95);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px -4px rgba(34, 211, 238, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.meta-chip-time:hover .chip-icon {
+  transform: scale(1.12) rotate(8deg);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.6);
+  background: rgba(34, 211, 238, 0.25);
+}
+
+.meta-chip-date .chip-icon {
+  background: rgba(96, 165, 250, 0.14);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.18);
+}
+.meta-chip-date:hover {
+  border-color: rgba(96, 165, 250, 0.6);
+  background: rgba(15, 23, 42, 0.95);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px -4px rgba(96, 165, 250, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.meta-chip-date:hover .chip-icon {
+  transform: scale(1.12) rotate(-8deg);
+  box-shadow: 0 0 14px rgba(96, 165, 250, 0.6);
+  background: rgba(96, 165, 250, 0.25);
+}
+
+.meta-chip-sprint .chip-icon {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.18);
+}
+.meta-chip-sprint:hover {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: rgba(15, 23, 42, 0.95);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px -4px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.meta-chip-sprint:hover .chip-icon {
+  transform: scale(1.12) rotate(12deg);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.25);
 }
 
 .hero-actions {
@@ -4123,19 +4181,33 @@ body.cursor-click .cursor-ring {
   }
 
   .hero-meta {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: min(340px, 92vw);
+    max-width: 100%;
     margin: 0 auto 22px;
-    gap: 6px;
+    gap: 8px 10px;
+    padding: 0 4px;
   }
 
   .meta-chip {
-    width: 100%;
-    justify-content: center;
-    padding: 7px 12px;
-    font-size: 0.78rem;
+    width: auto;
+    flex: 0 1 auto;
+    padding: 5px 12px 5px 7px;
+    font-size: 0.76rem;
+    gap: 7px;
+  }
+
+  .meta-chip .chip-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .meta-chip .chip-icon svg {
+    width: 12px;
+    height: 12px;
   }
 
   /* Buttons aligned side by side on mobile */
