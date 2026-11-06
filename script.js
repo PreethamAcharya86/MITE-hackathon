@@ -2235,13 +2235,14 @@
     if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
 
     // Config & Section Mappings
-    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'why', 'register', 'contributors'];
+    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'rules', 'register', 'contributors'];
     const SECTION_MESSAGES = {
       top: "Welcome to AI VibeX 1.0! Let's vibe!",
       about: "6 intense hours of pure AI innovation!",
       timeline: "Follow the schedule to stay on track!",
       flow: "Understand the hackathon flow: Build & win!",
-      why: "Discover why AI VibeX is your launchpad!",
+      rules: "Know the rules & regulations before building!",
+      why: "Know the rules & regulations before building!",
       register: "Register your team! Spots fill fast!",
       contributors: "Meet the visionary team behind the event!"
     };
@@ -2320,21 +2321,34 @@
       const botWidth = isSmallScreen ? 84 : 140;
       const botHeight = isSmallScreen ? 114 : 190;
 
-      // Static resting home position (right side) for all rest sections
-      const homeX = isSmallScreen
+      // Position docks: Right side (home) and Left side
+      const rightX = isSmallScreen
         ? window.innerWidth - botWidth - 18
         : window.innerWidth - botWidth - 36;
-      const homeY = isSmallScreen
+      const rightY = isSmallScreen
         ? window.innerHeight - botHeight - 24
         : Math.round(window.innerHeight * 0.38);
 
+      const leftX = isSmallScreen ? 18 : 38;
+      const leftY = isSmallScreen
+        ? window.innerHeight - botHeight - 24
+        : Math.round(window.innerHeight * 0.40);
+
       const sections = getSectionElements();
       const activeSection = sections[currentSectionIdx];
-      const isRegisterSection = activeSection && activeSection.id === 'register';
+      const activeId = activeSection ? activeSection.id : 'top';
       const regEl = document.getElementById('register');
 
-      if (isRegisterSection && regEl) {
-        // Move from one place to another while scrolling ONLY in registration section
+      if (activeId === 'flow') {
+        // Event Flow section: move left and keep there
+        targetX = leftX;
+        targetY = leftY;
+      } else if (activeId === 'rules' || activeId === 'why') {
+        // Rules & Regulations section: place to right
+        targetX = rightX;
+        targetY = rightY;
+      } else if (activeId === 'register' && regEl) {
+        // Registration section: move from one place to another while scrolling
         const regRect = regEl.getBoundingClientRect();
         const vh = window.innerHeight;
 
@@ -2344,21 +2358,18 @@
         const currentOffset = startOffset - regRect.top;
         const regProgress = Math.max(0, Math.min(1, currentOffset / totalScrollable));
 
-        // Place 1 (Right): start position in registration
-        const startX = homeX;
+        // Start position (Right) to End position (Left) across registration
+        const startX = rightX;
         const startY = Math.round(vh * 0.28);
-
-        // Place 2 (Left): target position on opposite side of screen
         const endX = isSmallScreen ? 18 : 42;
         const endY = Math.round(vh * 0.58);
 
-        // Smoothly interpolate between Place 1 and Place 2 based on scroll position
         targetX = startX + (endX - startX) * regProgress;
         targetY = startY + (endY - startY) * regProgress;
       } else {
-        // Rest of the sections: keep static in place
-        targetX = homeX;
-        targetY = homeY;
+        // Rest of the sections (top, about, timeline, contributors): keep static on right
+        targetX = rightX;
+        targetY = rightY;
       }
     }
 
