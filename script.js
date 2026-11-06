@@ -2851,49 +2851,60 @@
 
   class Particle {
     constructor(x, y, palette, defaultSize) {
-      this.x = x + (Math.random() - 0.5) * 40;
-      this.y = y + (Math.random() - 0.5) * 40;
-      this.vx = (Math.random() - 0.5) * 2;
-      this.vy = (Math.random() - 0.5) * 2;
+      this.x = x;
+      this.y = y;
+      this.vx = 0;
+      this.vy = 0;
       this.tx = x;
       this.ty = y;
       this.palette = palette;
       this.color = palette[Math.floor(Math.random() * palette.length)];
-      this.baseSize = defaultSize || (Math.random() * 1.1 + 1.35);
+      this.baseSize = defaultSize || 1.4;
       this.size = this.baseSize;
       this.alpha = 0;
-      this.targetAlpha = 0.95;
-      this.spring = Math.random() * 0.035 + 0.075;
-      this.friction = Math.random() * 0.03 + 0.83;
+      this.targetAlpha = 0;
+      this.spring = 0.085;
+      this.friction = 0.84;
       this.active = false;
-      this.jitterPhase = Math.random() * Math.PI * 2;
-      this.jitterSpeed = Math.random() * 0.04 + 0.02;
     }
 
     setTarget(tx, ty, isInitial = false) {
-      const dx = tx - this.tx;
-      const dy = ty - this.ty;
-      const distSq = dx * dx + dy * dy;
+      if (isInitial) {
+        this.x = tx;
+        this.y = ty;
+        this.vx = 0;
+        this.vy = 0;
+        this.alpha = 0.95;
+      } else {
+        const dx = tx - this.tx;
+        const dy = ty - this.ty;
+        const distSq = dx * dx + dy * dy;
 
-      if (!isInitial && distSq > 9) {
-        this.vx += (Math.random() - 0.5) * 3.2;
-        this.vy += (Math.random() - 0.5) * 3.2;
+        if (distSq > 9) {
+          this.vx += (Math.random() - 0.5) * 1.5;
+          this.vy += (Math.random() - 0.5) * 1.5;
+        }
       }
 
       this.tx = tx;
       this.ty = ty;
       this.active = true;
-      this.targetAlpha = Math.random() * 0.15 + 0.85;
+      this.targetAlpha = 0.95;
       this.color = this.palette[Math.floor(Math.random() * this.palette.length)];
     }
 
-    setIdle(slotCenterX, slotCenterY) {
+    setIdle(slotCenterX, slotCenterY, isInitial = false) {
       this.active = false;
-      const angle = Math.random() * Math.PI * 2;
-      const dist = Math.random() * 32 + 10;
-      this.tx = slotCenterX + Math.cos(angle) * dist;
-      this.ty = slotCenterY + Math.sin(angle) * dist;
-      this.targetAlpha = Math.random() * 0.12 + 0.08;
+      this.tx = slotCenterX;
+      this.ty = slotCenterY;
+      this.targetAlpha = 0;
+      if (isInitial) {
+        this.x = slotCenterX;
+        this.y = slotCenterY;
+        this.vx = 0;
+        this.vy = 0;
+        this.alpha = 0;
+      }
     }
 
     update(ptrX, ptrY, ptrActive, time) {
@@ -2915,18 +2926,12 @@
         }
       }
 
-      if (this.active) {
-        this.jitterPhase += this.jitterSpeed;
-        this.x += Math.cos(this.jitterPhase) * 0.12;
-        this.y += Math.sin(this.jitterPhase) * 0.12;
-      }
-
       this.vx *= this.friction;
       this.vy *= this.friction;
       this.x += this.vx;
       this.y += this.vy;
 
-      this.alpha += (this.targetAlpha - this.alpha) * 0.12;
+      this.alpha += (this.targetAlpha - this.alpha) * 0.14;
     }
 
     draw(targetCtx, colonAlphaMod = 1) {
@@ -2944,23 +2949,18 @@
   }
 
   // 7 segment particle pools (Days, Colon, Hours, Colon, Minutes, Colon, Seconds)
-  const SEGMENT_CAPACITIES = [190, 36, 190, 36, 190, 36, 190];
+  const SEGMENT_CAPACITIES = [220, 40, 220, 40, 220, 40, 220];
   const segmentPools = SEGMENT_CAPACITIES.map((capacity, i) => {
     const pool = [];
     const isColon = (i === 1 || i === 3 || i === 5);
     for (let k = 0; k < capacity; k++) {
-      pool.push(new Particle(slotX7[i], cy, BLUE_PALETTE, isColon ? 1.6 : 1.4));
+      pool.push(new Particle(slotX7[i], cy, BLUE_PALETTE, isColon ? 1.5 : 1.4));
     }
     return pool;
   });
 
-  // Ambient floating background ember particles (all blue)
+  // Ambient floating background ember particles (disabled to keep digits even and crisp)
   const emberPool = [];
-  for (let k = 0; k < 35; k++) {
-    const ep = new Particle(cx, cy, EMBER_PALETTE, 1.0);
-    ep.setIdle(cx, cy);
-    emberPool.push(ep);
-  }
 
   // Cache previously rendered segment texts
   let prevSegTexts = ['', '', '', '', '', '', ''];
@@ -2995,12 +2995,12 @@
     const imgData = sampleCtx.getImageData(startX, startY, width, height);
     const pixels = imgData.data;
     const targets = [];
-    const step = isColon ? 3 : (hasDays ? 3 : 4);
+    const step = 3;
 
     for (let y = 0; y < height; y += step) {
       for (let x = 0; x < width; x += step) {
         const idx = (y * width + x) * 4;
-        if (pixels[idx + 3] > 110) {
+        if (pixels[idx + 3] > 135) {
           targets.push({ x: startX + x, y: startY + y });
         }
       }
@@ -3039,7 +3039,7 @@
       ? slotX7[segIdx]
       : (segIdx >= 2 ? slotX5[segIdx - 2] : cx);
     for (let pIdx = 0; pIdx < poolCopy.length; pIdx++) {
-      poolCopy[pIdx].setIdle(sx, cy);
+      poolCopy[pIdx].setIdle(sx, cy, isInitial);
     }
   }
 
@@ -3163,13 +3163,6 @@
         p.update(pointerX, pointerY, isPointerActive, time);
         p.draw(ctx, colonMod);
       }
-    }
-
-    // Render ambient embers
-    for (let eIdx = 0; eIdx < emberPool.length; eIdx++) {
-      const ep = emberPool[eIdx];
-      ep.update(pointerX, pointerY, isPointerActive, time);
-      ep.draw(ctx, 0.4);
     }
 
     if (isVisible && !isReducedMotion()) {
