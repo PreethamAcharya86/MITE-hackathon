@@ -2320,25 +2320,45 @@
       const botWidth = isSmallScreen ? 84 : 140;
       const botHeight = isSmallScreen ? 114 : 190;
 
-      if (isSmallScreen) {
-        targetX = window.innerWidth - botWidth - 18;
-        targetY = window.innerHeight - botHeight - 20;
-        return;
-      }
+      // Static resting home position (right side) for all rest sections
+      const homeX = isSmallScreen
+        ? window.innerWidth - botWidth - 18
+        : window.innerWidth - botWidth - 36;
+      const homeY = isSmallScreen
+        ? window.innerHeight - botHeight - 24
+        : Math.round(window.innerHeight * 0.38);
 
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const scrollRatio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      const sections = getSectionElements();
+      const activeSection = sections[currentSectionIdx];
+      const isRegisterSection = activeSection && activeSection.id === 'register';
+      const regEl = document.getElementById('register');
 
-      // Vertical drift downwards
-      const verticalRange = window.innerHeight * 0.45;
-      targetY = window.innerHeight * 0.20 + (scrollRatio * verticalRange);
+      if (isRegisterSection && regEl) {
+        // Move from one place to another while scrolling ONLY in registration section
+        const regRect = regEl.getBoundingClientRect();
+        const vh = window.innerHeight;
 
-      // Alternating edges: even -> right, odd -> left
-      const isEvenSection = currentSectionIdx % 2 === 0;
-      if (isEvenSection) {
-        targetX = window.innerWidth - botWidth - 36;
+        // Calculate normalized scroll progress through registration section (0 to 1)
+        const startOffset = vh * 0.75;
+        const totalScrollable = regRect.height + vh * 0.4;
+        const currentOffset = startOffset - regRect.top;
+        const regProgress = Math.max(0, Math.min(1, currentOffset / totalScrollable));
+
+        // Place 1 (Right): start position in registration
+        const startX = homeX;
+        const startY = Math.round(vh * 0.28);
+
+        // Place 2 (Left): target position on opposite side of screen
+        const endX = isSmallScreen ? 18 : 42;
+        const endY = Math.round(vh * 0.58);
+
+        // Smoothly interpolate between Place 1 and Place 2 based on scroll position
+        targetX = startX + (endX - startX) * regProgress;
+        targetY = startY + (endY - startY) * regProgress;
       } else {
-        targetX = 36;
+        // Rest of the sections: keep static in place
+        targetX = homeX;
+        targetY = homeY;
       }
     }
 
