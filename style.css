@@ -776,6 +776,11 @@ body.cursor-click .cursor-ring {
   z-index: 2;
   pointer-events: none;
   animation: orbFloat 8s ease-in-out infinite;
+  will-change: transform;
+  /* Promote orbs to their own GPU layer so blur+animation
+     never causes the page to repaint on mobile scroll */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .orb-1 {
@@ -801,7 +806,8 @@ body.cursor-click .cursor-ring {
   background: rgba(236, 72, 153, 0.08);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: -150px;
+  margin-left: -150px;
   animation-delay: -6s;
 }
 
@@ -4123,6 +4129,8 @@ body.cursor-click .cursor-ring {
   html {
     overflow-x: hidden;
     max-width: 100vw;
+    /* Prevent elastic overscroll from causing layout jitter on iOS */
+    overscroll-behavior-y: none;
   }
 
   /* body must NOT be overflow-x:hidden here (breaks position:sticky); clip is the safe equivalent */
@@ -4130,6 +4138,7 @@ body.cursor-click .cursor-ring {
     overflow-x: visible;
     overflow-x: clip;
     max-width: 100vw;
+    overscroll-behavior-y: none;
   }
 
   .container {
@@ -4198,14 +4207,22 @@ body.cursor-click .cursor-ring {
 
   /* Hero Section: evenly distributes components across the 100dvh mobile viewport */
   .hero {
+    /* Use svh (small viewport height) — stays fixed when browser toolbar shows/hides,
+       preventing the layout shift / jitter on scroll-back */
     min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100svh;
+    height: 100svh;
+    max-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: calc(var(--nav-height, 64px) + 8px) 0 max(16px, env(safe-area-inset-bottom, 16px));
+    justify-content: flex-start;
+    padding-top: 70px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    padding-left: 0;
+    padding-right: 0;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   /* Glowing space background overlay on mobile: translucent so space canvas + stars shine through */
@@ -4220,7 +4237,12 @@ body.cursor-click .cursor-ring {
   }
 
   .orb {
-    opacity: 0.55;
+    opacity: 0.4;
+    /* Freeze orb animation on mobile — the continuous translateY
+       forces GPU layer promotion/demotion every scroll frame, causing jitter */
+    animation: none;
+    will-change: auto;
+    transform: translateZ(0);
   }
 
   .hero-content {
@@ -4232,8 +4254,9 @@ body.cursor-click .cursor-ring {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .hero-main-group {
