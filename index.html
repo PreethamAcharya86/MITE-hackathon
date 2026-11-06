@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -88,45 +88,47 @@
         </span>
       </div>
 
-      <h1 class="hero-title" data-aos="fade-up">
-        <span class="title-line">
-          <span class="gradient-text glitch-text" data-text="AI VibeX 1.0">AI VibeX 1.0</span>
-        </span>
-        <span class="title-sub">6 Hour Hackathon</span>
-      </h1>
+      <div class="hero-main-group">
+        <h1 class="hero-title" data-aos="fade-up">
+          <span class="title-line">
+            <span class="gradient-text glitch-text" data-text="AI VibeX 1.0">AI VibeX 1.0</span>
+          </span>
+          <span class="title-sub">6 Hour Hackathon</span>
+        </h1>
 
-      <p class="hero-tagline" data-aos="fade-up" data-aos-delay="100">
-        Build. Vibe. Innovate. A 6-Hour AI Innovation Sprint
-      </p>
+        <p class="hero-tagline" data-aos="fade-up" data-aos-delay="100">
+          Build. Vibe. Innovate. A 6-Hour AI Innovation Sprint
+        </p>
 
-      <div class="hero-meta" data-aos="fade-up" data-aos-delay="200">
-        <div class="meta-chip meta-chip-time">
-          <span class="chip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-          </span>
-          <span class="chip-text">9:05 AM &ndash; 4:00 PM</span>
-        </div>
-        <div class="meta-chip meta-chip-date">
-          <span class="chip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-          </span>
-          <span class="chip-text">12th November</span>
-        </div>
-        <div class="meta-chip meta-chip-sprint">
-          <span class="chip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-          </span>
-          <span class="chip-text">6 Hours of Innovation</span>
+        <div class="hero-meta" data-aos="fade-up" data-aos-delay="200">
+          <div class="meta-chip meta-chip-time">
+            <span class="chip-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </span>
+            <span class="chip-text">9:05 AM &ndash; 4:00 PM</span>
+          </div>
+          <div class="meta-chip meta-chip-date">
+            <span class="chip-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            </span>
+            <span class="chip-text">12th November</span>
+          </div>
+          <div class="meta-chip meta-chip-sprint">
+            <span class="chip-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+            </span>
+            <span class="chip-text">6 Hours of Innovation</span>
+          </div>
         </div>
       </div>
 
@@ -135,6 +137,12 @@
         data-target="2026-11-12T09:05:00+05:30"
         aria-label="Hackathon Countdown Timer">
         <div class="countdown-card-inner">
+          <!-- Countdown Header / Title -->
+          <div class="countdown-header" aria-hidden="true">
+            <span class="countdown-live-dot"></span>
+            <span class="countdown-title">HACKATHON BEGINS IN</span>
+          </div>
+
           <!-- Canvas for Particle Animated Countdown -->
           <div class="countdown-canvas-wrapper" id="countdown-canvas-wrapper">
             <canvas id="countdown-particle-canvas" class="countdown-particle-canvas" width="700" height="100"
