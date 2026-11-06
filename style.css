@@ -1745,6 +1745,75 @@ body.cursor-click .cursor-ring {
   }
 }
 
+/* ─── DESKTOP TALL SCREEN HEIGHT: EVENLY DISTRIBUTE HERO ELEMENTS ─────── */
+@media (min-width: 769px) and (min-height: 780px) {
+  .hero {
+    min-height: 100vh;
+    padding-top: calc(var(--nav-height, 70px) + clamp(16px, 3vh, 44px));
+    padding-bottom: clamp(24px, 4.5vh, 56px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .hero-content {
+    flex: 1;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 960px;
+    max-height: min(940px, 86vh);
+    margin: auto 0;
+    box-sizing: border-box;
+  }
+
+  .hero-main-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: clamp(14px, 2.2vh, 26px);
+    margin: 0;
+  }
+
+  .hero-title {
+    margin-bottom: 0;
+  }
+
+  .hero-tagline {
+    margin-bottom: 0;
+    font-size: clamp(1rem, 1.25vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .hero-meta {
+    margin-bottom: 0;
+    gap: clamp(12px, 1.6vw, 20px);
+  }
+
+  .college-badge {
+    margin: 0 auto;
+  }
+
+  .countdown-wrap {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .hero-actions {
+    margin-top: 0;
+    margin-bottom: 0;
+    gap: clamp(16px, 2vw, 24px);
+  }
+}
+
 /* ─── PRIZE POOL ─────────────────────────────────────────── */
 .prize-pool {
   position: relative;
