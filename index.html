@@ -1294,6 +1294,7 @@
         loader.style.display = 'none';
         cancelAnimationFrame(lRaf); // stop star canvas while dialog shown
         musicDialog.classList.add('ldr-show');
+        lockScroll();              // ← lock scroll when dialog opens
         document.getElementById('ldr-btn-play').focus();
       }, 700);
     }
@@ -1308,6 +1309,38 @@
       musicBtn.title = lbl;
     }
 
+    /* ── Scroll lock (mobile-safe) ───────────────────────────
+       overflow:hidden on body alone doesn't stop iOS momentum
+       scroll. We also block touchmove on the document, but
+       allow it inside the dialog card so it can scroll if needed. */
+    let _scrollY = 0;
+
+    function lockScroll() {
+      _scrollY = window.scrollY;
+      document.body.style.position   = 'fixed';
+      document.body.style.top        = `-${_scrollY}px`;
+      document.body.style.left       = '0';
+      document.body.style.right      = '0';
+      document.body.style.overflowY  = 'hidden';
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+    }
+
+    function unlockScroll() {
+      document.body.style.position  = '';
+      document.body.style.top       = '';
+      document.body.style.left      = '';
+      document.body.style.right     = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, _scrollY);
+      document.removeEventListener('touchmove', preventScroll);
+    }
+
+    function preventScroll(e) {
+      // Allow scroll inside the music card itself (future-proof)
+      if (e.target.closest('.ldr-music-card')) return;
+      e.preventDefault();
+    }
+
     /* ── Dismiss loader & apply music choice ─────────────── */
     function dismissLoader(playMusic) {
       musicDialog.style.transition = 'opacity 0.5s ease';
@@ -1317,6 +1350,7 @@
         musicDialog.style.display = 'none';
         // Re-enable page interaction
         document.body.classList.remove('loader-active');
+        unlockScroll();            // ← restore scroll when dialog closes
 
         if (playMusic && audio) {
           audio.play()

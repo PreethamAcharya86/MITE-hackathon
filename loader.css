@@ -64,6 +64,7 @@ body.loader-active {
   visibility: visible;
   pointer-events: all;         /* re-enable clicks/cursor */
   cursor: auto;
+  touch-action: none;          /* block touch-scroll on the backdrop */
 }
 /* Ensure every child inside the dialog is fully interactive */
 #site-music-dialog * {
@@ -283,8 +284,9 @@ body.loader-active {
   transition: opacity 0.4s ease;
 }
 
-/* ── MUSIC CARD ──────────────────────────────────────────── */
+/* Music card itself can scroll if content overflows on small screens */
 .ldr-music-card {
+  touch-action: pan-y;
   position: relative;
   background: rgba(8, 13, 26, 0.95);
   border: 1px solid rgba(139,92,246,0.4);
