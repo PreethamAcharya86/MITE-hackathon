@@ -2337,37 +2337,13 @@
       const sections = getSectionElements();
       const activeSection = sections[currentSectionIdx];
       const activeId = activeSection ? activeSection.id : 'top';
-      const regEl = document.getElementById('register');
 
       if (activeId === 'flow') {
         // Event Flow section: move left and keep there
         targetX = leftX;
         targetY = leftY;
-      } else if (activeId === 'rules' || activeId === 'why') {
-        // Rules & Regulations section: place to right
-        targetX = rightX;
-        targetY = rightY;
-      } else if (activeId === 'register' && regEl) {
-        // Registration section: move from one place to another while scrolling
-        const regRect = regEl.getBoundingClientRect();
-        const vh = window.innerHeight;
-
-        // Calculate normalized scroll progress through registration section (0 to 1)
-        const startOffset = vh * 0.75;
-        const totalScrollable = regRect.height + vh * 0.4;
-        const currentOffset = startOffset - regRect.top;
-        const regProgress = Math.max(0, Math.min(1, currentOffset / totalScrollable));
-
-        // Start position (Right) to End position (Left) across registration
-        const startX = rightX;
-        const startY = Math.round(vh * 0.28);
-        const endX = isSmallScreen ? 18 : 42;
-        const endY = Math.round(vh * 0.58);
-
-        targetX = startX + (endX - startX) * regProgress;
-        targetY = startY + (endY - startY) * regProgress;
       } else {
-        // Rest of the sections (top, about, timeline, contributors): keep static on right
+        // All other sections (rules, register, top, about, timeline, contributors): keep static on right
         targetX = rightX;
         targetY = rightY;
       }
