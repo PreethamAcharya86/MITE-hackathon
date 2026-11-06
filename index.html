@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,9 +15,105 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="loader.css" />
 </head>
 
-<body>
+<body class="loader-active">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SITE LOADER OVERLAY — shows on first visit, fades out
+       then presents the music prompt before revealing the page
+       ═══════════════════════════════════════════════════════ -->
+
+  <!-- Loading Screen -->
+  <div id="site-loader" role="status" aria-label="Loading AI VibeX">
+    <canvas id="ldr-canvas"></canvas>
+    <div class="ldr-orb ldr-orb-1"></div>
+    <div class="ldr-orb ldr-orb-2"></div>
+    <div class="ldr-orb ldr-orb-3"></div>
+    <div class="ldr-grid"></div>
+
+    <div class="ldr-inner">
+      <!-- Badge -->
+      <div class="ldr-badge">
+        <div class="ldr-badge-dot"></div>
+        MITE · AIML DEPARTMENT
+      </div>
+
+      <!-- Ring Spinner -->
+      <div class="ldr-ring" aria-hidden="true">
+        <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ldr-g1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <linearGradient id="ldr-g2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#22d3ee"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <circle class="ldr-ring-track" cx="45" cy="45" r="38"/>
+          <circle class="ldr-arc-1" cx="45" cy="45" r="38" stroke-dashoffset="0"/>
+          <circle class="ldr-arc-2" cx="45" cy="45" r="30" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ldr-ring-label">AI</div>
+      </div>
+
+      <!-- Title -->
+      <div>
+        <div class="ldr-title" data-text="AI VibeX 1.0">AI VibeX 1.0</div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="ldr-progress-wrap">
+        <div class="ldr-progress-track">
+          <div class="ldr-progress-fill" id="ldr-fill"></div>
+        </div>
+        <div class="ldr-progress-label" id="ldr-label">Initializing...</div>
+      </div>
+
+      <!-- Rotating tip -->
+      <div class="ldr-tip" id="ldr-tip">Build. Vibe. Innovate.</div>
+    </div>
+  </div>
+
+  <!-- Music Prompt Dialog -->
+  <div id="site-music-dialog" role="dialog" aria-modal="true" aria-labelledby="ldr-music-title">
+    <div class="ldr-music-card">
+      <div class="ldr-music-icon-wrap">
+        <div class="ldr-sound-wave"></div>
+        <div class="ldr-sound-wave"></div>
+        <div class="ldr-sound-wave"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/>
+          <circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+      <div class="ldr-music-title" id="ldr-music-title">Set the Vibe 🎵</div>
+      <div class="ldr-music-desc">Want to turn on the music?</div>
+      <div class="ldr-music-btns">
+        <button class="ldr-btn ldr-btn-yes" id="ldr-btn-play" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Yeah, let's go!
+        </button>
+        <button class="ldr-btn ldr-btn-no" id="ldr-btn-mute" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 10v4h4l5 4V6l-5 4H4z"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          Stay silent
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ END LOADER ══════════════════════════════════════════ -->
 
   <!-- SCROLL PROGRESS BAR -->
   <div class="scroll-progress-bar" id="scroll-progress"></div>
@@ -1094,6 +1190,156 @@
   <script src="script.js"></script>
   <script src="artifera-scroll.js"></script>
   <script src="title_scrolling.js"></script>
+
+  <!-- ══ LOADER SCRIPT ══════════════════════════════════════ -->
+  <script>
+  (() => {
+    'use strict';
+
+    const loader      = document.getElementById('site-loader');
+    const musicDialog = document.getElementById('site-music-dialog');
+    const fillEl      = document.getElementById('ldr-fill');
+    const labelEl     = document.getElementById('ldr-label');
+    const tipEl       = document.getElementById('ldr-tip');
+    const audio       = document.getElementById('background-music');
+    const musicBtn    = document.getElementById('music-toggle');
+
+    /* ── Star particle canvas ─────────────────────────────── */
+    const ldrCanvas = document.getElementById('ldr-canvas');
+    const ldrCtx    = ldrCanvas.getContext('2d');
+    let lW, lH, lStars = [], lRaf;
+
+    function ldrResize() {
+      lW = ldrCanvas.width  = window.innerWidth;
+      lH = ldrCanvas.height = window.innerHeight;
+    }
+    ldrResize();
+    window.addEventListener('resize', ldrResize, { passive: true });
+
+    function mkStar() {
+      return {
+        x: Math.random() * lW, y: Math.random() * lH,
+        r: Math.random() * 1.1 + 0.2, a: Math.random(),
+        da: (Math.random() * 0.004 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
+        dx: (Math.random() - 0.5) * 0.08, dy: (Math.random() - 0.5) * 0.08,
+      };
+    }
+    const STAR_N = Math.min(160, Math.floor(window.innerWidth * window.innerHeight / 7000));
+    for (let i = 0; i < STAR_N; i++) lStars.push(mkStar());
+
+    function ldrDrawStars() {
+      ldrCtx.clearRect(0, 0, lW, lH);
+      for (const s of lStars) {
+        s.a += s.da;
+        if (s.a > 1 || s.a < 0) s.da *= -1;
+        s.x += s.dx; s.y += s.dy;
+        if (s.x < 0) s.x = lW; if (s.x > lW) s.x = 0;
+        if (s.y < 0) s.y = lH; if (s.y > lH) s.y = 0;
+        ldrCtx.beginPath();
+        ldrCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ldrCtx.fillStyle = `rgba(255,255,255,${s.a * 0.75})`;
+        ldrCtx.fill();
+      }
+      lRaf = requestAnimationFrame(ldrDrawStars);
+    }
+    ldrDrawStars();
+
+    /* ── Progress phases ──────────────────────────────────── */
+    const PHASES = [
+      { pct: 15,  msg: 'Spinning up particles...' },
+      { pct: 35,  msg: 'Loading design system...'  },
+      { pct: 55,  msg: 'Rendering the cosmos...'   },
+      { pct: 75,  msg: 'Calibrating hackathon vibe...' },
+      { pct: 90,  msg: 'Almost ready...'            },
+      { pct: 100, msg: "Let's build! 🚀"           },
+    ];
+    const TIPS = [
+      'Build. Vibe. Innovate.',
+      '6 Hours. Infinite possibilities.',
+      'MITE · AIML Department',
+      'Think different. Code fast.',
+      'Your best hack starts now.',
+    ];
+
+    let phaseIdx = 0, tipIdx = 0;
+
+    const tipInterval = setInterval(() => {
+      tipEl.style.opacity = '0';
+      setTimeout(() => {
+        tipIdx = (tipIdx + 1) % TIPS.length;
+        tipEl.textContent = TIPS[tipIdx];
+        tipEl.style.opacity = '1';
+      }, 400);
+    }, 1800);
+
+    function advancePhase() {
+      if (phaseIdx >= PHASES.length) return;
+      const phase = PHASES[phaseIdx++];
+      fillEl.style.width  = phase.pct + '%';
+      labelEl.textContent = phase.msg;
+      if (phase.pct < 100) {
+        const delay = phaseIdx < 3 ? 220 : phaseIdx < 5 ? 300 : 380;
+        setTimeout(advancePhase, delay);
+      } else {
+        setTimeout(showMusicDialog, 450);
+      }
+    }
+    setTimeout(advancePhase, 350);
+
+    /* ── Show music dialog after loading ─────────────────── */
+    function showMusicDialog() {
+      clearInterval(tipInterval);
+      loader.classList.add('ldr-fade-out');
+      setTimeout(() => {
+        loader.style.display = 'none';
+        cancelAnimationFrame(lRaf); // stop star canvas while dialog shown
+        musicDialog.classList.add('ldr-show');
+        document.getElementById('ldr-btn-play').focus();
+      }, 700);
+    }
+
+    /* ── Music preference helper ─────────────────────────── */
+    function setMusicPlaying(isPlaying) {
+      if (!musicBtn) return;
+      musicBtn.classList.toggle('is-playing', isPlaying);
+      musicBtn.setAttribute('aria-pressed', String(isPlaying));
+      const lbl = isPlaying ? 'Pause background music' : 'Play background music';
+      musicBtn.setAttribute('aria-label', lbl);
+      musicBtn.title = lbl;
+    }
+
+    /* ── Dismiss loader & apply music choice ─────────────── */
+    function dismissLoader(playMusic) {
+      musicDialog.style.transition = 'opacity 0.5s ease';
+      musicDialog.style.opacity    = '0';
+
+      setTimeout(() => {
+        musicDialog.style.display = 'none';
+        // Re-enable page interaction
+        document.body.classList.remove('loader-active');
+
+        if (playMusic && audio) {
+          audio.play()
+            .then(() => setMusicPlaying(true))
+            .catch(() => {/* browser may still block — user can click navbar button */});
+        }
+      }, 500);
+    }
+
+    document.getElementById('ldr-btn-play').addEventListener('click', () => dismissLoader(true));
+    document.getElementById('ldr-btn-mute').addEventListener('click', () => dismissLoader(false));
+
+    // Escape key = stay silent
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && musicDialog.classList.contains('ldr-show')) {
+        dismissLoader(false);
+      }
+    });
+
+  })();
+  </script>
+  <!-- ══ END LOADER SCRIPT ══════════════════════════════════ -->
+
 </body>
 
 </html>

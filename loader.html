@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI VibeX 1.0 | Loading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --clr-bg:        #050811;
+      --clr-bg-2:      #080d1a;
+      --clr-purple:    #8b5cf6;
+      --clr-purple-2:  #6d28d9;
+      --clr-cyan:      #22d3ee;
+      --clr-cyan-2:    #0891b2;
+      --clr-pink:      #ec4899;
+      --grad-text:     linear-gradient(90deg, #a78bfa, #22d3ee, #ec4899);
+      --grad-main:     linear-gradient(135deg, #8b5cf6, #22d3ee);
+      --font-main:     'Outfit', sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+    }
+
+    /* ── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--clr-bg);
+      font-family: var(--font-main);
+      color: #fff;
+    }
+
+    /* ── PARTICLE CANVAS ──────────────────────────────────── */
+    #loader-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LOADER SHELL ───────────────────────────────────────── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* ── MUSIC DIALOG ───────────────────────────────────────── */
+    #music-dialog {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #music-dialog.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ── ORBS ──────────────────────────────────────────────── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 1;
+      animation: orb-drift 8s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: min(500px, 80vw);
+      height: min(500px, 80vw);
+      background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%);
+      top: -15%; left: -15%;
+      animation-delay: 0s;
+    }
+    .orb-2 {
+      width: min(400px, 65vw);
+      height: min(400px, 65vw);
+      background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%);
+      bottom: -10%; right: -10%;
+      animation-delay: -3s;
+    }
+    .orb-3 {
+      width: min(300px, 50vw);
+      height: min(300px, 50vw);
+      background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+      top: 40%; left: 50%;
+      transform: translateX(-50%);
+      animation-delay: -6s;
+    }
+    @keyframes orb-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(20px, 15px) scale(1.08); }
+    }
+
+    /* ── GRID OVERLAY ──────────────────────────────────────── */
+    .hero-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* ── LOADER CONTENT ────────────────────────────────────── */
+    .loader-inner {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    /* Logo / Badge */
+    .loader-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(139,92,246,0.35);
+      backdrop-filter: blur(12px);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.65);
+      animation: fade-in-down 0.6s ease both;
+    }
+    .loader-badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--clr-cyan);
+      box-shadow: 0 0 8px var(--clr-cyan);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    /* Title */
+    .loader-title {
+      font-size: clamp(2.8rem, 10vw, 6rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fade-in-up 0.7s 0.1s ease both;
+      position: relative;
+      /* glitch layers */
+    }
+    .loader-title::before,
+    .loader-title::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .loader-title::before {
+      animation: glitch-1 3.5s 1.2s infinite linear;
+      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    }
+    .loader-title::after {
+      animation: glitch-2 3.5s 1.5s infinite linear;
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    }
+    @keyframes glitch-1 {
+      0%,90%,100% { transform: none; opacity: 0; }
+      91%          { transform: translate(-3px, 2px); opacity: 0.6; }
+      93%          { transform: translate(3px, -2px); opacity: 0.4; }
+      95%          { transform: translate(-2px, 0); opacity: 0.6; }
+      97%          { transform: none; opacity: 0; }
+    }
+    @keyframes glitch-2 {
+      0%,88%,100% { transform: none; opacity: 0; }
+      89%          { transform: translate(4px, -1px); opacity: 0.5; }
+      91%          { transform: translate(-4px, 2px); opacity: 0.3; }
+      93%          { transform: none; opacity: 0; }
+    }
+
+    .loader-subtitle {
+      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.04em;
+      margin-top: -24px;
+      animation: fade-in-up 0.7s 0.2s ease both;
+    }
+
+    /* ── PROGRESS BAR ──────────────────────────────────────── */
+    .loader-progress-wrap {
+      width: min(340px, 80vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fade-in-up 0.7s 0.35s ease both;
+    }
+    .loader-progress-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+    .loader-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 100px;
+      background: var(--grad-main);
+      box-shadow: 0 0 10px rgba(139,92,246,0.7), 0 0 20px rgba(34,211,238,0.4);
+      transition: width 0.1s linear;
+      position: relative;
+    }
+    .loader-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 8px var(--clr-cyan);
+    }
+    .loader-progress-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── LOADING TIPS ──────────────────────────────────────── */
+    .loader-tip {
+      font-size: clamp(0.75rem, 2vw, 0.88rem);
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.03em;
+      font-style: italic;
+      animation: fade-in-up 0.7s 0.5s ease both;
+      min-height: 1.4em;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ── RING SPINNER ──────────────────────────────────────── */
+    .loader-ring {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      animation: fade-in 0.6s 0.15s ease both;
+      flex-shrink: 0;
+    }
+    .loader-ring svg {
+      width: 100%;
+      height: 100%;
+      transform-origin: center;
+    }
+    .ring-track {
+      fill: none;
+      stroke: rgba(255,255,255,0.06);
+      stroke-width: 2.5;
+    }
+    .ring-arc-1 {
+      fill: none;
+      stroke: url(#ring-grad-1);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 160 220;
+      animation: spin-1 1.4s linear infinite;
+      transform-origin: center;
+    }
+    .ring-arc-2 {
+      fill: none;
+      stroke: url(#ring-grad-2);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-dasharray: 60 320;
+      animation: spin-2 2.0s linear infinite reverse;
+      transform-origin: center;
+    }
+    @keyframes spin-1 { to { stroke-dashoffset: -380; } }
+    @keyframes spin-2 { to { stroke-dashoffset: 380; } }
+
+    .ring-logo {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── MUSIC DIALOG CARD ──────────────────────────────────── */
+    .music-card {
+      position: relative;
+      background: rgba(8, 13, 26, 0.92);
+      border: 1px solid rgba(139,92,246,0.4);
+      border-radius: 24px;
+      padding: clamp(28px, 6vw, 48px) clamp(24px, 7vw, 52px);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow:
+        0 0 0 1px rgba(139,92,246,0.1),
+        0 32px 80px rgba(0,0,0,0.6),
+        0 0 60px rgba(139,92,246,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: card-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes card-pop {
+      from { opacity: 0; transform: scale(0.88) translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Corner accents */
+    .music-card::before,
+    .music-card::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      border-color: var(--clr-cyan);
+      border-style: solid;
+    }
+    .music-card::before {
+      top: 10px; left: 10px;
+      border-width: 1.5px 0 0 1.5px;
+      border-radius: 4px 0 0 0;
+    }
+    .music-card::after {
+      bottom: 10px; right: 10px;
+      border-width: 0 1.5px 1.5px 0;
+      border-radius: 0 0 4px 0;
+    }
+
+    .music-icon-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(34,211,238,0.15));
+      border: 1px solid rgba(139,92,246,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+      animation: icon-pulse 3s ease-in-out infinite;
+    }
+    @keyframes icon-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.3), 0 0 20px rgba(139,92,246,0.15); }
+      50%      { box-shadow: 0 0 0 12px rgba(139,92,246,0), 0 0 30px rgba(139,92,246,0.25); }
+    }
+    .music-icon-wrap svg {
+      width: 32px; height: 32px;
+      color: var(--clr-cyan);
+      filter: drop-shadow(0 0 8px var(--clr-cyan));
+    }
+
+    /* Sound waves animation around icon */
+    .sound-wave {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(34,211,238,0.3);
+      animation: wave-out 2s ease-out infinite;
+    }
+    .sound-wave:nth-child(2) { animation-delay: 0.6s; }
+    .sound-wave:nth-child(3) { animation-delay: 1.2s; }
+    @keyframes wave-out {
+      from { opacity: 0.6; transform: scale(1); }
+      to   { opacity: 0; transform: scale(1.8); }
+    }
+
+    .music-title {
+      font-size: clamp(1.3rem, 4vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .music-desc {
+      font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .music-desc span {
+      color: rgba(34,211,238,0.8);
+      font-weight: 500;
+    }
+
+    /* Track preview chip */
+    .track-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 6px 14px 6px 10px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      font-family: var(--font-mono);
+      margin-bottom: 28px;
+    }
+    .track-eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+    }
+    .track-eq span {
+      display: block;
+      width: 2.5px;
+      border-radius: 2px;
+      background: var(--clr-cyan);
+      animation: eq-bar 1s ease-in-out infinite alternate;
+    }
+    .track-eq span:nth-child(1) { height: 6px; animation-delay: 0s; }
+    .track-eq span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+    .track-eq span:nth-child(3) { height: 14px; animation-delay: 0.3s; }
+    .track-eq span:nth-child(4) { height: 8px; animation-delay: 0.1s; }
+    .track-eq span:nth-child(5) { height: 12px; animation-delay: 0.25s; }
+    @keyframes eq-bar {
+      from { transform: scaleY(0.3); opacity: 0.5; }
+      to   { transform: scaleY(1);   opacity: 1;   }
+    }
+
+    /* Buttons */
+    .music-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-music {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      white-space: nowrap;
+      flex: 1;
+      min-width: 120px;
+      max-width: 180px;
+      justify-content: center;
+      letter-spacing: 0.01em;
+    }
+    .btn-music-yes {
+      background: linear-gradient(135deg, var(--clr-purple), var(--clr-cyan-2));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(139,92,246,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .btn-music-yes:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(139,92,246,0.55), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-music-yes:active { transform: translateY(0); }
+    .btn-music-no {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-music-no:hover {
+      background: rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.75);
+      transform: translateY(-2px);
+    }
+    .btn-music-no:active { transform: translateY(0); }
+
+    .btn-music svg {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── ENTER ANIMATION KEYFRAMES ─────────────────────────── */
+    @keyframes fade-in-down {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE TWEAKS ─────────────────────────────────── */
+    @media (max-width: 480px) {
+      .loader-inner { gap: 24px; }
+      .music-card   { padding: 28px 22px; border-radius: 20px; }
+      .music-btns   { flex-direction: column; align-items: center; }
+      .btn-music    { max-width: 100%; width: 100%; }
+      .loader-ring  { width: 70px; height: 70px; }
+    }
+
+    @media (max-height: 600px) and (orientation: landscape) {
+      .loader-inner { gap: 16px; }
+      .loader-title { font-size: 2.4rem; }
+      .loader-ring  { width: 60px; height: 60px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background canvas for star particles -->
+  <canvas id="loader-canvas"></canvas>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-grid"></div>
+
+  <!-- ── LOADING SCREEN ──────────────────────────────────── -->
+  <div id="loader" role="status" aria-label="Loading AI VibeX">
+    <div class="loader-inner">
+
+      <!-- Badge -->
+      <div class="loader-badge">
+        <div class="loader-badge-dot"></div>
+        MITE · AIML DEPARTMENT
+      </div>
+
+      <!-- Spinner + Title Row (stacked) -->
+      <div class="loader-ring" aria-hidden="true">
+        <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ring-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <linearGradient id="ring-grad-2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#22d3ee"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="45" cy="45" r="38"/>
+          <circle class="ring-arc-1" cx="45" cy="45" r="38" stroke-dashoffset="0"/>
+          <circle class="ring-arc-2" cx="45" cy="45" r="30" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-logo">AI</div>
+      </div>
+
+      <!-- Title -->
+      <div>
+        <div class="loader-title" data-text="AI VibeX 1.0">AI VibeX 1.0</div>
+        <div class="loader-subtitle">6 Hour AI Innovation Sprint</div>
+      </div>
+
+      <!-- Progress -->
+      <div class="loader-progress-wrap">
+        <div class="loader-progress-track">
+          <div class="loader-progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="loader-progress-label" id="progress-label">Initializing...</div>
+      </div>
+
+      <!-- Rotating tip -->
+      <div class="loader-tip" id="loader-tip">Build. Vibe. Innovate.</div>
+
+    </div>
+  </div>
+
+  <!-- ── MUSIC PROMPT DIALOG ──────────────────────────────── -->
+  <div id="music-dialog" role="dialog" aria-modal="true" aria-labelledby="music-dialog-title">
+    <div class="music-card">
+
+      <!-- Icon -->
+      <div class="music-icon-wrap">
+        <div class="sound-wave"></div>
+        <div class="sound-wave"></div>
+        <div class="sound-wave"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/>
+          <circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+
+      <!-- Text -->
+      <div class="music-title" id="music-dialog-title">Set the Vibe 🎵</div>
+      <div class="music-desc">
+        AI VibeX comes with a <span>phonk soundtrack</span> to fuel your hacking session.
+        Want to turn it on?
+      </div>
+
+      <!-- Track chip -->
+      <div class="track-chip">
+        <div class="track-eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        Phonk Reel — Kulakovka
+      </div>
+
+      <!-- Buttons -->
+      <div class="music-btns">
+        <button class="btn-music btn-music-yes" id="btn-play" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Yeah, let's go!
+        </button>
+        <button class="btn-music btn-music-no" id="btn-mute" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 10v4h4l5 4V6l-5 4H4z"/>
+            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          Stay silent
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      /* ── STAR PARTICLES ─────────────────────────────────── */
+      const canvas = document.getElementById('loader-canvas');
+      const ctx    = canvas.getContext('2d');
+      let W, H, stars = [], rafId;
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      function mkStar() {
+        return {
+          x:  Math.random() * W,
+          y:  Math.random() * H,
+          r:  Math.random() * 1.1 + 0.2,
+          a:  Math.random(),
+          da: (Math.random() * 0.004 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
+          dx: (Math.random() - 0.5) * 0.08,
+          dy: (Math.random() - 0.5) * 0.08,
+        };
+      }
+
+      const STAR_COUNT = Math.min(160, Math.floor(W * H / 8000));
+      for (let i = 0; i < STAR_COUNT; i++) stars.push(mkStar());
+
+      function drawStars(ts) {
+        ctx.clearRect(0, 0, W, H);
+        for (const s of stars) {
+          s.a += s.da;
+          if (s.a > 1 || s.a < 0) s.da *= -1;
+          s.x += s.dx;
+          s.y += s.dy;
+          if (s.x < 0) s.x = W;
+          if (s.x > W) s.x = 0;
+          if (s.y < 0) s.y = H;
+          if (s.y > H) s.y = 0;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${s.a * 0.75})`;
+          ctx.fill();
+        }
+        rafId = requestAnimationFrame(drawStars);
+      }
+      drawStars();
+
+      /* ── LOADER PROGRESS ───────────────────────────────── */
+      const fill    = document.getElementById('progress-fill');
+      const label   = document.getElementById('progress-label');
+      const tipEl   = document.getElementById('loader-tip');
+
+      const PHASES = [
+        { pct: 15, msg: 'Spinning up particles...' },
+        { pct: 35, msg: 'Loading design system...' },
+        { pct: 55, msg: 'Rendering the cosmos...' },
+        { pct: 75, msg: 'Calibrating hackathon vibe...' },
+        { pct: 90, msg: 'Almost ready...' },
+        { pct: 100, msg: 'Let\'s build! 🚀' },
+      ];
+
+      const TIPS = [
+        'Build. Vibe. Innovate.',
+        '6 Hours. Infinite possibilities.',
+        'MITE · AIML Department',
+        'Think different. Code fast.',
+        'Your best hack starts now.',
+      ];
+
+      let phaseIdx = 0;
+      let tipIdx   = 0;
+
+      function rotateTip() {
+        tipEl.style.opacity = '0';
+        setTimeout(() => {
+          tipIdx = (tipIdx + 1) % TIPS.length;
+          tipEl.textContent = TIPS[tipIdx];
+          tipEl.style.opacity = '1';
+        }, 400);
+      }
+      const tipInterval = setInterval(rotateTip, 1800);
+
+      function advancePhase() {
+        if (phaseIdx >= PHASES.length) return;
+        const phase = PHASES[phaseIdx++];
+        fill.style.width   = phase.pct + '%';
+        label.textContent  = phase.msg;
+
+        if (phase.pct < 100) {
+          const delay = phaseIdx < 3 ? 220 : phaseIdx < 5 ? 300 : 380;
+          setTimeout(advancePhase, delay);
+        } else {
+          // Loading complete → show music dialog
+          setTimeout(showMusicDialog, 450);
+        }
+      }
+
+      // Start progress after a brief intro pause
+      setTimeout(advancePhase, 350);
+
+      /* ── TRANSITION: LOADER → MUSIC DIALOG ─────────────── */
+      const loader      = document.getElementById('loader');
+      const musicDialog = document.getElementById('music-dialog');
+
+      function showMusicDialog() {
+        clearInterval(tipInterval);
+        loader.classList.add('fade-out');
+        setTimeout(() => {
+          loader.style.display = 'none';
+          musicDialog.classList.add('show');
+          document.getElementById('btn-play').focus();
+        }, 700);
+      }
+
+      /* ── MUSIC CHOICE HANDLER ──────────────────────────── */
+      const MAIN_PAGE     = 'index.html';
+      const MUSIC_STORAGE = 'aivibex_music_pref';
+
+      function goToMain(playMusic) {
+        // Fade out everything
+        document.body.style.transition = 'opacity 0.6s ease';
+        document.body.style.opacity = '0';
+        cancelAnimationFrame(rafId);
+
+        setTimeout(() => {
+          sessionStorage.setItem(MUSIC_STORAGE, playMusic ? 'play' : 'mute');
+          window.location.href = MAIN_PAGE;
+        }, 600);
+      }
+
+      document.getElementById('btn-play').addEventListener('click', () => goToMain(true));
+      document.getElementById('btn-mute').addEventListener('click', () => goToMain(false));
+
+      // Keyboard: Escape = mute, Enter when focused on button = that button's action
+      document.addEventListener('keydown', (e) => {
+        if (musicDialog.classList.contains('show')) {
+          if (e.key === 'Escape') goToMain(false);
+        }
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
+

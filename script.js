@@ -169,6 +169,7 @@
           musicButton.disabled = false;
         });
     });
+
   }
 
   function closeMobileNav() {

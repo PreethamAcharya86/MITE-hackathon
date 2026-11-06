@@ -1,0 +1,406 @@
+/* ═══════════════════════════════════════════════════════════
+   AI VibeX — Loader & Music Prompt Styles
+   Namespaced with ldr- prefix so nothing bleeds into main CSS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Block page scroll while loader is active.
+   Music dialog re-enables pointer-events on itself explicitly. */
+body.loader-active {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── CURSOR FIX ──────────────────────────────────────────────
+   The main style.css sets cursor:none on body/buttons globally.
+   Override it inside the music dialog so the native cursor shows. */
+#site-music-dialog,
+#site-music-dialog *,
+#site-music-dialog button,
+#site-music-dialog .ldr-btn {
+  cursor: auto !important;
+}
+#site-music-dialog .ldr-btn,
+#site-music-dialog button {
+  cursor: pointer !important;
+}
+
+/* ── LOADER OVERLAY ──────────────────────────────────────── */
+#site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #050811;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+#site-loader.ldr-fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── MUSIC DIALOG OVERLAY ────────────────────────────────── */
+#site-music-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 99999; /* same layer as loader so it's always on top */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 8, 17, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;        /* blocked until shown */
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#site-music-dialog.ldr-show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;         /* re-enable clicks/cursor */
+  cursor: auto;
+}
+/* Ensure every child inside the dialog is fully interactive */
+#site-music-dialog * {
+  pointer-events: auto;
+}
+
+/* ── LOADER ORBS ─────────────────────────────────────────── */
+.ldr-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: ldr-orb-drift 8s ease-in-out infinite alternate;
+}
+.ldr-orb-1 {
+  width: min(500px, 80vw); height: min(500px, 80vw);
+  background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%);
+  top: -15%; left: -15%;
+  animation-delay: 0s;
+}
+.ldr-orb-2 {
+  width: min(400px, 65vw); height: min(400px, 65vw);
+  background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%);
+  bottom: -10%; right: -10%;
+  animation-delay: -3s;
+}
+.ldr-orb-3 {
+  width: min(300px, 50vw); height: min(300px, 50vw);
+  background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+  top: 40%; left: 50%;
+  transform: translateX(-50%);
+  animation-delay: -6s;
+}
+@keyframes ldr-orb-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(20px, 15px) scale(1.08); }
+}
+
+/* ── GRID ────────────────────────────────────────────────── */
+.ldr-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* ── STAR CANVAS ─────────────────────────────────────────── */
+#ldr-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ── LOADER INNER CONTENT ────────────────────────────────── */
+.ldr-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Badge */
+.ldr-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(139,92,246,0.35);
+  backdrop-filter: blur(12px);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.65);
+  animation: ldr-fade-down 0.6s ease both;
+}
+.ldr-badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22d3ee;
+  box-shadow: 0 0 8px #22d3ee;
+  animation: ldr-pulse-dot 2s ease-in-out infinite;
+}
+@keyframes ldr-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+/* Ring Spinner */
+.ldr-ring {
+  position: relative;
+  width: 90px; height: 90px;
+  animation: ldr-fade-in 0.6s 0.15s ease both;
+  flex-shrink: 0;
+}
+.ldr-ring svg { width: 100%; height: 100%; }
+.ldr-ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 2.5; }
+.ldr-arc-1 {
+  fill: none; stroke: url(#ldr-g1); stroke-width: 2.5;
+  stroke-linecap: round; stroke-dasharray: 160 220;
+  animation: ldr-spin1 1.4s linear infinite;
+  transform-origin: center;
+}
+.ldr-arc-2 {
+  fill: none; stroke: url(#ldr-g2); stroke-width: 1.5;
+  stroke-linecap: round; stroke-dasharray: 60 320;
+  animation: ldr-spin2 2s linear infinite reverse;
+  transform-origin: center;
+}
+@keyframes ldr-spin1 { to { stroke-dashoffset: -380; } }
+@keyframes ldr-spin2 { to { stroke-dashoffset: 380; } }
+.ldr-ring-label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.08em;
+}
+
+/* Title */
+.ldr-title {
+  font-size: clamp(2.8rem, 10vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #a78bfa, #22d3ee, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ldr-fade-up 0.7s 0.1s ease both;
+  position: relative;
+}
+.ldr-title::before,
+.ldr-title::after {
+  content: attr(data-text);
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, #a78bfa, #22d3ee, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ldr-title::before {
+  animation: ldr-glitch1 3.5s 1.2s infinite;
+  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+}
+.ldr-title::after {
+  animation: ldr-glitch2 3.5s 1.5s infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+}
+@keyframes ldr-glitch1 {
+  0%, 90%, 100% { transform: none; opacity: 0; }
+  91% { transform: translate(-3px, 2px);  opacity: 0.6; }
+  93% { transform: translate(3px, -2px);  opacity: 0.4; }
+  95% { transform: translate(-2px, 0);    opacity: 0.6; }
+  97% { transform: none; opacity: 0; }
+}
+@keyframes ldr-glitch2 {
+  0%, 88%, 100% { transform: none; opacity: 0; }
+  89% { transform: translate(4px, -1px);  opacity: 0.5; }
+  91% { transform: translate(-4px, 2px);  opacity: 0.3; }
+  93% { transform: none; opacity: 0; }
+}
+
+/* Progress */
+.ldr-progress-wrap {
+  width: min(340px, 80vw);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: ldr-fade-up 0.7s 0.35s ease both;
+}
+.ldr-progress-track {
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 100px; overflow: hidden;
+}
+.ldr-progress-fill {
+  height: 100%; width: 0%;
+  border-radius: 100px;
+  background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+  box-shadow: 0 0 10px rgba(139,92,246,0.7), 0 0 20px rgba(34,211,238,0.4);
+  transition: width 0.12s linear;
+  position: relative;
+}
+.ldr-progress-fill::after {
+  content: '';
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 6px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 8px #22d3ee;
+}
+.ldr-progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+}
+
+/* Rotating tip */
+.ldr-tip {
+  font-size: clamp(0.75rem, 2vw, 0.88rem);
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.03em;
+  font-style: italic;
+  animation: ldr-fade-up 0.7s 0.5s ease both;
+  min-height: 1.4em;
+  transition: opacity 0.4s ease;
+}
+
+/* ── MUSIC CARD ──────────────────────────────────────────── */
+.ldr-music-card {
+  position: relative;
+  background: rgba(8, 13, 26, 0.95);
+  border: 1px solid rgba(139,92,246,0.4);
+  border-radius: 24px;
+  padding: clamp(28px, 6vw, 48px) clamp(24px, 7vw, 52px);
+  max-width: 420px; width: 100%;
+  text-align: center;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow:
+    0 0 0 1px rgba(139,92,246,0.1),
+    0 32px 80px rgba(0,0,0,0.6),
+    0 0 60px rgba(139,92,246,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  animation: ldr-card-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  cursor: auto;
+}
+@keyframes ldr-card-pop {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+.ldr-music-card::before,
+.ldr-music-card::after {
+  content: ''; position: absolute;
+  width: 20px; height: 20px; border-color: #22d3ee; border-style: solid;
+}
+.ldr-music-card::before { top: 10px;    left: 10px;  border-width: 1.5px 0 0 1.5px; border-radius: 4px 0 0 0; }
+.ldr-music-card::after  { bottom: 10px; right: 10px; border-width: 0 1.5px 1.5px 0; border-radius: 0 0 4px 0; }
+
+.ldr-music-icon-wrap {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(34,211,238,0.15));
+  border: 1px solid rgba(139,92,246,0.35);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; position: relative;
+  animation: ldr-icon-pulse 3s ease-in-out infinite;
+}
+@keyframes ldr-icon-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.3), 0 0 20px rgba(139,92,246,0.15); }
+  50%       { box-shadow: 0 0 0 12px rgba(139,92,246,0), 0 0 30px rgba(139,92,246,0.25); }
+}
+.ldr-music-icon-wrap svg {
+  width: 32px; height: 32px;
+  color: #22d3ee;
+  filter: drop-shadow(0 0 8px #22d3ee);
+}
+.ldr-sound-wave {
+  position: absolute; inset: -4px; border-radius: 50%;
+  border: 1px solid rgba(34,211,238,0.3);
+  animation: ldr-wave-out 2s ease-out infinite;
+}
+.ldr-sound-wave:nth-child(2) { animation-delay: 0.6s; }
+.ldr-sound-wave:nth-child(3) { animation-delay: 1.2s; }
+@keyframes ldr-wave-out {
+  from { opacity: 0.6; transform: scale(1); }
+  to   { opacity: 0;   transform: scale(1.8); }
+}
+
+.ldr-music-title {
+  font-size: clamp(1.3rem, 4vw, 1.65rem);
+  font-weight: 800; letter-spacing: -0.01em;
+  background: linear-gradient(90deg, #a78bfa, #22d3ee, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 10px;
+}
+.ldr-music-desc {
+  font-size: clamp(0.88rem, 2.2vw, 1rem);
+  color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 28px;
+}
+
+/* Buttons */
+.ldr-music-btns {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+}
+.ldr-btn {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px; border-radius: 12px;
+  font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600;
+  cursor: pointer;              /* explicit pointer cursor */
+  border: none; outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap; flex: 1; min-width: 120px; max-width: 180px;
+  justify-content: center; letter-spacing: 0.01em;
+  pointer-events: auto;         /* force clickable even if parent chain was blocked */
+}
+.ldr-btn-yes {
+  background: linear-gradient(135deg, #8b5cf6, #0891b2);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(139,92,246,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.ldr-btn-yes:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(139,92,246,0.55); }
+.ldr-btn-yes:active { transform: translateY(0); }
+.ldr-btn-no {
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.ldr-btn-no:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.75); transform: translateY(-2px); }
+.ldr-btn-no:active { transform: translateY(0); }
+.ldr-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ── SHARED KEYFRAMES ────────────────────────────────────── */
+@keyframes ldr-fade-down { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+@keyframes ldr-fade-up   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: none; } }
+@keyframes ldr-fade-in   { from { opacity: 0; }                               to { opacity: 1; }                  }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ldr-inner { gap: 20px; }
+  .ldr-music-card { padding: 28px 20px; border-radius: 20px; }
+  .ldr-music-btns { flex-direction: column; align-items: center; }
+  .ldr-btn { max-width: 100%; width: 100%; }
+  .ldr-ring { width: 70px; height: 70px; }
+}
+@media (max-height: 600px) and (orientation: landscape) {
+  .ldr-inner { gap: 14px; }
+  .ldr-title { font-size: 2.2rem; }
+  .ldr-ring  { width: 58px; height: 58px; }
+}
+
