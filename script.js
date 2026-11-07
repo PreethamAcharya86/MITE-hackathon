@@ -2022,6 +2022,10 @@
     let isPointerOverWordmark = false;
 
     function initWordmarkCanvas() {
+      if (isMobile()) {
+        stopWordmark();
+        return false;
+      }
       wordmarkCtx = wordmarkCanvas.getContext('2d');
       if (!wordmarkCtx) return false;
       const stage = wordmarkSection && wordmarkSection.querySelector('.vibex-wordmark-stage');
@@ -2035,6 +2039,7 @@
     }
 
     function createWordmarkParticles() {
+      if (isMobile()) return;
       const sampleCanvas = document.createElement('canvas');
       sampleCanvas.width = wordmarkWidth;
       sampleCanvas.height = wordmarkHeight;
@@ -2079,7 +2084,10 @@
     }
 
     function renderWordmark(time, isStatic = false) {
-      if (!wordmarkCtx) return;
+      if (isMobile() || !wordmarkCtx) {
+        stopWordmark();
+        return;
+      }
       wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
       const assembleProgress = Math.max(0, Math.min(1, wordmarkProgress / 0.34));
       const releaseTimeline = Math.max(0, Math.min(1, (wordmarkProgress - 0.68) / 0.32));
@@ -2128,10 +2136,14 @@
         wordmarkCtx.fill();
       });
       wordmarkCtx.globalAlpha = 1;
-      if (!isStatic) wordmarkRafId = requestAnimationFrame(renderWordmark);
+      if (!isStatic && !isMobile()) wordmarkRafId = requestAnimationFrame(renderWordmark);
     }
 
     function startWordmark() {
+      if (isMobile()) {
+        stopWordmark();
+        return;
+      }
       if (prefersReducedMotion()) {
         stopWordmark();
         wordmarkProgress = 0.34;
@@ -2148,14 +2160,17 @@
       }
     }
 
-    if (initWordmarkCanvas()) {
+    if (wordmarkSection) {
+      wordmarkSection.addEventListener('vibex:scrollprogress', event => {
+        if (isMobile()) return;
+        wordmarkProgress = event.detail.progress;
+      });
+    }
+
+    if (!isMobile() && initWordmarkCanvas()) {
       createWordmarkParticles();
-      if (wordmarkSection) {
-        wordmarkSection.addEventListener('vibex:scrollprogress', event => {
-          wordmarkProgress = event.detail.progress;
-        });
-      }
       window.addEventListener('pointermove', event => {
+        if (isMobile()) return;
         const stage = wordmarkSection && wordmarkSection.querySelector('.vibex-wordmark-stage');
         const rect = stage && stage.getBoundingClientRect();
         if (!rect || event.clientX < rect.left || event.clientX > rect.right ||
@@ -2187,18 +2202,26 @@
       if (wordmarkSection && 'IntersectionObserver' in window) {
         new IntersectionObserver(entries => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !isMobile()) {
               startWordmark();
             } else {
               stopWordmark();
             }
           });
         }, { threshold: 0.05 }).observe(wordmarkSection);
-      } else {
+      } else if (!isMobile()) {
         startWordmark();
       }
 
       window.addEventListener('resize', () => {
+        if (isMobile()) {
+          stopWordmark();
+          wordmarkParticles.length = 0;
+          if (wordmarkCtx) {
+            wordmarkCtx.clearRect(0, 0, wordmarkWidth, wordmarkHeight);
+          }
+          return;
+        }
         if (!initWordmarkCanvas()) return;
         wordmarkParticles.length = 0;
         createWordmarkParticles();

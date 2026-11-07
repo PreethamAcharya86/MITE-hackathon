@@ -1098,6 +1098,25 @@ body.cursor-click .cursor-ring {
 /* Responsive display toggle - hide particle section on mobile */
 /* Responsive display toggle - Artifera particle section visible on all screens */
 @media (max-width: 768px) {
+  /* Pause and hide AI VibeX particle wordmark on mobile screen to maximize performance */
+  .vibex-wordmark-section {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .vibex-wordmark-stage,
+  .vibex-wordmark-wrap,
+  .vibex-wordmark-canvas,
+  .vibex-wordmark-glow {
+    display: none !important;
+    animation: none !important;
+  }
+
   .particle-showcase-section {
     display: flex !important;
     padding: 30px 0 20px 0;

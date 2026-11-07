@@ -6,6 +6,7 @@
   const stage = section && section.querySelector('.vibex-wordmark-stage');
   if (!section || !stage) return;
 
+  const isMobile = () => window.innerWidth <= 768;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let progress = readProgress();
   let targetProgress = progress;
@@ -19,11 +20,13 @@
   }
 
   function readProgress() {
+    if (isMobile()) return 0;
     const range = section.offsetHeight - stage.offsetHeight;
     return range > 0 ? clamp(-section.getBoundingClientRect().top / range) : 0;
   }
 
   function publishProgress(value) {
+    if (isMobile()) return;
     section.dispatchEvent(new CustomEvent('vibex:scrollprogress', {
       detail: { progress: value }
     }));
@@ -31,7 +34,7 @@
 
   function animateProgress(time) {
     animationFrame = 0;
-    if (document.hidden || !inView || reducedMotion.matches) return;
+    if (document.hidden || !inView || reducedMotion.matches || isMobile()) return;
 
     const deltaTime = previousFrameTime
       ? Math.min(0.05, (time - previousFrameTime) / 1000)
@@ -41,12 +44,19 @@
     if (Math.abs(targetProgress - progress) < 1e-5) progress = targetProgress;
     publishProgress(progress);
 
-    if (progress !== targetProgress) {
+    if (progress !== targetProgress && !isMobile()) {
       animationFrame = requestAnimationFrame(animateProgress);
     }
   }
 
   function updateProgress() {
+    if (isMobile()) {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+      return;
+    }
     targetProgress = readProgress();
     if (reducedMotion.matches) {
       progress = 0.34;
@@ -61,6 +71,13 @@
   }
 
   function syncAnimation() {
+    if (isMobile()) {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      }
+      return;
+    }
     targetProgress = reducedMotion.matches ? 0.34 : readProgress();
     if (inView && !document.hidden && !reducedMotion.matches && progress !== targetProgress) {
       if (!animationFrame) {
