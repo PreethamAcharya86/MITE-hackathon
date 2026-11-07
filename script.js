@@ -2339,12 +2339,8 @@
       const activeSection = sections[currentSectionIdx];
       const activeId = activeSection ? activeSection.id : 'top';
 
-      if (activeId === 'flow') {
-        // Event Flow section: move left and keep there
-        targetX = leftX;
-        targetY = leftY;
-      } else {
-        // All other sections (rules, register, top, about, timeline, contributors): keep static on right
+      if (activeId) {
+        // Always keep robot static on the right side regardless of section
         targetX = rightX;
         targetY = rightY;
       }
