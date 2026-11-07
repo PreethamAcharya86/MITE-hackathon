@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -138,6 +138,7 @@
       </div>
       <ul class="nav-links" id="nav-links">
         <li><a href="#about" class="nav-link">Prize Pool</a></li>
+        <li><a href="#brochure" class="nav-link">Brochure</a></li>
         <li><a href="#timeline" class="nav-link">Timeline</a></li>
         <li><a href="#flow" class="nav-link">Flow</a></li>
         <li><a href="#rules" class="nav-link">Rules</a></li>
@@ -316,7 +317,79 @@
     </div>
   </section>
 
-  <!-- ARTIFERA SCROLL-ASSEMBLE SECTION (particles form the logo while scrolling) -->
+  <!-- BROCHURE SECTION -->
+  <section class="section brochure-section" id="brochure">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Official Document</span>
+        <h2 class="section-title">The <span class="gradient-text">Brochure</span></h2>
+        <p class="section-subtitle">Everything you need to know — rules, timeline, judging criteria and more.</p>
+      </div>
+
+      <div class="brochure-card" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Decorative corner accents -->
+        <span class="brochure-corner brochure-corner-tl" aria-hidden="true"></span>
+        <span class="brochure-corner brochure-corner-br" aria-hidden="true"></span>
+
+        <!-- Glow blob -->
+        <div class="brochure-glow" aria-hidden="true"></div>
+
+        <!-- PDF Icon -->
+        <div class="brochure-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="2" width="28" height="36" rx="3" fill="url(#pdf-bg)" opacity="0.15"/>
+            <rect x="6" y="2" width="28" height="36" rx="3" stroke="url(#pdf-stroke)" stroke-width="1.5"/>
+            <path d="M28 2v10h10" stroke="url(#pdf-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 2l10 10" stroke="url(#pdf-stroke)" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="2" y="26" width="30" height="14" rx="2.5" fill="url(#pdf-tag)"/>
+            <text x="8.5" y="36.5" font-family="monospace" font-size="8" font-weight="700" fill="white" letter-spacing="0.5">PDF</text>
+            <defs>
+              <linearGradient id="pdf-bg" x1="6" y1="2" x2="34" y2="38" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8b5cf6"/>
+                <stop offset="1" stop-color="#22d3ee"/>
+              </linearGradient>
+              <linearGradient id="pdf-stroke" x1="6" y1="2" x2="34" y2="38" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a78bfa"/>
+                <stop offset="1" stop-color="#22d3ee"/>
+              </linearGradient>
+              <linearGradient id="pdf-tag" x1="2" y1="26" x2="32" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8b5cf6"/>
+                <stop offset="1" stop-color="#22d3ee"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <!-- Info -->
+        <div class="brochure-info">
+          <div class="brochure-filename">
+            <span class="brochure-mono">AI_VibeX_1.0_Hackathon_Official_Rulebook</span>
+            <span class="brochure-ext">.pdf</span>
+          </div>
+          <p class="brochure-desc">
+            The official hackathon rulebook — covering eligibility, judging criteria, submission guidelines, timeline and all regulations.
+          </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="brochure-actions">
+          <a href="assets/AI_Vibex_1.0_Hackathon_Official_Rulebook.pdf"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="brochure-btn brochure-btn-primary"
+             aria-label="Open brochure PDF in new tab">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 3H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/>
+              <path d="M13 3h4v4M17 3l-7 7"/>
+            </svg>
+            Preview Brochure
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
   <section class="afs" id="artifera-scroll" aria-label="Artifera logo assembling from particles as you scroll">
     <h2 class="afs-sr">Artifera</h2>
     <div class="afs-stage">
@@ -589,7 +662,7 @@
         <div class="rule-card" data-aos="fade-up" data-aos-delay="320" id="rule-card-5">
           <div class="rule-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
           <h3>Judging Criteria</h3>
-          <p>Projects are judged on Innovation, Technical Complexity, Impact and Presentation.</p>
+          <p>Projects are judged on Innovation, Technical Complexity, Impact and Presentation. Judges&#39; decisions are final, and there are no tie-breakers.</p>
         </div>
         <div class="rule-card" data-aos="fade-up" data-aos-delay="400" id="rule-card-6">
           <div class="rule-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
