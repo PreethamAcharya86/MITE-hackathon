@@ -25,7 +25,7 @@
     document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
 
     // Hover states on all interactive elements
-    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .prize-card, .flow-card, .why-card, .rule-card';
+    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .prize-card, .flow-card, .why-card, .rule-card, .brochure-card, .brochure-icon, .register-card, .criteria-wrap';
     document.querySelectorAll(interactables).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -320,11 +320,12 @@
     sections.forEach(s => observer.observe(s));
   }
 
-  /* â”€â”€â”€ 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .register-card, .contributor-card:not(.coordinator-card)');
+    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .register-card, .contributor-card:not(.coordinator-card), .brochure-card');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768) return;
         const rect = el.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
