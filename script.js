@@ -322,7 +322,7 @@
 
   /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .register-card, .contributor-card:not(.coordinator-card), .brochure-card');
+    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .register-card, .contributor-card:not(.coordinator-card), .brochure-card, .selected-teams-card');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         if (window.innerWidth <= 768) return;
@@ -2260,7 +2260,7 @@
     if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
 
     // Config & Section Mappings
-    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'rules', 'register', 'contributors'];
+    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'rules', 'register', 'selected-teams', 'contributors'];
     const SECTION_MESSAGES = {
       top: "Welcome to AI VibeX 1.0! Let's vibe!",
       about: "6 intense hours of pure AI innovation!",
@@ -2268,7 +2268,8 @@
       flow: "Understand the hackathon flow: Build & win!",
       rules: "Know the rules & regulations before building!",
       why: "Know the rules & regulations before building!",
-      register: "Register your team! Spots fill fast!",
+      register: "Registrations are officially closed!",
+      'selected-teams': "Results will be announced soon!",
       contributors: "Meet the visionary team behind the event!"
     };
 
