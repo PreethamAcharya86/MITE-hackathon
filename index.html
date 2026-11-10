@@ -16,6 +16,7 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="loader.css" />
+  <link rel="stylesheet" href="vibex-runner.css" />
 </head>
 
 <body class="loader-active">
@@ -142,9 +143,8 @@
         <li><a href="#timeline" class="nav-link">Timeline</a></li>
         <li><a href="#flow" class="nav-link">Flow</a></li>
         <li><a href="#rules" class="nav-link">Rules</a></li>
-        <li><a href="#selected-teams" class="nav-link">Results</a></li>
         <li><a href="#contributors" class="nav-link">Team</a></li>
-        <li><a href="#register" class="nav-link nav-cta">Register</a></li>
+        <li><a href="#selected-teams" class="nav-link nav-cta">Finalists</a></li>
       </ul>
       <button class="music-toggle" id="music-toggle" type="button" aria-label="Play background music"
         aria-pressed="false" title="Play background music">
@@ -267,15 +267,14 @@
       </div>
 
       <div class="hero-actions" data-aos="fade-up" data-aos-delay="400">
-        <a href="#register" class="btn-primary btn-closed" id="hero-register-btn">
+        <a href="#selected-teams" class="btn-primary" id="hero-finalists-btn">
+          <span>View Finalists</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
-          <span>Registration Closed</span>
         </a>
-        <a href="#selected-teams" class="btn-secondary" id="hero-timeline-btn">
-          Result Announcement
+        <a href="#timeline" class="btn-secondary" id="hero-timeline-btn">
+          View Timeline
         </a>
       </div>
     </div>
@@ -678,51 +677,20 @@
     </div>
   </section>
 
-  <!-- REGISTER SECTION -->
-  <section class="section register-section" id="register">
-    <div class="register-bg-orb"></div>
-    <div class="container">
-      <div class="register-card" data-aos="zoom-in">
-        <div class="reg-badge reg-badge-closed">
-          <span class="badge-dot pulse-red"></span> Registration Closed
-        </div>
-        <h2 class="reg-title">Registration <span class="gradient-text">Closed</span></h2>
-        <p class="reg-subtitle">
-          Registrations for <strong>AI VibeX 1.0</strong> have officially closed.<br />
-          Presented by the <strong>Department of AIML</strong>, <strong>MITE</strong>.<br />
-          Thank you for the tremendous enthusiasm and overwhelming response!
-        </p>
-        
-        <div class="btn-primary btn-large btn-closed-main" id="main-register-btn" role="status" aria-label="Registration is closed">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          <span>Registration Closed</span>
-        </div>
-        <p class="reg-note">The official registration portal has been closed. Evaluation of submitted teams is underway.</p>
-        <div class="reg-closed-action">
-          <a href="#selected-teams" class="reg-jump-btn">
-            <span>View Result Announcement</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESULT ANNOUNCEMENT SECTION -->
+  <!-- SELECTED FINALISTS ANNOUNCEMENT SECTION -->
   <section class="section selected-teams-section" id="selected-teams">
     <div class="teams-bg-orb teams-bg-orb-1"></div>
     <div class="teams-bg-orb teams-bg-orb-2"></div>
     <div class="container">
       <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">Result <span class="gradient-text">Announcement</span></h2>
+        <span class="section-eyebrow">Official Announcement</span>
+        <h2 class="section-title">Selected <span class="gradient-text">Finalists</span></h2>
+        <p class="section-subtitle">
+          Congratulations to all shortlisted teams selected for AI VibeX 1.0!
+        </p>
       </div>
 
-      <div class="selected-teams-card result-announce-card" data-aos="zoom-in" data-aos-delay="150">
+      <div class="selected-teams-card finalists-card finalists-locked" data-aos="zoom-in" data-aos-delay="150">
         <!-- Ambient card glow & tech corners -->
         <div class="teams-glow"></div>
         <span class="teams-corner tc-tl"></span>
@@ -730,17 +698,78 @@
         <span class="teams-corner tc-bl"></span>
         <span class="teams-corner tc-br"></span>
 
-        <!-- Loading Widget with Animation -->
-        <div class="result-loader-wrapper">
-          <div class="result-cyber-spinner" aria-hidden="true">
-            <div class="spinner-ring outer-ring"></div>
-            <div class="spinner-ring inner-ring"></div>
-            <div class="spinner-pulse-center"></div>
+        <!-- PDF Document Row -->
+        <div class="finalists-doc-row">
+          <div class="finalists-doc-info">
+            <a href="assets/AI_VIBEX_1.0_Finalists.pdf" class="finalists-doc-icon" id="finalists-doc-icon" aria-label="Official Finalists Document">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="2" width="28" height="36" rx="3" fill="url(#finalists-pdf-bg)" opacity="0.18" />
+                <rect x="6" y="2" width="28" height="36" rx="3" stroke="url(#finalists-pdf-stroke)" stroke-width="1.6" />
+                <path d="M26 2v8h8" stroke="url(#finalists-pdf-stroke)" stroke-width="1.6" fill="none" />
+                <path d="M12 18h16M12 24h12M12 30h8" stroke="#22d3ee" stroke-width="1.6" stroke-linecap="round" />
+                <rect x="18" y="26" width="22" height="15" rx="3" fill="#0b1329" stroke="#8b5cf6" stroke-width="1.4" />
+                <text x="22" y="37" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#a78bfa" letter-spacing="0.5">PDF</text>
+                <defs>
+                  <linearGradient id="finalists-pdf-bg" x1="6" y1="2" x2="34" y2="38" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#22d3ee" />
+                    <stop offset="1" stop-color="#8b5cf6" />
+                  </linearGradient>
+                  <linearGradient id="finalists-pdf-stroke" x1="6" y1="2" x2="34" y2="38" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#22d3ee" />
+                    <stop offset="1" stop-color="#8b5cf6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </a>
+            <div class="finalists-doc-details">
+              <div class="finalists-status-pill" id="finalists-status-pill">
+                <span class="badge-dot pulse-amber" id="finalists-status-dot"></span>
+                <span id="finalists-status-text">Finalists Locked</span>
+              </div>
+              <h3 class="finalists-filename">
+                AI_VIBEX_1.0_Finalists<span class="ext">.pdf</span>
+              </h3>
+              <p class="finalists-meta-text" id="finalists-meta-text">
+                Clear 10 hurdles in VibeX Runner to unlock official roster
+              </p>
+            </div>
           </div>
-          <p class="result-announce-text">
-            Results will be announced soon<span class="loading-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
-          </p>
+
+          <div class="finalists-actions">
+            <!-- Unlock / Play Button (shown when locked) -->
+            <button type="button" class="finalists-btn btn-unlock" id="finalists-unlock-btn" aria-label="Play VibeX Runner game to unlock results">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="6" width="20" height="12" rx="4"/>
+                <line x1="6" y1="12" x2="10" y2="12"/>
+                <line x1="8" y1="10" x2="8" y2="14"/>
+                <circle cx="16" cy="10" r="1.2" fill="currentColor" stroke="none"/>
+                <circle cx="18" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>Play to Unlock</span>
+            </button>
+
+            <!-- Preview Button (shown when unlocked) -->
+            <a href="assets/AI_VIBEX_1.0_Finalists.pdf" target="_blank" rel="noopener noreferrer"
+               class="finalists-btn btn-preview" id="finalists-preview-btn"
+               title="Open PDF preview in new tab" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span>Preview</span>
+            </a>
+
+            <!-- Play Again Button (shown when unlocked so game is always accessible) -->
+            <button type="button" class="finalists-btn btn-replay" id="finalists-replay-btn" title="Replay VibeX Runner" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>Play Again</span>
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -1177,7 +1206,7 @@
     <!-- Action Menu -->
     <nav id="vibebot-menu" class="vibebot-menu" aria-hidden="true" role="menu">
       <button type="button" class="vibebot-btn" id="vb-btn-next" role="menuitem">Next section</button>
-      <button type="button" class="vibebot-btn" id="vb-btn-register" role="menuitem">Register</button>
+      <button type="button" class="vibebot-btn" id="vb-btn-finalists" role="menuitem">Finalists</button>
       <button type="button" class="vibebot-btn" id="vb-btn-tip" role="menuitem">Tip</button>
       <button type="button" class="vibebot-btn" id="vb-btn-dance" role="menuitem">Dance</button>
     </nav>
@@ -1491,6 +1520,9 @@
   })();
   </script>
   <!-- ══ END LOADER SCRIPT ══════════════════════════════════ -->
+
+  <!-- VibeX Runner Mini Game (loads after page content) -->
+  <script src="vibex-runner.js" defer></script>
 
 </body>
 

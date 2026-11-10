@@ -25,7 +25,7 @@
     document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
 
     // Hover states on all interactive elements
-    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .prize-card, .flow-card, .why-card, .rule-card, .brochure-card, .brochure-icon, .register-card, .criteria-wrap';
+    const interactables = 'a, button, input, textarea, select, label, [role="button"], .tl-card, .prize-card, .flow-card, .why-card, .rule-card, .brochure-card, .brochure-icon, .finalists-card, .finalists-btn, .finalists-doc-icon, .criteria-wrap';
     document.querySelectorAll(interactables).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -322,7 +322,7 @@
 
   /* ─── 8. DYNAMIC SPOTLIGHT & 3D TILT ON CARDS ───────────── */
   function initTilt() {
-    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .register-card, .contributor-card:not(.coordinator-card), .brochure-card, .selected-teams-card');
+    const tiltEls = document.querySelectorAll('.why-card, .rule-card, .prize-card, .tl-card, .flow-card, .criteria-wrap, .finalists-card, .contributor-card:not(.coordinator-card), .brochure-card, .selected-teams-card');
     tiltEls.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         if (window.innerWidth <= 768) return;
@@ -699,7 +699,7 @@
     updateFill(); // Run once on load
   }
 
-  /* â”€â”€â”€ INIT ALL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ─── INIT ALL ─────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
     initAOS();
@@ -2253,14 +2253,14 @@
     const pupilR = document.getElementById('vb-pupil-right');
 
     const btnNext = document.getElementById('vb-btn-next');
-    const btnRegister = document.getElementById('vb-btn-register');
+    const btnFinalists = document.getElementById('vb-btn-finalists');
     const btnTip = document.getElementById('vb-btn-tip');
     const btnDance = document.getElementById('vb-btn-dance');
 
     if (!botRoot || !actorGroup || !pupilL || !pupilR) return;
 
     // Config & Section Mappings
-    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'rules', 'register', 'selected-teams', 'contributors'];
+    const SECTION_IDS = ['top', 'about', 'timeline', 'flow', 'rules', 'selected-teams', 'contributors'];
     const SECTION_MESSAGES = {
       top: "Welcome to AI VibeX 1.0! Let's vibe!",
       about: "6 intense hours of pure AI innovation!",
@@ -2268,8 +2268,7 @@
       flow: "Understand the hackathon flow: Build & win!",
       rules: "Know the rules & regulations before building!",
       why: "Know the rules & regulations before building!",
-      register: "Registrations are officially closed!",
-      'selected-teams': "Results will be announced soon!",
+      'selected-teams': "Check out the official AI VibeX 1.0 finalists!",
       contributors: "Meet the visionary team behind the event!"
     };
 
@@ -2709,12 +2708,12 @@
       });
     }
 
-    if (btnRegister) {
-      btnRegister.addEventListener('click', (e) => {
+    if (btnFinalists) {
+      btnFinalists.addEventListener('click', (e) => {
         e.stopPropagation();
         closeMenu();
-        const regSection = document.getElementById('register');
-        if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
+        const finalistsSection = document.getElementById('selected-teams');
+        if (finalistsSection) finalistsSection.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
