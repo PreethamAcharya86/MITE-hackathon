@@ -16,7 +16,6 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="loader.css" />
-  <link rel="stylesheet" href="vibex-runner.css" />
 </head>
 
 <body class="loader-active">
@@ -690,7 +689,7 @@
         </p>
       </div>
 
-      <div class="selected-teams-card finalists-card finalists-locked" data-aos="zoom-in" data-aos-delay="150">
+      <div class="selected-teams-card finalists-card" data-aos="zoom-in" data-aos-delay="150">
         <!-- Ambient card glow & tech corners -->
         <div class="teams-glow"></div>
         <span class="teams-corner tc-tl"></span>
@@ -701,7 +700,7 @@
         <!-- PDF Document Row -->
         <div class="finalists-doc-row">
           <div class="finalists-doc-info">
-            <a href="assets/AI_VIBEX_1.0_Finalists.pdf" class="finalists-doc-icon" id="finalists-doc-icon" aria-label="Official Finalists Document">
+            <a href="assets/AI_VIBEX_1.0_Finalists.pdf" target="_blank" rel="noopener noreferrer" class="finalists-doc-icon" id="finalists-doc-icon" aria-label="Open PDF preview in new tab">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="6" y="2" width="28" height="36" rx="3" fill="url(#finalists-pdf-bg)" opacity="0.18" />
                 <rect x="6" y="2" width="28" height="36" rx="3" stroke="url(#finalists-pdf-stroke)" stroke-width="1.6" />
@@ -723,35 +722,22 @@
             </a>
             <div class="finalists-doc-details">
               <div class="finalists-status-pill" id="finalists-status-pill">
-                <span class="badge-dot pulse-amber" id="finalists-status-dot"></span>
-                <span id="finalists-status-text">Finalists Locked</span>
+                <span class="badge-dot pulse-green" id="finalists-status-dot"></span>
+                <span id="finalists-status-text">Shortlist Confirmed</span>
               </div>
               <h3 class="finalists-filename">
                 AI_VIBEX_1.0_Finalists<span class="ext">.pdf</span>
               </h3>
               <p class="finalists-meta-text" id="finalists-meta-text">
-                Clear 10 hurdles in VibeX Runner to unlock official roster
+                Official Finalists Roster &bull; 1.7 MB &bull; Department of AIML, MITE
               </p>
             </div>
           </div>
 
           <div class="finalists-actions">
-            <!-- Unlock / Play Button (shown when locked) -->
-            <button type="button" class="finalists-btn btn-unlock" id="finalists-unlock-btn" aria-label="Play VibeX Runner game to unlock results">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="6" width="20" height="12" rx="4"/>
-                <line x1="6" y1="12" x2="10" y2="12"/>
-                <line x1="8" y1="10" x2="8" y2="14"/>
-                <circle cx="16" cy="10" r="1.2" fill="currentColor" stroke="none"/>
-                <circle cx="18" cy="12" r="1.2" fill="currentColor" stroke="none"/>
-              </svg>
-              <span>Play to Unlock</span>
-            </button>
-
-            <!-- Preview Button (shown when unlocked) -->
             <a href="assets/AI_VIBEX_1.0_Finalists.pdf" target="_blank" rel="noopener noreferrer"
                class="finalists-btn btn-preview" id="finalists-preview-btn"
-               title="Open PDF preview in new tab" style="display: none;">
+               title="Open PDF preview in new tab">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -759,14 +745,6 @@
               </svg>
               <span>Preview</span>
             </a>
-
-            <!-- Play Again Button (shown when unlocked so game is always accessible) -->
-            <button type="button" class="finalists-btn btn-replay" id="finalists-replay-btn" title="Replay VibeX Runner" style="display: none;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-              <span>Play Again</span>
-            </button>
           </div>
         </div>
 
@@ -1520,9 +1498,6 @@
   })();
   </script>
   <!-- ══ END LOADER SCRIPT ══════════════════════════════════ -->
-
-  <!-- VibeX Runner Mini Game (loads after page content) -->
-  <script src="vibex-runner.js" defer></script>
 
 </body>
 
